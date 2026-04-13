@@ -414,7 +414,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     input.focus();
   }
   sendBtn.addEventListener("click", send);
-  input.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
+  input.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
 
   copyBtn.addEventListener("click", () => {
     const q = input.value.trim() || "請幫我解釋這個單元的重點";
@@ -476,6 +476,7 @@ window.__TTS = (function(){
   const LS = { rate:'tts.rate', voice:'tts.voice', mode:'tts.mode', azVoice:'tts.azVoice' };
   let voices = [], queue = [], qIdx = 0;
   let azVoices = [], audio = null, azAvailable = false;
+  let epoch = 0;
 
   const __ttsMeta = document.querySelector('meta[name="api-base"]');
   const API_BASE = (__ttsMeta && __ttsMeta.content) ? __ttsMeta.content.replace(/\/$/,'')
@@ -512,14 +513,16 @@ window.__TTS = (function(){
   function getAzVoice(){ return localStorage.getItem(LS.azVoice) || 'zh-TW-HsiaoChenNeural'; }
 
   function stopAll(){
+    epoch++;
     synth.cancel();
-    if (audio){ audio.pause(); audio.src=''; audio=null; }
+    if (audio){ audio.onended = audio.onerror = null; audio.pause(); audio.src=''; audio=null; }
   }
   function speakChunks(chunks, startIdx=0){
     stopAll(); queue = chunks; qIdx = startIdx; nextChunk();
   }
   async function nextChunk(){
     if (qIdx >= queue.length){ setStatus('idle'); return; }
+    const myEpoch = epoch;
     const text = queue[qIdx];
     if (getMode() === 'azure' && azAvailable){
       try {
@@ -530,13 +533,16 @@ window.__TTS = (function(){
           method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({ text, voice:getAzVoice(), rate:r })
         });
+        if (epoch !== myEpoch) return;
         if (!resp.ok){ throw new Error('tts '+resp.status); }
         const blob = await resp.blob();
+        if (epoch !== myEpoch) return;
         audio = new Audio(URL.createObjectURL(blob));
-        audio.onended = () => { qIdx++; nextChunk(); };
-        audio.onerror = () => { qIdx++; nextChunk(); };
+        audio.onended = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
+        audio.onerror = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
         audio.play();
       } catch(e){
+        if (epoch !== myEpoch) return;
         console.warn('Azure TTS failed, fallback to browser', e);
         localStorage.setItem(LS.mode,'browser'); browserSpeak(text);
       }
@@ -545,12 +551,13 @@ window.__TTS = (function(){
     browserSpeak(text);
   }
   function browserSpeak(text){
+    const myEpoch = epoch;
     const u = new SpeechSynthesisUtterance(text);
     const v = pickVoice(); if (v) u.voice = v;
     u.lang = (v && v.lang) || 'zh-TW';
     u.rate = getRate(); u.pitch = 1;
-    u.onend = () => { qIdx++; nextChunk(); };
-    u.onerror = () => { qIdx++; nextChunk(); };
+    u.onend = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
+    u.onerror = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
     setStatus('playing');
     synth.speak(u);
   }
