@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>進階函式｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-02 · Phase 4 · 進階自動化</div>
+    <h1>進階函式</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">進階函數：解決傳統函數做不到的場景</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這些函數平常用不到，但碰到時你會慶幸自己學過。</p><h2>重點函數</h2><pre><code class="lang-excel">=LET(x, A2*0.05, y, B2+x, y*1.1)
+# 命名變數，避免重複計算同一個東西
+
+=INDIRECT(&quot;工作表&quot; &amp; A2 &amp; &quot;!B5&quot;)
+# 用文字組出儲存格參照（動態跨表查詢）
+
+=OFFSET(A1, 5, 2, 1, 1)
+# 從 A1 偏移 5 列 2 欄 → C6
+
+=AGGREGATE(9, 7, A:A)
+# 強化版 SUM，可忽略隱藏列、錯誤值
+
+=SWITCH(A2, &quot;A&quot;, 100, &quot;B&quot;, 80, &quot;C&quot;, 60, 0)
+# 比巢狀 IF 好讀的多分支
+
+=LAMBDA(x, y, x^2 + y^2)(3, 4)
+# 自訂函數（M365 only），可放在「名稱管理員」變成可重用函式</code></pre>
+<h2>使用建議</h2><p>LET 是現在最被推薦的「公式重構」工具——把 =A1*0.05 + (A1*0.05)*1.1 改成 =LET(t, A1*0.05, t + t*1.1) 容易讀又只算一次。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 LET</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 SWITCH 取代巢狀 IF</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 INDIRECT 的用法</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 LAMBDA 是什麼</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P4-01.html">← 陣列與動態函式</a><a class="btn primary" href="P4-03.html">假設分析 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

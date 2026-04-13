@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>假設分析｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-03 · Phase 4 · 進階自動化</div>
+    <h1>假設分析</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">假設分析：給結果，反推輸入</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">「我想要利潤 100 萬，售價該訂多少？」這種問題就是假設分析的舞台。</p><h2>4 種工具</h2><table><thead><tr><th>工具</th><th>適合</th></tr></thead><tbody><tr><td>目標搜尋（Goal Seek）</td><td>只有 1 個變數要求解</td></tr><tr><td>模擬分析表（Data Table）</td><td>看 1~2 個變數變化的結果矩陣</td></tr><tr><td>分析藍本（Scenario Manager）</td><td>比較幾個情境（樂觀/悲觀/正常）</td></tr><tr><td>規劃求解（Solver）</td><td>多變數+條件約束的最佳化</td></tr></tbody></table>
+<h2>目標搜尋範例</h2><p>資料 → 模擬分析 → 目標搜尋。「將儲存格 B5（總利潤）設為 1000000，藉由變更儲存格 B2（售價）」→ Excel 會自動算出 B2 該是多少。</p>
+<h2>規劃求解（Solver）</h2><p>macOS 要先到「工具 → Excel 增益集 → Solver」啟用。可以設目標、可變儲存格、限制式。適合做產能規劃、運送路線等最佳化問題。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用目標搜尋解一個方程式</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">建立一個模擬分析表</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道分析藍本和規劃求解的差別</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">在 Mac 啟用 Solver</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P4-02.html">← 進階函式</a><a class="btn primary" href="P4-04.html">Power Query →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

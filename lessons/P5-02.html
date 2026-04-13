@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VBA 進階｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-02 · Phase 5 · VBA</div>
+    <h1>VBA 進階</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 進階：陣列、字典、錯誤處理、事件</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">進階 VBA 的精髓在「速度」——把 100 個操作壓成 1 個記憶體運算。</p><h2>陣列加速</h2><pre><code class="lang-vba">&#x27; 慢：直接讀寫儲存格（每次都跨應用程式）
+For i = 2 To 10000
+    Cells(i, 2).Value = Cells(i, 1).Value * 2
+Next i
+
+&#x27; 快：先讀進陣列，運算完一次寫回（快 100 倍）
+Dim arr As Variant
+arr = Range(&quot;A2:A10000&quot;).Value
+For i = 1 To UBound(arr)
+    arr(i, 1) = arr(i, 1) * 2
+Next i
+Range(&quot;B2:B10000&quot;).Value = arr</code></pre>
+<h2>Dictionary（去重 / 計數神器）</h2><pre><code class="lang-vba">Dim dict As Object
+Set dict = CreateObject(&quot;Scripting.Dictionary&quot;)
+
+For i = 2 To 1000
+    Dim key As String
+    key = Cells(i, 1).Value
+    If dict.Exists(key) Then
+        dict(key) = dict(key) + 1
+    Else
+        dict.Add key, 1
+    End If
+Next i</code></pre>
+<h2>錯誤處理</h2><pre><code class="lang-vba">Sub Safe()
+    On Error GoTo ErrHandler
+    &#x27; 你的程式碼
+    Exit Sub
+ErrHandler:
+    MsgBox &quot;錯誤：&quot; &amp; Err.Description
+End Sub</code></pre>
+<h2>事件驅動</h2><p>工作表可以掛事件：Worksheet_Change（資料變更時觸發）、Worksheet_SelectionChange（選取變更時）。可以做「自動填入時間戳記」之類的功能。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用陣列加速一段 VBA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 Dictionary 去重</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">加上 On Error 錯誤處理</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道事件驅動是什麼</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P5-01.html">← VBA 基礎</a><a class="btn primary" href="P5-03.html">VBA 實戰專案 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

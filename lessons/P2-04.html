@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>條件式格式化｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-04 · Phase 2 · 職場即戰力</div>
+    <h1>條件式格式化</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">條件式格式化：讓重要的資料自己跳出來</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">報表要給人看，不上色等於沒做。條件式格式可以自動把高/低值上色，看一眼就知道重點。</p><h2>3 種視覺化</h2><table><thead><tr><th>類型</th><th>適合場景</th></tr></thead><tbody><tr><td>資料橫條</td><td>快速比較大小（像橫條圖）</td></tr><tr><td>色階</td><td>熱力圖效果（紅高綠低）</td></tr><tr><td>圖示集</td><td>加箭頭/燈號/星星</td></tr></tbody></table>
+<h2>自訂公式規則（最強）</h2><pre><code class="lang-excel"># 整列上色：當 D 欄是「逾期」就把整列變紅
+# 選整列 → 條件式格式化 → 新增規則 → 使用公式
+=$D2=&quot;逾期&quot;
+# ⚠️ $D2 加 $ 是鎖欄不鎖列，這樣每一列都會用自己的 D 欄判斷
+
+# 高亮週末
+=WEEKDAY($A2, 2)&gt;=6
+
+# 標記高於平均
+=B2&gt;AVERAGE($B$2:$B$100)</code></pre>
+<div class="callout"><strong>⚠️ 注意</strong>公式裡 $ 用錯地方是最常犯的錯。記住：要鎖「欄」就 $X，要鎖「列」就 X$。整列上色一定要鎖欄不鎖列。</div>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">套一個資料橫條</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">套一個色階</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用公式規則整列上色</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 $ 鎖欄 vs 鎖列</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P2-03.html">← 樞紐分析表</a><a class="btn primary" href="P3-01.html">資料驗證 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

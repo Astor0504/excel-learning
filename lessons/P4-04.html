@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power Query｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-04 · Phase 4 · 進階自動化</div>
+    <h1>Power Query</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">Power Query：Excel 內建的 ETL 神器</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">再也不用每月手動清資料！Power Query 把整理流程錄起來，下個月一鍵重跑。</p><h2>什麼是 ETL</h2><p>Extract（取資料）→ Transform（清資料）→ Load（載入 Excel）。Power Query 把這三步全部視覺化，不用寫程式碼。</p>
+<h2>常見操作</h2><p>資料 → 取得資料 → 從檔案/資料庫/網頁。匯入後進入 Power Query 編輯器：可以拆欄、合併欄、移除列、轉置、樞紐/反樞紐、合併查詢（類似 JOIN）、附加查詢（類似 UNION）。</p>
+<h2>M 語言</h2><pre><code class="lang-powerquery">let
+    來源 = Excel.CurrentWorkbook(){[Name=&quot;訂單&quot;]}[Content],
+    篩選 = Table.SelectRows(來源, each [金額] &gt; 1000),
+    排序 = Table.Sort(篩選, {{&quot;金額&quot;, Order.Descending}})
+in
+    排序</code></pre>
+<h2>為什麼要用</h2><p>傳統複製貼上的工作流程：每個月花 2 小時。用 Power Query 第一次設定 30 分鐘，之後每月「重新整理」按一下，10 秒搞定。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">從 CSV 匯入一份資料</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">練習移除欄、篩選列</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 ETL 是什麼</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 M 語言長什麼樣</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P4-03.html">← 假設分析</a><a class="btn primary" href="P4-05.html">Power Pivot 與資料模型 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

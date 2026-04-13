@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>條件統計｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-01 · Phase 2 · 職場即戰力</div>
+    <h1>條件統計</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">SUMIF 系列：在條件下才加總/計算的「會挑食」函數</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">業績報表的核心函數。看懂這 6 個，老闆問你「電子部 3 月業績」可以 30 秒答出來。</p><h2>6 大條件統計函數</h2><table><thead><tr><th>函數</th><th>用途</th></tr></thead><tbody><tr><td>COUNTIF</td><td>符合條件的「個數」</td></tr><tr><td>COUNTIFS</td><td>多條件版</td></tr><tr><td>SUMIF</td><td>符合條件的「加總」</td></tr><tr><td>SUMIFS</td><td>多條件版</td></tr><tr><td>AVERAGEIF</td><td>符合條件的「平均」</td></tr><tr><td>AVERAGEIFS</td><td>多條件版</td></tr></tbody></table>
+<h2>語法差異（關鍵）</h2><pre><code class="lang-excel"># 單條件：條件範圍在前
+=SUMIF(條件範圍, 條件, 加總範圍)
+=SUMIF(A:A, &quot;電子&quot;, C:C)
+
+# 多條件：加總範圍在前！順序不同！
+=SUMIFS(加總範圍, 條件範圍1, 條件1, 條件範圍2, 條件2, ...)
+=SUMIFS(C:C, A:A, &quot;電子&quot;, B:B, &quot;&gt;2024-01-01&quot;)</code></pre>
+<h2>萬用字元</h2><pre><code class="lang-excel">=COUNTIF(A:A, &quot;陳*&quot;)        # 開頭是「陳」
+=COUNTIF(A:A, &quot;*股份*&quot;)      # 包含「股份」
+=SUMIF(A:A, &quot;&lt;&gt;已取消&quot;, B:B) # 不等於已取消</code></pre>
+<div class="callout"><strong>⚠️ 注意</strong>SUMIF 跟 SUMIFS 的參數順序不一樣！前者「條件範圍在前、加總範圍在後」，後者「加總範圍在最前面」——記反了結果會錯。</div>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 SUMIF</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 SUMIFS（雙條件）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用萬用字元 *</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道兩者參數順序差異</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P1-03.html">← 條件判斷</a><a class="btn primary" href="P2-02.html">查找比對 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

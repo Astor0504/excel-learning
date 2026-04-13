@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>綜合挑戰｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-04 · Phase 5 · VBA</div>
+    <h1>綜合挑戰</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">綜合挑戰：跨章節整合題目練習</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上！這些題目模擬真實工作場景，每題都會用到 3+ 個函數。</p><h2>挑戰 1：年資與獎金</h2><p>員工表有「入職日期」和「年薪」兩欄。要算出：① 滿幾年（DATEDIF）② 年資 ≥ 3 年的人 ③ 每人應發獎金（IFS 分級）④ 全公司獎金加總（SUMIFS）。</p>
+<h2>挑戰 2：跨表查詢</h2><p>訂單表只有「商品代號」，商品表有「代號→名稱→價格」。要：① 用 XLOOKUP 帶出商品名 ② 帶出單價 ③ 算小計 ④ 用樞紐做月報。</p>
+<h2>挑戰 3：動態儀表板</h2><pre><code class="lang-excel"># 給定銷售明細，做一個 Dashboard：
+=UNIQUE(銷售[業務員])           # 列出所有業務員
+=SUMIFS(銷售[金額], 銷售[業務員], A2)  # 個人業績
+=RANK(B2, B:B)                    # 排名
+=LARGE(銷售[金額], 1)             # 最高一筆
+# 加上條件式格式 + 走勢圖 = 完整儀表板</code></pre>
+<h2>挑戰 4：自動化清單</h2><p>每月收到 N 個分公司的 .csv → 用 Power Query 合併 → 用樞紐分析 → 用 VBA 一鍵更新 + 寄信。這是一個完整的「自動化報表系統」。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">完成挑戰 1（年資）</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">完成挑戰 2（跨表）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">完成挑戰 3（儀表板）</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">挑戰 4 做一部分</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P5-03.html">← VBA 實戰專案</a><a class="btn primary" href="../index.html">完成 ✓</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

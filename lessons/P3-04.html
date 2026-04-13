@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>命名範圍與表格｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P3-04 · Phase 3 · 專業打磨</div>
+    <h1>命名範圍與表格</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">命名範圍 + 表格：讓公式變得「會說人話」</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">=SUMIFS(C2:C500, A2:A500, &quot;電子&quot;) vs =SUMIFS(業績[金額], 業績[部門], &quot;電子&quot;)——後者半年後回來看也懂。</p><h2>命名範圍</h2><p>選範圍 → 左上角「名稱方塊」輸入名字 → Enter。之後公式可以直接寫名字。例如把 B2:B100 取名為「業績」，公式變成 =SUM(業績)。</p>
+<h2>表格（最強功能之一）</h2><pre><code class="lang-excel"># 選資料 → ⌘+T → 套用表格樣式
+# 表格會自動：
+# 1. 加標題排序篩選按鈕
+# 2. 公式自動展開（新增一列就自動套用）
+# 3. 範圍動態擴展（新資料樞紐自動更新）
+
+# 結構化參照（公式裡用欄位名）
+=SUM(業績表[金額])
+=SUMIFS(業績表[金額], 業績表[部門], &quot;電子&quot;)
+=業績表[@金額] * 0.05  # @ 代表本列</code></pre>
+<h2>小技巧</h2><p>養成把所有資料先轉成「表格」的習慣，後面所有函數和樞紐都會變得超穩定。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">建立一個命名範圍</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 ⌘+T 把資料轉成表格</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用結構化參照寫一個 SUMIFS</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 [@欄位] 是什麼</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P3-03.html">← 圖表設計</a><a class="btn primary" href="P3-05.html">保護與安全 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>樞紐分析表｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-03 · Phase 2 · 職場即戰力</div>
+    <h1>樞紐分析表</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">樞紐分析表：5 秒做出 30 分鐘的報表</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">如果只能學一個 Excel 功能，請學樞紐。它能把幾萬筆原始資料瞬間變成可讀報表。</p><h2>建立步驟</h2><p>① 點任一儲存格 → ② 插入 → 樞紐分析表 → ③ 拖欄位到 4 大區域。</p>
+<h2>4 大區域怎麼用</h2><table><thead><tr><th>區域</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>列（Rows）</td><td>變成左邊的「分組」</td><td>部門、產品類別</td></tr><tr><td>欄（Columns）</td><td>變成上方的「分組」</td><td>月份、年度</td></tr><tr><td>值（Values）</td><td>要計算的數字</td><td>業績、數量</td></tr><tr><td>篩選（Filters）</td><td>頂部下拉篩選</td><td>地區、年度</td></tr></tbody></table>
+<h2>超實用功能</h2><p>右鍵 → 群組 → 可以把日期自動分成「年/季/月」。值欄位設定 → 改顯示為「百分比」、「累計」、「差異」等。插入交叉分析篩選器（Slicer）→ 視覺化篩選按鈕。</p>
+<div class="callout"><strong>⚠️ 注意</strong>原始資料有合併儲存格、空白欄位、欄位名稱重複 → 樞紐會壞。建議資料先轉成「表格」（⌘+T）再做樞紐，新增資料會自動納入。</div>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">建立一個樞紐</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">拖欄位到 4 個區域</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用日期群組成月</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">插入一個交叉分析篩選器</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P2-02.html">← 查找比對</a><a class="btn primary" href="P2-04.html">條件式格式化 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

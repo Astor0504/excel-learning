@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>條件判斷｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-03 · Phase 1 · 操作效率</div>
+    <h1>條件判斷</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">IF 是 Excel 的「if 陳述式」，會了它才能寫條件邏輯</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">從這課開始 Excel 變成「會思考」的工具。IF 加上 AND/OR 幾乎可以表達所有判斷。</p><h2>語法</h2><pre><code class="lang-excel">=IF(條件, 條件成立的值, 條件不成立的值)
+
+# 範例：成績及格判斷
+=IF(B2&gt;=60, &quot;及格&quot;, &quot;不及格&quot;)
+
+# 多重條件：用 IFS（比巢狀 IF 好讀）
+=IFS(B2&gt;=90, &quot;A&quot;, B2&gt;=80, &quot;B&quot;, B2&gt;=70, &quot;C&quot;, TRUE, &quot;F&quot;)
+
+# 複合條件：AND / OR
+=IF(AND(B2&gt;=60, C2&gt;=60), &quot;兩科都過&quot;, &quot;補考&quot;)
+=IF(OR(D2=&quot;VIP&quot;, E2&gt;10000), &quot;享折扣&quot;, &quot;原價&quot;)</code></pre>
+<h2>巢狀 IF vs IFS</h2><p>舊寫法 =IF(A&gt;90,&quot;A&quot;,IF(A&gt;80,&quot;B&quot;,IF(A&gt;70,&quot;C&quot;,&quot;F&quot;))) → 括號地獄。新版直接用 IFS 一行搞定，最後一個 TRUE 當 else。</p>
+<h2>小技巧</h2><p>MOD(A2, 2)=0 可以判斷偶數。配合 IF 可以做「奇數列上色」之類的判斷。</p>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 IF 判斷及格</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 IFS 寫等第</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 AND 寫雙條件 IF</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 IFS 的 TRUE 是什麼</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P1-02.html">← 基礎函式</a><a class="btn primary" href="P2-01.html">條件統計 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

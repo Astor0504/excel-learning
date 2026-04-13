@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>基礎函式｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-02 · Phase 1 · 操作效率</div>
+    <h1>基礎函式</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 3</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">7 個最常用的統計函數，幾乎所有報表都從這裡開始</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——背熟這幾個，才有資格往後學進階函數。</p><h2>基礎函數速覽</h2><table><thead><tr><th>函數</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>SUM</td><td>加總</td><td>=SUM(A2:A100)</td></tr><tr><td>AVERAGE</td><td>平均</td><td>=AVERAGE(B2:B100)</td></tr><tr><td>COUNT</td><td>計算數字個數</td><td>=COUNT(C2:C100)</td></tr><tr><td>COUNTA</td><td>計算非空個數（含文字）</td><td>=COUNTA(D2:D100)</td></tr><tr><td>MAX / MIN</td><td>最大 / 最小</td><td>=MAX(E2:E100)</td></tr><tr><td>MEDIAN</td><td>中位數</td><td>=MEDIAN(F2:F100)</td></tr><tr><td>LARGE / SMALL</td><td>第 N 大 / 小</td><td>=LARGE(G2:G100, 3) → 第 3 大</td></tr></tbody></table>
+<h2>實戰範例</h2><pre><code class="lang-excel"># 業績統計（A欄=業務員，B欄=金額）
+=SUM(B:B)              # 全部業績
+=AVERAGE(B2:B100)      # 平均單筆
+=COUNT(B:B)            # 有幾筆業績
+=COUNTA(A:A) - 1       # 業務員人數（扣標題）
+=LARGE(B:B, 1)         # 最高一筆
+=LARGE(B:B, 3)         # 第 3 高（找前三名）</code></pre>
+<div class="callout"><strong>⚠️ 注意</strong>COUNT 只算「數字」，文字會被忽略！要算筆數請用 COUNTA。AVERAGE 會自動忽略空白和文字，但會把 0 算進去。</div>
+<h2>⌨️ 本課常用快捷鍵</h2>
+<div class="mac-kb" data-shortcuts='[{"keys": "cmd,shift,t", "label": "⌘ ⇧ T · 自動加總 SUM"}, {"keys": "=", "label": "= · 開始輸入公式"}, {"keys": "cmd,enter", "label": "⌘ ↩ · 多格同時輸入"}, {"keys": "ctrl,d", "label": "⌃ D · 填滿向下"}]'></div>
+<script src="../keyboard.js"></script>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">分清楚 COUNT vs COUNTA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 LARGE 找前 3 名</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 AVERAGE 怎麼處理 0 跟空白</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P1-01.html">← macOS 快捷鍵大全</a><a class="btn primary" href="P1-03.html">條件判斷 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>

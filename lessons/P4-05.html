@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://istqb-api-alpha.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power Pivot 與資料模型｜Excel 學習地圖</title>
+<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-05 · Phase 4 · 進階自動化</div>
+    <h1>Power Pivot 與資料模型</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">Power Pivot + DAX：把 Excel 變成迷你 BI 工具</p></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料超過樞紐處理上限（約百萬列）？要跨多張表分析？這時 Power Pivot 就出場了。</p><h2>資料模型</h2><p>傳統樞紐只能用「一張表」。資料模型可以匯入多張表 → 設定關聯（像資料庫的 JOIN）→ 建立樞紐時跨表分析。</p>
+<h2>DAX 基礎</h2><pre><code class="lang-dax"># 度量值（Measures）= 公式語言版的計算欄位
+總業績 := SUM(訂單[金額])
+
+電子部業績 :=
+    CALCULATE(
+        SUM(訂單[金額]),
+        部門[部門名] = &quot;電子&quot;
+    )
+
+# 同期比較
+去年同期 :=
+    CALCULATE([總業績], SAMEPERIODLASTYEAR(&#x27;日期&#x27;[日期]))</code></pre>
+<h2>和 Power Query 的差別</h2><p>Power Query：清資料、整形資料；Power Pivot：建模型、寫 DAX、做分析。一個負責「清」，一個負責「算」，常常一起用。</p>
+<div class="callout"><strong>⚠️ 注意</strong>Power Pivot 的資料模型 macOS 版支援有限，部分功能要 Windows 版。Power Query 在 Mac 已經完整支援。</div>
+<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+
+    </article>
+    <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">知道資料模型是什麼</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">知道度量值（Measure）跟計算欄位的差</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">認識 CALCULATE 這個 DAX 核心</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">了解 Mac 版的限制</span></label></div>
+    <div class="notes">
+      <h4>📝 我的筆記</h4>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P4-04.html">← Power Query</a><a class="btn primary" href="P5-01.html">VBA 基礎 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h4>💬 AI 學習教練</h4>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script src="../search-index.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../app.js"></script>
+</body></html>
