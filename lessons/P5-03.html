@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VBA 實戰專案｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-03">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -44,7 +44,7 @@
 End Sub</code></pre>
 <h2>加速三件事</h2><p>① Application.ScreenUpdating = False（關螢幕更新）② Application.Calculation = xlCalculationManual（暫停自動計算）③ 用陣列代替逐格操作。</p>
 <h2>按鈕綁巨集</h2><p>開發人員 → 插入 → 按鈕 → 拖出來 → 指定巨集。使用者就能一鍵執行。</p>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個自動化流程</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">加上 ScreenUpdating=False</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">建立一個按鈕綁巨集</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">存成 .xlsm</span></label></div>
@@ -82,4 +82,8 @@ End Sub</code></pre>
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>

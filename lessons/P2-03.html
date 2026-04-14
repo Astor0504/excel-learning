@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>樞紐分析表｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-03">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -25,7 +25,7 @@
 <h2>4 大區域怎麼用</h2><table><thead><tr><th>區域</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>列（Rows）</td><td>變成左邊的「分組」</td><td>部門、產品類別</td></tr><tr><td>欄（Columns）</td><td>變成上方的「分組」</td><td>月份、年度</td></tr><tr><td>值（Values）</td><td>要計算的數字</td><td>業績、數量</td></tr><tr><td>篩選（Filters）</td><td>頂部下拉篩選</td><td>地區、年度</td></tr></tbody></table>
 <h2>超實用功能</h2><p>右鍵 → 群組 → 可以把日期自動分成「年/季/月」。值欄位設定 → 改顯示為「百分比」、「累計」、「差異」等。插入交叉分析篩選器（Slicer）→ 視覺化篩選按鈕。</p>
 <div class="callout"><strong>⚠️ 注意</strong>原始資料有合併儲存格、空白欄位、欄位名稱重複 → 樞紐會壞。建議資料先轉成「表格」（⌘+T）再做樞紐，新增資料會自動納入。</div>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">建立一個樞紐</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">拖欄位到 4 個區域</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用日期群組成月</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">插入一個交叉分析篩選器</span></label></div>
@@ -63,4 +63,8 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>

@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>命名範圍與表格｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P3-04">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -33,7 +33,7 @@
 =SUMIFS(業績表[金額], 業績表[部門], &quot;電子&quot;)
 =業績表[@金額] * 0.05  # @ 代表本列</code></pre>
 <h2>小技巧</h2><p>養成把所有資料先轉成「表格」的習慣，後面所有函數和樞紐都會變得超穩定。</p>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">建立一個命名範圍</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 ⌘+T 把資料轉成表格</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用結構化參照寫一個 SUMIFS</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 [@欄位] 是什麼</span></label></div>
@@ -71,4 +71,8 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>

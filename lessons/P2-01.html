@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>條件統計｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-01">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -33,7 +33,7 @@
 =COUNTIF(A:A, &quot;*股份*&quot;)      # 包含「股份」
 =SUMIF(A:A, &quot;&lt;&gt;已取消&quot;, B:B) # 不等於已取消</code></pre>
 <div class="callout"><strong>⚠️ 注意</strong>SUMIF 跟 SUMIFS 的參數順序不一樣！前者「條件範圍在前、加總範圍在後」，後者「加總範圍在最前面」——記反了結果會錯。</div>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 SUMIF</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 SUMIFS（雙條件）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用萬用字元 *</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道兩者參數順序差異</span></label></div>
@@ -71,4 +71,8 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>

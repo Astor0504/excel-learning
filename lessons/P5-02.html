@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VBA 進階｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-02">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -53,7 +53,7 @@ ErrHandler:
     MsgBox &quot;錯誤：&quot; &amp; Err.Description
 End Sub</code></pre>
 <h2>事件驅動</h2><p>工作表可以掛事件：Worksheet_Change（資料變更時觸發）、Worksheet_SelectionChange（選取變更時）。可以做「自動填入時間戳記」之類的功能。</p>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用陣列加速一段 VBA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 Dictionary 去重</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">加上 On Error 錯誤處理</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道事件驅動是什麼</span></label></div>
@@ -91,4 +91,8 @@ End Sub</code></pre>
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>

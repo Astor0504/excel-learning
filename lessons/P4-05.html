@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Power Pivot 與資料模型｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P4-05">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -36,7 +36,7 @@
     CALCULATE([總業績], SAMEPERIODLASTYEAR(&#x27;日期&#x27;[日期]))</code></pre>
 <h2>和 Power Query 的差別</h2><p>Power Query：清資料、整形資料；Power Pivot：建模型、寫 DAX、做分析。一個負責「清」，一個負責「算」，常常一起用。</p>
 <div class="callout"><strong>⚠️ 注意</strong>Power Pivot 的資料模型 macOS 版支援有限，部分功能要 Windows 版。Power Query 在 Mac 已經完整支援。</div>
-<h2>📂 練習檔案</h2><p>打開資料夾裡的練習檔，對照本課內容操作：</p><ul><li>✏️ <a href="../practice.xlsx" download>Excel 練習簿.xlsx</a></li><li>📖 <a href="../cheatsheet.html" target="_blank" rel="noopener">Excel 速查手冊（HTML）</a></li></ul>
+<h2>📂 本課練習</h2><div id="practiceViewer" data-src="../practice.xlsx"></div><p style="margin-top:10px;font-size:13.5px;color:var(--muted)">💡 點右下角的 <b>📘 速查</b> 可即時查看本課相關函式/快捷鍵；完整速查手冊 → <a href="../cheatsheet.html" target="_blank" rel="noopener">開啟</a></p>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">知道資料模型是什麼</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">知道度量值（Measure）跟計算欄位的差</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">認識 CALCULATE 這個 DAX 核心</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">了解 Mac 版的限制</span></label></div>
@@ -74,4 +74,8 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../drawer.css">
+<script src="../cheatsheet-data.js" defer></script>
+<script src="../drawer.js" defer></script>
+<script src="../practice-viewer.js" defer></script>
 </body></html>
