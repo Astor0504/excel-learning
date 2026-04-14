@@ -6,6 +6,9 @@ function pageKey(){
 const PK = pageKey();
 const DEPTH = document.body?.dataset.depth || "";
 
+// Shared HTML escape — used by AI chat and search
+function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
 // Theme
 const themeBtn = document.getElementById("themeBtn");
 const saved = localStorage.getItem("theme");
@@ -316,11 +319,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 // ========= AI 助教浮動聊天 =========
 (function(){
   if (!document.getElementById("aiFab")) return;
-  function getApiKey() {
-    const _a = 'c2stYW50LWFwaTAzLWNSTl9vcF9WaEdGVVp6NEpRUlg0SjZNdmdRaUFOUmFyQ0JIMG5TSElu';
-    const _b = 'BFUQphjeflVLnhTaJRjcidXd5EWar9FMYxGSVRXZWZ1T3AHb0MXRHFnYxcjR29Gdnp2Ymx2Z';
-    return atob(_a + _b.split('').reverse().join(''));
-  }
+  const __apiMeta = document.querySelector('meta[name="api-base"]');
+  const CHAT_API_BASE = (__apiMeta && __apiMeta.content) ? __apiMeta.content.replace(/\/$/,'') : '';
   const fab = document.getElementById("aiFab");
   const panel = document.getElementById("aiPanel");
   const closeBtn = document.getElementById("aiClose");
@@ -349,7 +349,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     log.appendChild(div);
     log.scrollTop = log.scrollHeight;
   }
-  function esc(s){ return s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  const esc = escHtml;
   function renderMd(s){
     s = esc(s);
     s = s.replace(/```([\s\S]*?)```/g, (_,c)=>`<pre><code>${c}</code></pre>`);
@@ -381,15 +381,13 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     thinking.textContent = "🤔 思考中…";
     log.appendChild(thinking);
     log.scrollTop = log.scrollHeight;
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 30_000);
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch(CHAT_API_BASE + '/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': getApiKey(),
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
+        headers: { 'Content-Type': 'application/json' },
+        signal: ctrl.signal,
         body: JSON.stringify({
           model: 'claude-haiku-4-5',
           max_tokens: 1024,
@@ -404,11 +402,14 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         messages.push({role:"assistant", content:reply});
         add("assistant", reply);
       } else {
-        add("assistant", "❌ " + (data.error?.message || "API 回應異常，可改用「複製問題」貼到 Claude/ChatGPT 網頁版"));
+        add("assistant", "❌ " + (data.error?.message || data.error || "API 回應異常，可改用「複製問題」貼到 Claude/ChatGPT 網頁版"));
       }
     } catch(err) {
       thinking.remove();
-      add("assistant", "🌐 連線失敗：" + err.message + "\n\n你可以按「📋 複製到剪貼簿」貼到 Claude/ChatGPT 網頁版繼續問。");
+      const msg = err.name === 'AbortError' ? '請求逾時（30 秒）' : err.message;
+      add("assistant", "🌐 連線失敗：" + msg + "\n\n你可以按「📋 複製到剪貼簿」貼到 Claude/ChatGPT 網頁版繼續問。");
+    } finally {
+      clearTimeout(timeout);
     }
     sendBtn.disabled = false;
     input.focus();
@@ -450,7 +451,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
          <div class="si-meta">${esc(e.b||"")}</div>
        </a>`).join("");
   }
-  function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  const esc = escHtml;
   btn.addEventListener("click", open);
   modal.addEventListener("click", e => { if (e.target === modal) close(); });
   input?.addEventListener("input", e => render(e.target.value));
