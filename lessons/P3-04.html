@@ -20,6 +20,7 @@
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">命名範圍 + 表格：讓公式變得「會說人話」</p></div>
+    <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">=SUMIFS(C2:C500, A2:A500, &quot;電子&quot;) vs =SUMIFS(業績[金額], 業績[部門], &quot;電子&quot;)——後者半年後回來看也懂。</p><h2>命名範圍</h2><p>選範圍 → 左上角「名稱方塊」輸入名字 → Enter。之後公式可以直接寫名字。例如把 B2:B100 取名為「業績」，公式變成 =SUM(業績)。</p>
 <h2>表格（最強功能之一）</h2><pre><code class="lang-excel"># 選資料 → ⌘+T → 套用表格樣式
@@ -71,8 +72,10 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
 <link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
+<script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
 <script src="../practice-viewer.js" defer></script>
 </body></html>

@@ -22,8 +22,27 @@
   var fab = document.createElement('button');
   fab.id = 'cheatFab';
   fab.title = '打開速查';
-  fab.textContent = '📘';
+  fab.innerHTML = '📘<span class="cd-badge" style="display:none">0</span>';
   document.body.appendChild(fab);
+
+  var LS_KEY = 'excelLearned';
+  function updateBadge(){
+    var learned = {};
+    try { learned = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e){}
+    var n = Object.keys(learned).filter(function(k){ return learned[k]; }).length;
+    var badge = fab.querySelector('.cd-badge');
+    if (!badge) return;
+    if (n > 0) {
+      badge.style.display = '';
+      badge.textContent = n;
+      fab.classList.add('has-progress');
+    } else {
+      badge.style.display = 'none';
+      fab.classList.remove('has-progress');
+    }
+  }
+  updateBadge();
+  window.addEventListener('cheat-learned-changed', updateBadge);
 
   var panel = document.createElement('div');
   panel.id = 'cheatDrawer';
