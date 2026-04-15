@@ -134,6 +134,35 @@ html[data-theme="dark"] .xc-vba pre{background:#0E0F0F;border:1px solid var(--li
   .xc-sc-list li{grid-template-columns:1fr}
 }
 
+/* ===== Phase 折疊 ===== */
+.phase-head{
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  margin:28px 0 0;padding:14px 16px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;font-size:17px;
+  transition:all .15s ease;user-select:none
+}
+.phase-head:hover{border-color:var(--accent);background:var(--accent-soft)}
+.phase-head .phase-title{flex:1;font-weight:700}
+.phase-head .phase-stat{
+  font-size:13px;color:var(--muted);font-weight:600;
+  background:var(--bg);padding:2px 10px;border-radius:999px
+}
+.phase-head .phase-chev{
+  font-size:14px;color:var(--muted);
+  transition:transform .2s ease;display:inline-block
+}
+.phase-head.is-open{border-color:var(--accent);background:var(--accent-soft)}
+.phase-head.is-open .phase-chev{transform:rotate(180deg);color:var(--accent)}
+.phase-head.is-open .phase-stat{background:var(--surface);color:var(--accent)}
+
+.phase-group{
+  display:none;
+  animation:ph-fade .2s ease-out
+}
+.phase-group.is-open{display:block}
+@keyframes ph-fade{ from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
+
 /* ===== index.html 增強 ===== */
 .idx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .idx-chip{display:inline-flex;align-items:center;gap:4px;

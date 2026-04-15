@@ -69,7 +69,7 @@
       header.filter(Boolean).map(function(h){return el('th',{text:h});})));
     var tbody = el('tbody',null,
       rows.map(function(r){
-        return el('tr',null, r.map(function(c, i){
+        return el('tr',null, r.map(function(c){
           return el('td',{text: c === '' ? '' : String(c)});
         }));
       }));
@@ -80,7 +80,7 @@
   }
 
   // ---------- 互動題卡（公式輸入 → 即時驗證）----------
-  function buildInteractiveTask(t, idx, total, progressUpdate){
+  function buildInteractiveTask(t, progressUpdate){
     var card = el('div',{class:'xc-task'});
     var head = el('div',{class:'xc-task-head'},[
       el('span',{class:'xc-task-num',text:'#'+t.num}),
@@ -313,7 +313,7 @@
 
   var meta = buildMetaSection();
   if (meta) {
-    var mwrap = el('div',{class:'xc-section'});
+    var mwrap = el('div',{class:'xc-section','data-xc-type':'meta'});
     mwrap.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'📊'}), document.createTextNode(' 學習小檔案')]));
     mwrap.appendChild(meta);
     container.appendChild(mwrap);
@@ -321,7 +321,7 @@
 
   // 1. 快捷鍵（P1-01 專屬）
   if (data.shortcuts){
-    var sec = el('div',{class:'xc-section'});
+    var sec = el('div',{class:'xc-section','data-xc-type':'shortcuts'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'⌨️'}),document.createTextNode(' macOS 完整快捷鍵清單（120+ 條）')]));
     buildShortcuts(data.shortcuts).forEach(function(n){ sec.appendChild(n); });
     container.appendChild(sec);
@@ -329,7 +329,7 @@
 
   // 2. 知識型 sections
   if (data.knowledge){
-    var sec = el('div',{class:'xc-section'});
+    var sec = el('div',{class:'xc-section','data-xc-type':'knowledge'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'📚'}),document.createTextNode(' 深度知識 — 步驟、技巧、常見錯誤')]));
     buildKnowledge(data.knowledge).forEach(function(n){ sec.appendChild(n); });
     container.appendChild(sec);
@@ -337,7 +337,7 @@
 
   // 3. VBA
   if (data.vba){
-    var sec = el('div',{class:'xc-section'});
+    var sec = el('div',{class:'xc-section','data-xc-type':'vba'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'⚙️'}),document.createTextNode(' VBA 程式碼範例（複製即用）')]));
     buildVBA(data.vba).forEach(function(n){ sec.appendChild(n); });
     container.appendChild(sec);
@@ -345,7 +345,7 @@
 
   // 4. 互動練習（含資料表 + 即時驗證）
   if (data.inter){
-    var sec = el('div',{class:'xc-section'});
+    var sec = el('div',{class:'xc-section','data-xc-type':'practice-inter'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎯'}),document.createTextNode(' 互動練習 — 輸入公式即時驗證')]));
     sec.appendChild(el('div',{class:'xc-sub',text:'規則：在輸入框寫公式（可省略開頭 =）→ 按 Enter 或「檢查」→ 答對自動變綠 ✅，答錯變紅 ❌'}));
     var table = buildDataTable(data.inter.dataHeader, data.inter.dataRows, '【練習資料】');
@@ -376,15 +376,15 @@
       sec.querySelector('.xc-progress-count').textContent = n;
       sec.querySelector('.xc-progress-bar > span').style.width = (n/data.inter.tasks.length*100)+'%';
     } catch(e){}
-    data.inter.tasks.forEach(function(t, i){
-      sec.appendChild(buildInteractiveTask(t, i, data.inter.tasks.length, update));
+    data.inter.tasks.forEach(function(t){
+      sec.appendChild(buildInteractiveTask(t, update));
     });
     container.appendChild(sec);
   }
 
   // 5. 專業養成題目（含解析）
   if (data.pro){
-    var sec = el('div',{class:'xc-section'});
+    var sec = el('div',{class:'xc-section','data-xc-type':'practice-pro'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🧪'}),document.createTextNode(' 微任務練習 — 含原理解說')]));
     sec.appendChild(el('div',{class:'xc-sub',text:'每題提供「💡 提示」與「✅ 答案 + 🧠 解析」按鈕。建議先自己想、再翻答案'}));
     var table = buildDataTable(data.pro.dataHeader, data.pro.dataRows, '【練習資料】');

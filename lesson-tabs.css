@@ -1,0 +1,107 @@
+/* ===== lesson-tabs: 把 lesson 頁分成 4 個 tab ===== */
+
+.lt-bar{
+  display:flex;gap:4px;margin:20px 0 0;padding:6px;
+  background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  position:sticky;top:10px;z-index:30;backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px)
+}
+html[data-theme="dark"] .lt-bar{background:rgba(27,29,28,.85)}
+html[data-theme="light"] .lt-bar,html:not([data-theme]) .lt-bar{background:rgba(250,249,246,.85)}
+
+.lt-tab{
+  flex:1;padding:10px 12px;border:none;background:transparent;color:var(--muted);
+  font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .15s ease;white-space:nowrap
+}
+.lt-tab:hover{color:var(--text);background:var(--surface)}
+.lt-tab.is-active{color:var(--accent);background:var(--surface);
+  box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.lt-icon{font-size:16px}
+.lt-label{letter-spacing:.3px}
+.lt-badge{
+  background:var(--accent-soft);color:var(--accent);
+  padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;
+  min-width:22px;text-align:center;margin-left:2px
+}
+.lt-tab.is-active .lt-badge{background:var(--accent);color:#fff}
+
+.lt-panel{display:none;animation:lt-fade .18s ease-out}
+.lt-panel.is-active{display:block}
+@keyframes lt-fade{ from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+
+/* 在 tab 切換時，section 不要再重複加 margin-top */
+.lt-panel > .xc-section:first-child{margin-top:20px}
+
+/* ===== 練習區：桌機改 2 欄 grid ===== */
+@media (min-width:900px){
+  .lt-panel[data-panel="practice"] .xc-section{ /* section 本身不變 */ }
+  .lt-panel[data-panel="practice"] .xc-section > .xc-task ~ .xc-task{
+    /* 標記：先計算 task 數量，改 grid 容器 */
+  }
+  /* 把所有 task 用容器包起來——在 JS 裡做更好，但可以先用 CSS flex wrap */
+  .lt-panel[data-panel="practice"] .xc-section{
+    display:grid;grid-template-columns:1fr;gap:12px
+  }
+  .lt-panel[data-panel="practice"] .xc-section > h2,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-sub,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-data-wrap,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-progress{
+    grid-column:1 / -1
+  }
+}
+@media (min-width:1100px){
+  .lt-panel[data-panel="practice"] .xc-section{
+    grid-template-columns:1fr 1fr
+  }
+  .lt-panel[data-panel="practice"] .xc-section > h2,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-sub,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-data-wrap,
+  .lt-panel[data-panel="practice"] .xc-section > .xc-progress{
+    grid-column:1 / -1
+  }
+  .lt-panel[data-panel="practice"] .xc-task{margin:0}
+}
+
+/* ===== 知識區：桌機 2 欄 ===== */
+@media (min-width:1100px){
+  .lt-panel[data-panel="knowledge"] .xc-section{
+    column-count:2;column-gap:18px
+  }
+  .lt-panel[data-panel="knowledge"] .xc-section > h2,
+  .lt-panel[data-panel="knowledge"] .xc-section > .xc-sub{
+    column-span:all
+  }
+  .lt-panel[data-panel="knowledge"] .xc-know,
+  .lt-panel[data-panel="knowledge"] .xc-vba{
+    break-inside:avoid;margin-top:0;margin-bottom:14px
+  }
+}
+
+/* ===== 參考（快捷鍵）桌機 2 欄 ===== */
+@media (min-width:1100px){
+  .lt-panel[data-panel="reference"] .xc-section{
+    column-count:2;column-gap:18px
+  }
+  .lt-panel[data-panel="reference"] .xc-section > h2,
+  .lt-panel[data-panel="reference"] .xc-section > .xc-sub{
+    column-span:all
+  }
+  .lt-panel[data-panel="reference"] .xc-sc-group{
+    break-inside:avoid;margin-top:0;margin-bottom:14px
+  }
+}
+
+/* 手機 tab bar 字體縮小 */
+@media (max-width:640px){
+  .lt-tab{padding:8px 6px;font-size:13px}
+  .lt-icon{font-size:15px}
+  .lt-badge{font-size:10px;padding:1px 6px;min-width:18px}
+}
+
+/* 列印時展開全部 */
+@media print{
+  .lt-bar{display:none}
+  .lt-panel{display:block !important}
+}
