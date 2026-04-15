@@ -1,6 +1,5 @@
-/* practice.xlsx 內嵌瀏覽器（ADHD 友善版：自動載入 + 關鍵字高亮）
-   用法：<div id="practiceViewer" data-src="../practice.xlsx"></div>
-   高亮：從 body data-lesson-slug 讀對應 highlights。
+/* practice.xlsx 內嵌瀏覽器
+   只顯示對應本課的工作表，其他 sheet 收進「其他工作表」disclosure。
 */
 (function(){
   var SHEETJS_URL = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
@@ -17,21 +16,24 @@
   mount.innerHTML = [
     '<div class="pv-box">',
     '  <div class="pv-head">',
-    '    <span class="pv-title">✏️ 練習簿即時預覽</span>',
+    '    <div class="pv-head-l">',
+    '      <span class="pv-title">本課練習簿</span>',
+    '      <span class="pv-sheet-name"></span>',
+    '    </div>',
     '    <div class="pv-actions">',
     '      <span class="pv-status">載入中…</span>',
-    '      <a class="pv-btn" href="'+src+'" download>📥 下載原檔</a>',
+    '      <a class="pv-btn" href="'+src+'" download>下載原檔</a>',
     '    </div>',
     '  </div>',
-    (highlights.length ? '  <div class="pv-hint">🎯 本課重點關鍵字：'+highlights.map(function(h){return '<span class="pv-chip">'+esc(h)+'</span>';}).join('')+'（練習簿中會自動高亮）</div>' : ''),
+    (highlights.length ? '  <div class="pv-hint"><span class="pv-hint-label">本課重點</span>'+highlights.map(function(h){return '<span class="pv-chip">'+esc(h)+'</span>';}).join('')+'</div>' : ''),
     '  <div class="pv-body"></div>',
     '</div>'
   ].join('');
 
   var body = mount.querySelector('.pv-body');
   var statusEl = mount.querySelector('.pv-status');
+  var sheetNameEl = mount.querySelector('.pv-sheet-name');
 
-  // 自動載入（defer 到 idle 時間，避免阻塞首屏）
   var kick = function(){
     loadSheetJS(function(err){
       if (err) { setStatus('載入失敗', true); return; }
@@ -73,9 +75,13 @@
     var wb = XLSX.read(buf, {type:'array'});
     var names = wb.SheetNames;
 
-    // 預設切到和本課 highlights 最相關的 sheet（名稱含關鍵字的）
     var startIdx = 0;
-    if (highlights.length) {
+    var slugMatch = -1;
+    for (var j = 0; j < names.length; j++){
+      if (slug && names[j].toUpperCase().indexOf(slug.toUpperCase()) >= 0){ slugMatch = j; break; }
+    }
+    if (slugMatch >= 0) startIdx = slugMatch;
+    else if (highlights.length) {
       for (var i = 0; i < names.length; i++) {
         var nm = names[i];
         if (highlights.some(function(h){ return nm.toUpperCase().indexOf(h.toUpperCase()) >= 0; })) {
@@ -84,25 +90,44 @@
       }
     }
 
-    var tabsHtml = names.map(function(n, i){
-      return '<button class="pv-tab'+(i===startIdx?' active':'')+'" data-i="'+i+'">'+esc(n)+'</button>';
-    }).join('');
-    body.innerHTML = '<div class="pv-tabs">'+tabsHtml+'</div><div class="pv-sheet"></div>';
+    body.innerHTML = '<div class="pv-sheet"></div>';
     var sheetEl = body.querySelector('.pv-sheet');
+
     function show(i){
       var ws = wb.Sheets[names[i]];
       var html = XLSX.utils.sheet_to_html(ws, {editable:false});
       sheetEl.innerHTML = '<div class="pv-table">'+html+'</div>';
+      sheetNameEl.textContent = names[i];
       applyHighlights(sheetEl);
     }
-    body.querySelectorAll('.pv-tab').forEach(function(b){
-      b.addEventListener('click', function(){
-        body.querySelectorAll('.pv-tab').forEach(function(x){x.classList.remove('active');});
-        b.classList.add('active');
-        show(parseInt(b.dataset.i,10));
-      });
-    });
     show(startIdx);
+
+    if (names.length > 1) {
+      var det = document.createElement('details');
+      det.className = 'pv-other';
+      var sum = document.createElement('summary');
+      sum.innerHTML = '其他工作表 <span class="pv-other-count">' + (names.length-1) + '</span><span class="pv-other-chev" aria-hidden="true">▾</span>';
+      det.appendChild(sum);
+      var listEl = document.createElement('div');
+      listEl.className = 'pv-other-list';
+      names.forEach(function(n, i){
+        if (i === startIdx) return;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pv-other-link';
+        btn.textContent = n;
+        btn.addEventListener('click', function(){
+          show(i);
+          listEl.querySelectorAll('.pv-other-link').forEach(function(x){x.classList.remove('is-active');});
+          btn.classList.add('is-active');
+          var top = mount.getBoundingClientRect().top + window.pageYOffset - 80;
+          window.scrollTo({top: top, behavior:'smooth'});
+        });
+        listEl.appendChild(btn);
+      });
+      det.appendChild(listEl);
+      body.appendChild(det);
+    }
   }
 
   function applyHighlights(container){
