@@ -116,17 +116,32 @@ def parse_pro_function(ws):
     }
 
 
-# ---------- 專業養成 知識型 sheets（章節 + key/value 表格）----------
+# ---------- 專業養成 知識型 sheets（章節 + key/value 表格 + 動手練習）----------
 def parse_pro_knowledge(ws):
     rows = rows_of(ws)
     title = trim(rows[0][0])
     subtitle = trim(rows[1][0])
     sections = []
+    hands_tasks = []
     cur = None
+    in_hands = False
     for r in rows[2:]:
         cell0 = trim(r[0])
         rest = [trim(c) for c in r[1:]] if len(r) > 1 else []
         rest_empty = all(c == '' for c in rest)
+        # 動手練習區塊
+        if isinstance(cell0, str) and '動手練習' in cell0:
+            in_hands = True; cur = None; continue
+        if in_hands:
+            if cell0 == '#' and trim(r[1]) == '✓':
+                continue
+            if isinstance(cell0, (int, float)):
+                hands_tasks.append({
+                    'num': int(cell0),
+                    'difficulty': trim(r[2]),
+                    'desc': trim(r[3]) if len(r) > 3 else '',
+                })
+            continue
         if is_blank_row(r):
             continue
         # section header: col0 有值，其餘都空（且像章節標題）
@@ -137,15 +152,13 @@ def parse_pro_knowledge(ws):
             cur = {'title': cell0, 'items': []}
             sections.append(cur)
         elif cur is not None and cell0:
-            # data row in section
             cur['items'].append([cell0] + [c for c in rest if c != ''])
         elif cell0:
-            # 沒在 section 內的散落字串 → 開個 default section
             if not sections or sections[-1]['title'] != '說明':
                 cur = {'title': '說明', 'items': []}
                 sections.append(cur)
             sections[-1]['items'].append([cell0] + [c for c in rest if c != ''])
-    return {'title': title, 'subtitle': subtitle, 'sections': sections}
+    return {'title': title, 'subtitle': subtitle, 'sections': sections, 'handsTasks': hands_tasks}
 
 
 # ---------- 快捷鍵大全 ----------
@@ -233,23 +246,47 @@ def parse_vba(ws):
 def parse_dashboard(ws):
     rows = rows_of(ws)
     stages = {}
+    badges = []
+    strategies = []
+    start_point = []
     cur_phase = None
+    state = None
     for r in rows:
         c0 = trim(r[0])
-        if isinstance(c0, str) and (c0.startswith('🏃') or c0.startswith('💼') or c0.startswith('📐') or c0.startswith('⚡') or c0.startswith('🚀')) and 'Phase' in c0:
-            cur_phase = c0
-            continue
-        if isinstance(c0, str) and c0.startswith('第') and trim(r[1]):
-            stages[trim(r[1])] = {  # key by sheet name
-                'phase': cur_phase,
-                'stage': c0,
-                'topics': trim(r[2]),
-                'difficulty': trim(r[3]),
-                'taskCount': trim(r[4]),
-                'time': trim(r[5]),
-                'xp': trim(r[6]),
+        if isinstance(c0, str):
+            if '成就徽章' in c0:
+                state = 'badges'; continue
+            if '學習策略' in c0:
+                state = 'strategies'; continue
+            if '你的起點' in c0:
+                state = 'start'; continue
+            if (c0.startswith('🏃') or c0.startswith('💼') or c0.startswith('📐')
+                or c0.startswith('⚡') or c0.startswith('🚀') or c0.startswith('🔧')) and 'Phase' in c0:
+                cur_phase = c0; state = 'stages'; continue
+        if state == 'stages' and isinstance(c0, str) and c0.startswith('第') and trim(r[1]):
+            stages[trim(r[1])] = {
+                'phase': cur_phase, 'stage': c0,
+                'topics': trim(r[2]), 'difficulty': trim(r[3]),
+                'taskCount': trim(r[4]), 'time': trim(r[5]), 'xp': trim(r[6]),
             }
-    return stages
+        elif state == 'badges':
+            if c0 == '徽章' or c0 == '' or c0 is None: continue
+            if isinstance(c0, str) and ('解鎖' in c0 or 'XP' in c0 or c0 == '狀態'):
+                continue
+            cond = trim(r[1]); xp = trim(r[2])
+            if cond and xp:
+                badges.append({'name': c0, 'condition': cond, 'xp': xp})
+        elif state == 'strategies':
+            if c0 and isinstance(c0, str):
+                desc = trim(r[2]) if len(r) > 2 else ''
+                if desc:
+                    strategies.append({'title': c0, 'desc': desc})
+        elif state == 'start':
+            if c0 and isinstance(c0, str):
+                desc = trim(r[2]) if len(r) > 2 else ''
+                if desc:
+                    start_point.append({'stage': c0, 'desc': desc})
+    return {'stages': stages, 'badges': badges, 'strategies': strategies, 'startPoint': start_point}
 
 
 # ---------- Main ----------
@@ -272,7 +309,8 @@ for sn in pro_vba_sheets:
     professional[sn] = parse_vba(pro_wb[sn])
 professional['⌨️ 快捷鍵大全'] = parse_shortcuts(pro_wb['⌨️ 快捷鍵大全'])
 
-dashboard = parse_dashboard(pro_wb['🎯 儀表板'])
+dashboard_full = parse_dashboard(pro_wb['🎯 儀表板'])
+dashboard = dashboard_full['stages']  # 向後相容
 
 # Lesson slug → 對應 sheets
 LESSON_MAP = {
@@ -324,7 +362,13 @@ for slug, refs in LESSON_MAP.items():
     lessons[slug] = obj
 
 # 寫入 JS 檔
-out_data = {'lessons': lessons, 'dashboard': dashboard}
+out_data = {
+    'lessons': lessons,
+    'dashboard': dashboard,
+    'badges': dashboard_full['badges'],
+    'strategies': dashboard_full['strategies'],
+    'startPoint': dashboard_full['startPoint'],
+}
 js = '// Auto-generated from xlsx files. Do not edit by hand.\n'
 js += 'window.XLSX_CONTENT = ' + json.dumps(out_data, ensure_ascii=False, indent=1) + ';\n'
 OUT.write_text(js, encoding='utf-8')

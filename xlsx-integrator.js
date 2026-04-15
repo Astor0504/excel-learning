@@ -194,6 +194,56 @@
     return card;
   }
 
+  // ---------- 動手練習（checklist 型：只打勾、不驗證答案）----------
+  function buildHandsOn(tasks){
+    if (!tasks || !tasks.length) return null;
+    var KEY = 'xc-hands-'+slug;
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
+    var wrap = el('div',{class:'xc-hands'});
+    var bar = el('div',{class:'xc-hands-bar'},[
+      el('span',{class:'xc-hands-count'}),
+      el('div',{class:'xc-hands-track'}, el('span'))
+    ]);
+    wrap.appendChild(bar);
+    function updateBar(){
+      var done = 0;
+      tasks.forEach(function(t){ if (saved[t.num]) done++; });
+      wrap.querySelector('.xc-hands-count').textContent = done + ' / ' + tasks.length + ' 完成';
+      wrap.querySelector('.xc-hands-track > span').style.width = (done/tasks.length*100)+'%';
+    }
+    tasks.forEach(function(t){
+      var item = el('label',{class:'xc-hands-item'});
+      var cb = el('input',{type:'checkbox'});
+      if (saved[t.num]) { cb.checked = true; item.classList.add('is-done'); }
+      cb.addEventListener('change', function(){
+        saved[t.num] = cb.checked;
+        item.classList.toggle('is-done', cb.checked);
+        try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){}
+        updateBar();
+      });
+      // 難度標籤：把 emoji 換成色點
+      var diff = String(t.difficulty||'').trim();
+      var dotClass = 'is-easy';
+      if (/🔵|標準|基礎/.test(diff)) dotClass = 'is-normal';
+      else if (/🟡|變化|進階/.test(diff)) dotClass = 'is-harder';
+      else if (/🟠|高階/.test(diff)) dotClass = 'is-hard';
+      else if (/🔴|挑戰|專家/.test(diff)) dotClass = 'is-challenge';
+      var diffText = diff.replace(/^[🟢🔵🟡🟠🔴]\s*/u,'') || '暖身';
+      item.appendChild(cb);
+      item.appendChild(el('span',{class:'xc-hands-box'}));
+      item.appendChild(el('span',{class:'xc-hands-num',text:String(t.num).padStart(2,'0')}));
+      item.appendChild(el('span',{class:'xc-diff-pill '+dotClass},[
+        el('span',{class:'xc-diff-dot'}),
+        document.createTextNode(diffText)
+      ]));
+      item.appendChild(el('span',{class:'xc-hands-desc',text:t.desc}));
+      wrap.appendChild(item);
+    });
+    updateBar();
+    return wrap;
+  }
+
   // ---------- 知識型 sections ----------
   function buildKnowledge(k){
     var nodes = [];
@@ -333,6 +383,16 @@
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'📚'}),document.createTextNode(' 深度知識 — 步驟、技巧、常見錯誤')]));
     buildKnowledge(data.knowledge).forEach(function(n){ sec.appendChild(n); });
     container.appendChild(sec);
+
+    // 2b. 動手練習 checklist（若該 sheet 有）
+    if (data.knowledge.handsTasks && data.knowledge.handsTasks.length){
+      var hsec = el('div',{class:'xc-section','data-xc-type':'hands'});
+      hsec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎯'}),document.createTextNode(' 動手練習 — 跟著做、做完打勾')]));
+      hsec.appendChild(el('div',{class:'xc-sub',text:'以下是循序漸進的實作任務。打開 Excel 跟著做，做完就打勾。進度會自動記住。'}));
+      var h = buildHandsOn(data.knowledge.handsTasks);
+      if (h) hsec.appendChild(h);
+      container.appendChild(hsec);
+    }
   }
 
   // 3. VBA

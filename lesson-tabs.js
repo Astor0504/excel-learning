@@ -33,7 +33,7 @@
     lesson.querySelectorAll('.xc-section[data-xc-type]').forEach(function(sec){
       var t = sec.getAttribute('data-xc-type');
       if (t === 'meta') metaNodes.push(sec);
-      else if (t === 'practice-inter' || t === 'practice-pro') practiceNodes.push(sec);
+      else if (t === 'practice-inter' || t === 'practice-pro' || t === 'hands') practiceNodes.push(sec);
       else if (t === 'knowledge' || t === 'vba') knowledgeNodes.push(sec);
       else if (t === 'shortcuts') referenceNodes.push(sec);
     });
@@ -70,7 +70,7 @@
     var bar = document.createElement('div');
     bar.className = 'lt-bar';
     var badges = {
-      practice: countItems(practiceNodes, '.xc-task'),
+      practice: countItems(practiceNodes, '.xc-task, .xc-hands-item'),
       knowledge: countItems(knowledgeNodes, '.xc-know, .xc-vba'),
       reference: countItems(referenceNodes, '.xc-sc-list li'),
     };
