@@ -1,0 +1,160 @@
+/* ===== xlsx-integrator: 把 Excel 互動練習 / 專業養成內容注入 lesson 頁 ===== */
+
+.xc-section{margin:36px 0 0}
+.xc-section > h2{font-size:22px;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.xc-section > h2 .xc-emoji{font-size:24px}
+.xc-section > .xc-sub{color:var(--muted);font-size:13.5px;margin:-8px 0 16px}
+
+/* meta 條 */
+.xc-meta{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;
+  background:var(--accent-soft);padding:14px 16px;border-radius:14px}
+.xc-meta .xc-chip{background:var(--surface);border:1px solid var(--line);
+  padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:6px}
+.xc-meta .xc-chip .xc-chip-label{color:var(--muted);font-weight:500}
+
+/* 練習資料表 */
+.xc-data-wrap{margin:14px 0;border:1px solid var(--line);border-radius:14px;
+  overflow:auto;background:var(--surface)}
+.xc-data{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.xc-data th,.xc-data td{padding:9px 14px;text-align:left;
+  border-bottom:1px solid var(--line);white-space:nowrap}
+.xc-data th{background:var(--accent-soft);color:var(--text);font-weight:600;
+  position:sticky;top:0}
+.xc-data td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.xc-data tr:last-child td{border-bottom:none}
+.xc-data-cap{padding:10px 16px;background:var(--accent-soft);
+  color:var(--accent);font-size:12.5px;font-weight:600;border-bottom:1px solid var(--line)}
+
+/* 互動練習題卡 */
+.xc-task{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:16px 18px;margin:12px 0;transition:box-shadow .2s}
+.xc-task:hover{box-shadow:var(--shadow)}
+.xc-task.is-correct{border-color:var(--accent);background:var(--accent-soft)}
+.xc-task.is-wrong{border-color:#E5A0A0}
+
+.xc-task-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.xc-task-num{font-weight:700;color:var(--accent);font-size:14px;
+  background:var(--accent-soft);padding:3px 10px;border-radius:999px;min-width:42px;text-align:center}
+.xc-diff{font-size:14px}
+.xc-task-time{margin-left:auto;font-size:12px;color:var(--muted)}
+.xc-task-desc{font-size:15.5px;line-height:1.55;margin:6px 0 12px}
+
+.xc-input-row{display:flex;gap:8px;margin:10px 0}
+.xc-input{flex:1;padding:10px 14px;border:1.5px solid var(--line);
+  border-radius:10px;font-family:"SF Mono","Monaco","Menlo",monospace;
+  font-size:14px;background:var(--bg);color:var(--text);
+  transition:border-color .15s}
+.xc-input:focus{outline:none;border-color:var(--accent)}
+.xc-input.is-correct{border-color:var(--accent);background:var(--accent-soft)}
+.xc-input.is-wrong{border-color:#E5A0A0;background:#FFF5F5}
+html[data-theme="dark"] .xc-input.is-wrong{background:#3a2424}
+
+.xc-btn{padding:10px 16px;border:1px solid var(--line);background:var(--surface);
+  color:var(--text);border-radius:10px;font-size:13.5px;cursor:pointer;
+  font-family:inherit;white-space:nowrap;transition:all .15s}
+.xc-btn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.xc-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.xc-btn.primary:hover{filter:brightness(1.05)}
+.xc-btn.ghost{background:transparent;color:var(--muted);border-style:dashed}
+
+.xc-feedback{font-size:13.5px;margin-top:8px;min-height:20px}
+.xc-feedback.is-correct{color:var(--accent);font-weight:600}
+.xc-feedback.is-wrong{color:#C66}
+
+.xc-extra{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.xc-reveal{margin-top:10px;padding:10px 14px;background:var(--accent-soft);
+  border-radius:10px;font-size:13.5px;display:none;line-height:1.6}
+.xc-reveal.show{display:block}
+.xc-reveal code{font-family:"SF Mono","Monaco","Menlo",monospace;
+  background:var(--surface);padding:2px 8px;border-radius:5px;font-size:13px;
+  color:var(--accent-2)}
+.xc-reveal-label{font-weight:700;color:var(--accent);font-size:12px;
+  text-transform:uppercase;letter-spacing:.5px;margin-right:8px}
+
+/* 知識卡 (section) */
+.xc-know{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:18px 20px;margin:14px 0}
+.xc-know h3{margin:0 0 10px;font-size:17px;color:var(--text);
+  display:flex;align-items:center;gap:8px}
+.xc-know-list{margin:0;padding:0;list-style:none}
+.xc-know-list li{padding:10px 0;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:max-content 1fr;gap:14px;align-items:start}
+.xc-know-list li:last-child{border-bottom:none}
+.xc-know-key{font-weight:600;color:var(--accent-2);font-size:14px;
+  background:var(--bg);padding:3px 10px;border-radius:6px;white-space:nowrap}
+.xc-know-body{font-size:14.5px;line-height:1.65}
+.xc-know-extra{display:block;margin-top:4px;color:var(--muted);font-size:13px}
+
+/* 快捷鍵 */
+.xc-sc-group{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:18px 20px;margin:14px 0}
+.xc-sc-group h3{margin:0 0 10px;font-size:16px;display:flex;gap:8px;align-items:center}
+.xc-sc-list{margin:0;padding:0;list-style:none}
+.xc-sc-list li{display:grid;grid-template-columns:minmax(140px,max-content) 1fr;
+  gap:14px;padding:8px 0;border-bottom:1px dashed var(--line);align-items:center}
+.xc-sc-list li:last-child{border-bottom:none}
+.xc-kbd{font-family:"SF Mono","Monaco","Menlo",monospace;font-weight:600;
+  font-size:13px;background:var(--bg);color:var(--accent-2);
+  padding:5px 10px;border-radius:6px;border:1px solid var(--line);
+  white-space:nowrap;text-align:center}
+.xc-sc-desc{font-size:14.5px;line-height:1.5}
+.xc-sc-note{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+/* VBA 程式碼塊 */
+.xc-vba{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:18px 20px;margin:14px 0}
+.xc-vba-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.xc-vba-title{font-weight:600;font-size:15.5px;flex:1}
+.xc-vba-time{font-size:12px;color:var(--muted)}
+.xc-vba pre{margin:0;padding:14px 16px;background:#1B1D1C;color:#ECEAE4;
+  border-radius:10px;overflow:auto;font-size:13px;line-height:1.6;
+  font-family:"SF Mono","Monaco","Menlo",monospace}
+html[data-theme="dark"] .xc-vba pre{background:#0E0F0F;border:1px solid var(--line)}
+.xc-vba-tip{margin-top:10px;padding:10px 14px;background:var(--accent-soft);
+  border-radius:10px;font-size:13.5px;color:var(--accent);line-height:1.55}
+.xc-copy{padding:5px 12px;font-size:12px;border:1px solid var(--line);
+  background:var(--surface);border-radius:6px;cursor:pointer;color:var(--muted);
+  font-family:inherit;transition:all .15s}
+.xc-copy:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.xc-copy.copied{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 進度條 */
+.xc-progress{margin-top:18px;display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--muted)}
+.xc-progress-bar{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.xc-progress-bar > span{display:block;height:100%;background:var(--accent);
+  width:0%;border-radius:999px;transition:width .3s}
+
+/* 響應式 */
+@media (max-width:640px){
+  .xc-input-row{flex-direction:column}
+  .xc-btn{width:100%}
+  .xc-know-list li{grid-template-columns:1fr}
+  .xc-sc-list li{grid-template-columns:1fr}
+}
+
+/* ===== index.html 增強 ===== */
+.idx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.idx-chip{display:inline-flex;align-items:center;gap:4px;
+  background:var(--accent-soft);color:var(--accent);
+  padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.idx-chip-emoji{font-size:13px}
+
+.idx-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  margin:18px 0;padding:18px 14px;background:var(--accent-soft);
+  border-radius:14px}
+.idx-summary-item{text-align:center}
+.idx-summary-num{font-size:22px;font-weight:700;color:var(--accent);
+  line-height:1.1;font-variant-numeric:tabular-nums}
+.idx-summary-lbl{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.5px}
+
+@media (max-width:520px){
+  .idx-summary{grid-template-columns:repeat(2,1fr)}
+}
+
+/* 列印時隱藏互動 */
+@media print{
+  .xc-input-row,.xc-extra,.xc-copy{display:none}
+  .xc-reveal{display:block !important}
+}
