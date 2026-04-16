@@ -2,7 +2,12 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>條件判斷｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-03">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
+<link rel="stylesheet" href="../drawer.css">
+<link rel="stylesheet" href="../xlsx-integrator.css">
+<link rel="stylesheet" href="../lesson-tabs.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-03">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -33,6 +38,60 @@
 # 複合條件：AND / OR
 =IF(AND(B2&gt;=60, C2&gt;=60), &quot;兩科都過&quot;, &quot;補考&quot;)
 =IF(OR(D2=&quot;VIP&quot;, E2&gt;10000), &quot;享折扣&quot;, &quot;原價&quot;)</code></pre>
+<h2>IF 決策流程動畫</h2>
+<div class="formula-demo" id="ifDemo">
+  <div class="formula-title">點「播放」看分數如何變成等第（走訪順序：由左到右）</div>
+  <div class="formula-bar">=IFS(<span class="fp c1" data-step="1">B2&gt;=90,"A"</span>, <span class="fp c2" data-step="2">B2&gt;=80,"B"</span>, <span class="fp c3" data-step="3">B2&gt;=70,"C"</span>, <span class="fp c4" data-step="4">TRUE,"F"</span>)</div>
+  <div class="explain-area" id="ifExplain">
+    <div style="color:var(--muted);font-size:14px">點擊任何條件，或按下方「播放」按鈕看 85 分的判斷流程</div>
+  </div>
+  <button class="play-btn" onclick="playFormula('if')">▶ 播放 85 分的判斷流程</button>
+</div>
+
+<div class="excel-grid" id="ifGrid" style="grid-template-columns:repeat(2,1fr);max-width:320px">
+  <div class="cell header">分數</div><div class="cell header">等第</div>
+  <div class="cell highlight">85</div><div class="cell result" id="ifResult">B</div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:4px">IFS 會「由左到右」檢查條件，一找到 TRUE 就回傳，不繼續看後面。</p>
+
+<script>
+(function(){
+  var steps = {
+    if: [
+      {step:1,cls:'c1',label:'條件 1：≥ 90 嗎？',text:'85 &gt;= 90 → FALSE。往下一個條件。'},
+      {step:2,cls:'c2',label:'條件 2：≥ 80 嗎？',text:'85 &gt;= 80 → TRUE！回傳 "B"，後面的條件不會再看。'},
+      {step:3,cls:'c3',label:'條件 3：≥ 70 嗎？',text:'（跳過：前面已經命中）IFS 不像 IF，一命中就結束。'},
+      {step:4,cls:'c4',label:'兜底：TRUE',text:'最後一條 TRUE 等於 else，前面都沒中才會進來。常填「F」或「其他」。'}
+    ]
+  };
+  function showStep(demoId,stepNum){
+    var demo = document.getElementById(demoId+'Demo');
+    if(!demo) return;
+    var info = steps[demoId].find(function(s){return s.step===stepNum});
+    if(!info) return;
+    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
+    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
+    if(target) target.classList.add('active');
+    var area = demo.querySelector('.explain-area');
+    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
+  }
+  window.playFormula = function(demoId){
+    var s = steps[demoId];
+    if(!s) return;
+    s.forEach(function(item,i){
+      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
+    });
+  };
+  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
+    el.addEventListener('click',function(){
+      var demo = el.closest('.formula-demo');
+      var demoId = demo.id.replace('Demo','');
+      showStep(demoId, parseInt(el.dataset.step));
+    });
+  });
+})();
+</script>
+
 <h2>巢狀 IF vs IFS</h2><p>舊寫法 =IF(A&gt;90,&quot;A&quot;,IF(A&gt;80,&quot;B&quot;,IF(A&gt;70,&quot;C&quot;,&quot;F&quot;))) → 括號地獄。新版直接用 IFS 一行搞定，最後一個 TRUE 當 else。</p>
 <h2>小技巧</h2><p>MOD(A2, 2)=0 可以判斷偶數。配合 IF 可以做「奇數列上色」之類的判斷。</p>
 
@@ -73,14 +132,10 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
-<link rel="stylesheet" href="../lesson-cheat-inline.css">
-<link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
 <script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
-<link rel="stylesheet" href="../xlsx-integrator.css">
 <script src="../xlsx-content.js" defer></script>
 <script src="../xlsx-integrator.js" defer></script>
-<link rel="stylesheet" href="../lesson-tabs.css">
 <script src="../lesson-tabs.js" defer></script>
 </body></html>

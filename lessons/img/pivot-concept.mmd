@@ -1,0 +1,17 @@
+flowchart LR
+  A["📋 原始資料\n（逐筆交易）"]:::raw --> P["🎯 樞紐分析表"]:::pivot
+
+  P --> R["列：分組維度\n（部門/月份）"]:::area
+  P --> C["欄：展開維度\n（年/類別）"]:::area
+  P --> V["值：計算指標\n（加總/平均）"]:::area
+  P --> F["篩選：全域條件"]:::area
+
+  R --> OUT["📊 彙總報表"]:::result
+  C --> OUT
+  V --> OUT
+  F --> OUT
+
+  classDef raw fill:#e0f2fe,stroke:#0ea5e9,stroke-width:2px,color:#075985
+  classDef pivot fill:#fef3c7,stroke:#f59e0b,stroke-width:3px,color:#92400e,font-weight:bold
+  classDef area fill:#fae8ff,stroke:#a855f7,stroke-width:2px,color:#6b21a8
+  classDef result fill:#dcfce7,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold

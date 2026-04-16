@@ -2,7 +2,12 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>圖表設計｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P3-03">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
+<link rel="stylesheet" href="../drawer.css">
+<link rel="stylesheet" href="../xlsx-integrator.css">
+<link rel="stylesheet" href="../lesson-tabs.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P3-03">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -22,7 +27,15 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">圖表設計：選對類型比畫得漂亮重要</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">Excel 提供 17 種圖表，但 80% 的場合只需要 4 種。選錯類型再美也是錯。</p><h2>4 種圖表配對什麼資料</h2><table><thead><tr><th>圖表</th><th>適合</th></tr></thead><tbody><tr><td>柱狀 / 長條</td><td>比較類別大小（部門業績）</td></tr><tr><td>折線</td><td>時間趨勢（每月收入）</td></tr><tr><td>圓餅</td><td>佔比（市場份額，類別 ≤ 5）</td></tr><tr><td>散佈</td><td>兩變數關聯（廣告 vs 銷售）</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">Excel 提供 17 種圖表，但 80% 的場合只需要 4 種。選錯類型再美也是錯。</p>
+
+<h2>先搞清楚：這份資料適合什麼圖？</h2>
+<p>不知道選哪種圖？照著下面這個決策樹走一遍就對了：</p>
+<img class="diagram-light" src="img/chart-selection.svg" alt="圖表選型決策樹" style="max-width:100%;margin:12px 0;border-radius:12px">
+<img class="diagram-dark" src="img/chart-selection.dark.svg" alt="圖表選型決策樹" style="max-width:100%;margin:12px 0;border-radius:12px">
+<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+
+<h2>4 種圖表配對什麼資料</h2><table><thead><tr><th>圖表</th><th>適合</th></tr></thead><tbody><tr><td>柱狀 / 長條</td><td>比較類別大小（部門業績）</td></tr><tr><td>折線</td><td>時間趨勢（每月收入）</td></tr><tr><td>圓餅</td><td>佔比（市場份額，類別 ≤ 5）</td></tr><tr><td>散佈</td><td>兩變數關聯（廣告 vs 銷售）</td></tr></tbody></table>
 <h2>設計三原則</h2><p>① 一張圖只講一件事 ② 拿掉所有不必要的東西（網格線、3D 效果、陰影）③ 重點顏色用深色，其他用灰色——眼睛會自動看到重點。</p>
 <h2>走勢圖（Sparklines）</h2><p>插入 → 走勢圖 → 在單一儲存格內塞迷你折線圖。最適合做 KPI 表格旁邊的趨勢列。</p>
 <div class="callout"><strong>⚠️ 注意</strong>圓餅圖類別超過 5 個就難讀，改用橫條圖。3D 圓餅圖永遠不要用。</div>
@@ -64,14 +77,10 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
-<link rel="stylesheet" href="../lesson-cheat-inline.css">
-<link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
 <script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
-<link rel="stylesheet" href="../xlsx-integrator.css">
 <script src="../xlsx-content.js" defer></script>
 <script src="../xlsx-integrator.js" defer></script>
-<link rel="stylesheet" href="../lesson-tabs.css">
 <script src="../lesson-tabs.js" defer></script>
 </body></html>

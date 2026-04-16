@@ -2,7 +2,12 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>基礎函式｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-02">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
+<link rel="stylesheet" href="../drawer.css">
+<link rel="stylesheet" href="../xlsx-integrator.css">
+<link rel="stylesheet" href="../lesson-tabs.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-02">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -23,6 +28,62 @@
     <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——背熟這幾個，才有資格往後學進階函數。</p><h2>基礎函數速覽</h2><table><thead><tr><th>函數</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>SUM</td><td>加總</td><td>=SUM(A2:A100)</td></tr><tr><td>AVERAGE</td><td>平均</td><td>=AVERAGE(B2:B100)</td></tr><tr><td>COUNT</td><td>計算數字個數</td><td>=COUNT(C2:C100)</td></tr><tr><td>COUNTA</td><td>計算非空個數（含文字）</td><td>=COUNTA(D2:D100)</td></tr><tr><td>MAX / MIN</td><td>最大 / 最小</td><td>=MAX(E2:E100)</td></tr><tr><td>MEDIAN</td><td>中位數</td><td>=MEDIAN(F2:F100)</td></tr><tr><td>LARGE / SMALL</td><td>第 N 大 / 小</td><td>=LARGE(G2:G100, 3) → 第 3 大</td></tr></tbody></table>
+<h2>LARGE 公式拆解動畫</h2>
+<div class="formula-demo" id="largeDemo">
+  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
+  <div class="formula-bar">=LARGE(<span class="fp c1" data-step="1">B2:B6</span>, <span class="fp c2" data-step="2">3</span>)</div>
+  <div class="explain-area" id="largeExplain">
+    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
+  </div>
+  <button class="play-btn" onclick="playFormula('large')">▶ 播放逐步解說</button>
+</div>
+
+<div class="excel-grid" id="largeGrid" style="grid-template-columns:repeat(2,1fr);max-width:360px">
+  <div class="cell header">業務員</div><div class="cell header">業績</div>
+  <div class="cell">王小明</div><div class="cell" data-val="1">120000</div>
+  <div class="cell">林美玲</div><div class="cell" data-val="2">85000</div>
+  <div class="cell">張志偉</div><div class="cell result" data-val="3">95000</div>
+  <div class="cell">陳雅婷</div><div class="cell" data-val="4">150000</div>
+  <div class="cell">李大華</div><div class="cell" data-val="5">72000</div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:4px">排序後：150000 &gt; 120000 &gt; <b style="color:#4ade80">95000（第 3 大）</b> &gt; 85000 &gt; 72000</p>
+
+<script>
+(function(){
+  var steps = {
+    large: [
+      {step:1,cls:'c1',label:'參數 1：資料範圍',text:'B2:B6 = 要找前 N 大的資料範圍。範圍內的文字/空白會被忽略。'},
+      {step:2,cls:'c2',label:'參數 2：第幾大',text:'3 = 要第 3 大的值。改成 1 就是最大、改成 2 就是第 2 大。要找前 5 名就從 1 跑到 5。'}
+    ]
+  };
+  function showStep(demoId,stepNum){
+    var demo = document.getElementById(demoId+'Demo');
+    if(!demo) return;
+    var info = steps[demoId].find(function(s){return s.step===stepNum});
+    if(!info) return;
+    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
+    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
+    if(target) target.classList.add('active');
+    var area = demo.querySelector('.explain-area');
+    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
+  }
+  window.playFormula = function(demoId){
+    var s = steps[demoId];
+    if(!s) return;
+    s.forEach(function(item,i){
+      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
+    });
+  };
+  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
+    el.addEventListener('click',function(){
+      var demo = el.closest('.formula-demo');
+      var demoId = demo.id.replace('Demo','');
+      showStep(demoId, parseInt(el.dataset.step));
+    });
+  });
+})();
+</script>
+
 <h2>實戰範例</h2><pre><code class="lang-excel"># 業績統計（A欄=業務員，B欄=金額）
 =SUM(B:B)              # 全部業績
 =AVERAGE(B2:B100)      # 平均單筆
@@ -35,6 +96,16 @@
 <div class="mac-kb" data-shortcuts='[{"keys": "cmd,shift,t", "label": "⌘ ⇧ T · 自動加總 SUM"}, {"keys": "=", "label": "= · 開始輸入公式"}, {"keys": "cmd,enter", "label": "⌘ ↩ · 多格同時輸入"}, {"keys": "ctrl,d", "label": "⌃ D · 填滿向下"}]'></div>
 <script src="../keyboard.js"></script>
 
+
+    <div class="wps-callout">
+<span class="wps-label">WPS Office</span>
+<strong>本課快捷鍵差異</strong>
+<ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
+<li><b>自動加總</b>：Excel 用 ⌘ ⇧ T，WPS 無對應快捷鍵（需手動輸入 =SUM）</li>
+<li><b>填滿向下</b>：Excel 用 ⌃ D，WPS 用 ⌘ D</li>
+<li><b>多格同時輸入</b>：Excel 用 ⌘ ↩，WPS 用 Ctrl + Enter</li>
+</ul>
+</div>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">分清楚 COUNT vs COUNTA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 LARGE 找前 3 名</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 AVERAGE 怎麼處理 0 跟空白</span></label></div>
@@ -72,14 +143,10 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
-<link rel="stylesheet" href="../lesson-cheat-inline.css">
-<link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
 <script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
-<link rel="stylesheet" href="../xlsx-integrator.css">
 <script src="../xlsx-content.js" defer></script>
 <script src="../xlsx-integrator.js" defer></script>
-<link rel="stylesheet" href="../lesson-tabs.css">
 <script src="../lesson-tabs.js" defer></script>
 </body></html>

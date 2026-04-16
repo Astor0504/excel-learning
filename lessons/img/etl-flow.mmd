@@ -1,0 +1,15 @@
+flowchart LR
+  S1["📁 多個 CSV\n每月收到"]:::source --> E["🔌 Extract\n取資料"]:::step
+  S2["🗄️ 資料庫"]:::source --> E
+  S3["🌐 網頁表格"]:::source --> E
+  E --> T["🔧 Transform\n清/合併/轉置"]:::step
+  T --> L["📊 Load\n載入 Excel"]:::step
+  L --> R["📈 樞紐分析\n動態報表"]:::result
+
+  T -.->|"下個月"| X["🔄 重新整理\n一鍵重跑"]:::refresh
+  X --> L
+
+  classDef source fill:#e0f2fe,stroke:#0ea5e9,stroke-width:2px,color:#075985
+  classDef step fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#92400e,font-weight:bold
+  classDef result fill:#dcfce7,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+  classDef refresh fill:#fce7f3,stroke:#ec4899,stroke-width:2px,color:#9f1239

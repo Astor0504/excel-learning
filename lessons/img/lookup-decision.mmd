@@ -1,0 +1,11 @@
+flowchart TD
+  A["🔍 要查找資料？"]:::start --> B{"用 Excel 365\n/ 2021？"}
+  B -->|"✅ 是"| C["XLOOKUP\n（首選）"]:::recommended
+  B -->|"❌ 否"| D{"需要往左查？"}
+  D -->|"✅ 是"| E["INDEX + MATCH\n（萬能組合）"]:::alt
+  D -->|"❌ 否"| F["VLOOKUP\n（舊版）"]:::legacy
+
+  classDef start fill:#f0f9ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af
+  classDef recommended fill:#dcfce7,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+  classDef alt fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e40af
+  classDef legacy fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#92400e

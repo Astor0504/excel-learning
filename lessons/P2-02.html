@@ -2,7 +2,12 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>查找比對｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-02">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
+<link rel="stylesheet" href="../drawer.css">
+<link rel="stylesheet" href="../xlsx-integrator.css">
+<link rel="stylesheet" href="../lesson-tabs.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-02">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -22,7 +27,63 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VLOOKUP / XLOOKUP：跨表查資料的命脈函數</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">面試最常被問的就是這個。能解釋清楚 VLOOKUP 和 XLOOKUP 的差別，就贏一半。</p><h2>VLOOKUP（舊版王者）</h2><pre><code class="lang-excel">=VLOOKUP(查的值, 查表範圍, 第幾欄, [是否模糊比對])
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">面試最常被問的就是這個。能解釋清楚 VLOOKUP 和 XLOOKUP 的差別，就贏一半。</p><h2>VLOOKUP 公式拆解動畫</h2>
+<div class="formula-demo" id="vlookupDemo">
+  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
+  <div class="formula-bar">=VLOOKUP(<span class="fp c1" data-step="1">A2</span>, <span class="fp c2" data-step="2">員工表!A:D</span>, <span class="fp c3" data-step="3">2</span>, <span class="fp c4" data-step="4">FALSE</span>)</div>
+  <div class="explain-area" id="vlookupExplain">
+    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
+  </div>
+  <button class="play-btn" onclick="playFormula('vlookup')">▶ 播放逐步解說</button>
+</div>
+
+<div class="excel-grid" id="vlookupGrid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="cell header">A</div><div class="cell header">B</div><div class="cell header">C</div><div class="cell header">D</div>
+  <div class="cell" data-col="a">E001</div><div class="cell" data-col="b">王小明</div><div class="cell" data-col="c">業務</div><div class="cell" data-col="d">55000</div>
+  <div class="cell highlight" data-col="a">E002</div><div class="cell result" data-col="b">林美玲</div><div class="cell" data-col="c">行政</div><div class="cell" data-col="d">42000</div>
+  <div class="cell" data-col="a">E003</div><div class="cell" data-col="b">張志偉</div><div class="cell" data-col="c">工程</div><div class="cell" data-col="d">68000</div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:4px">黃框 = 查找值 (A2=E002)，綠框 = 回傳結果 (第 2 欄=林美玲)</p>
+
+<script>
+(function(){
+  var steps = {
+    vlookup: [
+      {step:1,cls:'c1',label:'參數 1：查找值',text:'A2 = 要找的值（例如員工編號 E002）。VLOOKUP 會拿這個值去表格最左欄找。'},
+      {step:2,cls:'c2',label:'參數 2：查表範圍',text:'員工表!A:D = 去「員工表」的 A 到 D 欄找。查找值必須在最左欄（A 欄）。'},
+      {step:3,cls:'c3',label:'參數 3：回傳第幾欄',text:'2 = 找到後，回傳同一列的第 2 欄（B 欄 = 姓名）。這個數字要手動數！'},
+      {step:4,cls:'c4',label:'參數 4：精確比對',text:'FALSE = 精確比對。幾乎永遠填 FALSE！填 TRUE 或省略會用模糊比對，結果常常錯。'}
+    ]
+  };
+  function showStep(demoId,stepNum){
+    var demo = document.getElementById(demoId+'Demo');
+    if(!demo) return;
+    var info = steps[demoId].find(function(s){return s.step===stepNum});
+    if(!info) return;
+    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
+    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
+    if(target) target.classList.add('active');
+    var area = demo.querySelector('.explain-area');
+    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
+  }
+  window.playFormula = function(demoId){
+    var s = steps[demoId];
+    if(!s) return;
+    s.forEach(function(item,i){
+      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
+    });
+  };
+  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
+    el.addEventListener('click',function(){
+      var demo = el.closest('.formula-demo');
+      var demoId = demo.id.replace('Demo','');
+      showStep(demoId, parseInt(el.dataset.step));
+    });
+  });
+})();
+</script>
+
+<h2>VLOOKUP（舊版王者）</h2><pre><code class="lang-excel">=VLOOKUP(查的值, 查表範圍, 第幾欄, [是否模糊比對])
 
 # 用員工編號查姓名
 =VLOOKUP(A2, 員工表!A:D, 2, FALSE)
@@ -45,10 +106,23 @@
 =INDEX(B:B, MATCH(&quot;陳小明&quot;, A:A, 0))
 # 適合舊版 Excel、需要查左邊、雙向查表</code></pre>
 <h2>哪個該用？</h2><p>M365 / Excel 2021 → 一律用 XLOOKUP；舊版 Office → INDEX+MATCH &gt; VLOOKUP。VLOOKUP 只在維護舊檔案時才碰。</p>
+<img class="diagram-light" src="img/lookup-decision.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
+<img class="diagram-dark" src="img/lookup-decision.dark.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
+<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
 <h2>⌨️ 本課常用快捷鍵</h2>
 <div class="mac-kb" data-shortcuts='[{"keys": "cmd,left,right,up,down", "label": "⌘ + 方向鍵 · 跳資料邊界"}, {"keys": "cmd,t", "label": "⌘ T · 切換絕對/相對參照"}, {"keys": "cmd,shift,enter", "label": "⌘ ⇧ ↩ · 陣列公式（舊版）"}, {"keys": "fn,f4", "label": "fn+F4 · 切換 $ 鎖定（Mac 替代）"}]'></div>
 <script src="../keyboard.js"></script>
 
+
+    <div class="wps-callout">
+<span class="wps-label">WPS Office</span>
+<strong>本課快捷鍵差異</strong>
+<ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
+<li><b>切換絕對/相對參照</b>：Excel 用 ⌘ T，WPS 用 F4</li>
+<li><b>陣列公式</b>：Excel 用 ⌘ ⇧ ↩，WPS 用 Ctrl + Shift + Enter</li>
+<li>WPS 也支援 VLOOKUP/XLOOKUP（需 WPS 2022+）</li>
+</ul>
+</div>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 VLOOKUP</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 XLOOKUP</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">寫一個 INDEX+MATCH</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 VLOOKUP 4 個限制</span></label></div>
@@ -86,14 +160,10 @@
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
-<link rel="stylesheet" href="../lesson-cheat-inline.css">
-<link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
 <script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
-<link rel="stylesheet" href="../xlsx-integrator.css">
 <script src="../xlsx-content.js" defer></script>
 <script src="../xlsx-integrator.js" defer></script>
-<link rel="stylesheet" href="../lesson-tabs.css">
 <script src="../lesson-tabs.js" defer></script>
 </body></html>

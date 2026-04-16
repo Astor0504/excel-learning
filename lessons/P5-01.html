@@ -2,7 +2,12 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VBA 基礎｜Excel 學習地圖</title>
-<link rel="stylesheet" href="../styles.css"><script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-01">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../lesson-cheat-inline.css">
+<link rel="stylesheet" href="../drawer.css">
+<link rel="stylesheet" href="../xlsx-integrator.css">
+<link rel="stylesheet" href="../lesson-tabs.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-01">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -22,7 +27,8 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 基礎：用程式碼自動化重複工作</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">VBA 是 Excel 的內建程式語言。會寫一點 VBA，等於有個 24 小時不抱怨的助理。</p><div class="callout"><strong>⚠️ 注意</strong>Mac 沒有 Alt+F11，要用「工具 → 巨集 → Visual Basic 編輯器」進入。Mac 版不支援 UserForm（自訂表單），其他基礎功能都能用。</div>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">VBA 是 Excel 的內建程式語言。會寫一點 VBA，等於有個 24 小時不抱怨的助理。</p>
+<img src="img/vba-concept.png" alt="VBA 自動化概念圖：從 2 小時手動到 5 秒自動" style="max-width:100%;margin:16px 0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div class="callout"><strong>⚠️ 注意</strong>Mac 沒有 Alt+F11，要用「工具 → 巨集 → Visual Basic 編輯器」進入。Mac 版不支援 UserForm（自訂表單），其他基礎功能都能用。</div>
 <h2>第一個巨集</h2><pre><code class="lang-vba">Sub HelloWorld()
     MsgBox &quot;哈囉，VBA！&quot;
 End Sub
@@ -50,6 +56,16 @@ End Sub</code></pre>
 <div class="mac-kb" data-shortcuts='[{"keys": "opt,f11", "label": "⌥ F11 · 開啟 VBE 編輯器"}, {"keys": "f5", "label": "F5 · 執行巨集"}, {"keys": "f8", "label": "F8 · 單步偵錯"}, {"keys": "opt,f8", "label": "⌥ F8 · 開啟巨集清單"}]'></div>
 <script src="../keyboard.js"></script>
 
+
+    <div class="wps-callout">
+<span class="wps-label">WPS Office</span>
+<strong>VBA 相容性</strong>
+<ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
+<li>WPS 支援 VBA（需額外安裝 VBA 運行環境）</li>
+<li>macOS 版 WPS 的 VBA 支援較不穩定，建議用 Windows 版</li>
+<li>開啟 VBA 編輯器：WPS 用「開發工具」→「Visual Basic」</li>
+</ul>
+</div>
 
     </article>
     <div class="checklist"><h4>✅ 本課任務</h4><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">在 Mac 開啟 VB 編輯器</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 MsgBox</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">寫一個 For 迴圈</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">存成 .xlsm 格式</span></label></div>
@@ -87,14 +103,10 @@ End Sub</code></pre>
 <script src="../search-index.js"></script>
 <script src="../quiz-data.js"></script>
 <script src="../app.js"></script>
-<link rel="stylesheet" href="../lesson-cheat-inline.css">
-<link rel="stylesheet" href="../drawer.css">
 <script src="../cheatsheet-data.js" defer></script>
 <script src="../lesson-cheat-inline.js" defer></script>
 <script src="../drawer.js" defer></script>
-<link rel="stylesheet" href="../xlsx-integrator.css">
 <script src="../xlsx-content.js" defer></script>
 <script src="../xlsx-integrator.js" defer></script>
-<link rel="stylesheet" href="../lesson-tabs.css">
 <script src="../lesson-tabs.js" defer></script>
 </body></html>

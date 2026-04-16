@@ -1,0 +1,20 @@
+flowchart TD
+  A["📊 要呈現什麼？"]:::start --> B{"資料類型？"}
+  B -->|"比較類別"| C["柱狀 / 長條圖"]:::chart1
+  B -->|"時間趨勢"| D["折線圖"]:::chart2
+  B -->|"佔比"| E{"類別數量？"}
+  B -->|"相關性"| F["散佈圖"]:::chart4
+  E -->|"≤ 5 個"| G["圓餅圖"]:::chart3
+  E -->|"> 5 個"| H["橫條圖\n（更易讀）"]:::chart1
+
+  C -.-> T1["📌 例：各部門業績"]:::tip
+  D -.-> T2["📌 例：每月收入"]:::tip
+  G -.-> T3["📌 例：市場份額"]:::tip
+  F -.-> T4["📌 例：廣告 vs 銷售"]:::tip
+
+  classDef start fill:#f0f9ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af
+  classDef chart1 fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+  classDef chart2 fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+  classDef chart3 fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#92400e,font-weight:bold
+  classDef chart4 fill:#fae8ff,stroke:#a855f7,stroke-width:2px,color:#6b21a8,font-weight:bold
+  classDef tip fill:#f3f4f6,stroke:#9ca3af,stroke-width:1px,color:#4b5563,font-size:12px
