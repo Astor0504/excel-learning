@@ -8,6 +8,121 @@ function pageKey(){
 }
 const PK = pageKey();
 const DEPTH = document.body?.dataset.depth || "";
+const idx = SEARCH_INDEX;
+const LESSON_SEQUENCE = [
+  "P1-01","P1-02","P1-03",
+  "P2-01","P2-02","P2-03","P2-04",
+  "P3-01","P3-02","P3-03","P3-04","P3-05",
+  "P4-01","P4-02","P4-03","P4-04","P4-05",
+  "P5-01","P5-02","P5-03","P5-04",
+];
+const LESSON_GUIDE = {
+  "P1-01": {
+    focus: "先把手從滑鼠搬回鍵盤，建立最基本的 Excel 操作節奏。",
+    unlock: "做資料整理、寫公式、切換工作表時都不會一直被滑鼠打斷。",
+    nextWhy: "下一課會開始碰公式，快捷鍵和輸入節奏先熟，後面學函數會輕鬆很多。",
+  },
+  "P1-02": {
+    focus: "把 SUM、AVERAGE、COUNT 這些最常用統計函數變成反射動作。",
+    unlock: "看到一欄數字時，會自然知道要怎麼加總、取平均、算筆數和找排名。",
+    nextWhy: "有了基本函數後，下一課才能進到 IF / IFS 這種會做判斷的公式。",
+  },
+  "P1-03": {
+    focus: "讓 Excel 不只會算數，還會根據條件做出不同結果。",
+    unlock: "你會開始理解公式的邏輯結構，為 Phase 2 的條件統計打底。",
+    nextWhy: "下一課的 SUMIF / COUNTIF 本質上就是把條件判斷搬進統計公式裡。",
+  },
+  "P2-01": {
+    focus: "把條件邏輯和加總、計數結合，開始做真正的報表分析。",
+    unlock: "老闆問某部門、某月份、某類型資料時，你可以直接用公式答出來。",
+    nextWhy: "做完條件統計後，下一課會進到跨表查找，補齊職場最常見的第二塊能力。",
+  },
+  "P2-02": {
+    focus: "學會在不同工作表之間拉資料，解決職場最常見的查表任務。",
+    unlock: "你能處理代碼對照、名單補欄位、跨檔查價格這類高頻需求。",
+    nextWhy: "下一課的樞紐分析會把查回來、整理好的資料做成真正可讀的報表。",
+  },
+  "P2-03": {
+    focus: "把大量原始資料快速變成可以閱讀與回答問題的報表。",
+    unlock: "你會知道什麼時候該用公式，什麼時候該直接上樞紐比較快。",
+    nextWhy: "有了樞紐之後，下一課會教你把重點自動凸顯，讓報表更容易被看懂。",
+  },
+  "P2-04": {
+    focus: "把報表從『算得出來』升級成『一眼看得懂』。",
+    unlock: "你能用顏色、資料橫條和公式規則，讓異常值和重點自己跳出來。",
+    nextWhy: "下一個 phase 會進到表單與資料品質，從『看懂資料』走向『避免髒資料』。",
+  },
+  "P3-01": {
+    focus: "先把輸入端管好，減少後面清資料和修資料的時間。",
+    unlock: "你會知道怎麼限制輸入格式、做下拉選單、避免表單被亂填。",
+    nextWhy: "資料品質穩了之後，下一課就能更有效處理文字與日期這些常見髒資料。",
+  },
+  "P3-02": {
+    focus: "把最常見的文字清理和日期處理手法一次補齊。",
+    unlock: "你能拆字串、補格式、算期間，處理從外部貼進來的雜亂資料。",
+    nextWhy: "資料整理乾淨後，下一課才適合做圖表，否則視覺化只會放大混亂。",
+  },
+  "P3-03": {
+    focus: "學會選對圖表，不讓圖表只是漂亮而已。",
+    unlock: "你能根據資料類型選柱狀圖、折線圖、圓餅圖或散佈圖。",
+    nextWhy: "下一課會把資料來源本身變穩，用表格和命名範圍讓整套報表更耐用。",
+  },
+  "P3-04": {
+    focus: "把公式和資料來源變得可讀、可維護、可自動擴張。",
+    unlock: "你會開始寫出半年後回來也看得懂的公式，而不是只有當下能用。",
+    nextWhy: "報表結構穩了之後，下一課再加上保護與安全，才算能安心交付別人使用。",
+  },
+  "P3-05": {
+    focus: "替報表補上最後一道防線，避免公式和結構被誤改。",
+    unlock: "你會知道什麼該鎖、什麼該留給使用者填，交付檔案時更安心。",
+    nextWhy: "接下來會進到進階自動化，從保護既有流程走向減少手工流程本身。",
+  },
+  "P4-01": {
+    focus: "學會用動態陣列一次吐出整片結果，減少輔助欄和重複公式。",
+    unlock: "你能開始用 FILTER、SORT、UNIQUE 這些新世代函數處理大量清單。",
+    nextWhy: "下一課會進一步用 LET、LAMBDA 等把公式模組化，處理更複雜的場景。",
+  },
+  "P4-02": {
+    focus: "把公式從『能算』再往前推到『能封裝、能重用』。",
+    unlock: "你會知道何時該用 LET 提升可讀性，何時該用 LAMBDA 做可重複邏輯。",
+    nextWhy: "公式能力再往上後，下一課會換一種思考方式，開始做假設分析與反推。",
+  },
+  "P4-03": {
+    focus: "從單向計算切到反推決策，讓 Excel 幫你找出達標條件。",
+    unlock: "你能用目標搜尋、規劃求解和資料表做更接近商業決策的分析。",
+    nextWhy: "下一課會把焦點轉到 Power Query，解決大量重複清資料的流程問題。",
+  },
+  "P4-04": {
+    focus: "把一再重複的清資料流程變成可以重新整理的一鍵流程。",
+    unlock: "你會理解 Extract / Transform / Load 的流程，讓 Excel 更像資料工具。",
+    nextWhy: "學會 Query 後，下一課就能把多表關聯和量值計算交給 Power Pivot。",
+  },
+  "P4-05": {
+    focus: "把 Excel 從單表思維提升到資料模型思維。",
+    unlock: "你能處理跨表關聯、建立量值，開始接近 BI 工具的分析方式。",
+    nextWhy: "最後一個 phase 會把這些能力接到 VBA，自動化整個處理流程與交付流程。",
+  },
+  "P5-01": {
+    focus: "第一次讓 Excel 替你執行一連串步驟，而不是自己手動點完。",
+    unlock: "你會知道錄巨集、開 VBE、寫基本變數與流程控制的實戰起點。",
+    nextWhy: "下一課會把 VBA 從入門腳本推到更像真正程式：陣列、字典、錯誤處理。",
+  },
+  "P5-02": {
+    focus: "把 VBA 從會跑提升到更穩、更快、更像工程化腳本。",
+    unlock: "你能處理大量資料、避免卡頓，也知道程式壞掉時怎麼保底。",
+    nextWhy: "下一課會把這些能力放進完整專案，做真正的自動化交付流程。",
+  },
+  "P5-03": {
+    focus: "把分散技巧組成完整專案，從讀資料到產報表都交給 VBA。",
+    unlock: "你會看到宏觀流程怎麼設計，而不是只會寫零散的小巨集。",
+    nextWhy: "最後一課會用綜合挑戰驗收整張學習地圖，看看哪些能力還需要補強。",
+  },
+  "P5-04": {
+    focus: "把前面 20 課的能力串起來，確認自己已經能獨立解題。",
+    unlock: "你會更清楚自己在哪一段已經穩了、哪一段還值得回頭補強。",
+    nextWhy: "做完後最有價值的下一步不是再往下衝，而是回頭重做弱點課與建立自己的模板。",
+  },
+};
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -142,6 +257,85 @@ initChecklist();
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
 
+// Lesson compass
+(function(){
+  const lesson = document.querySelector(".lesson");
+  if (!lesson || lesson.querySelector(".lesson-compass")) return;
+
+  const slug = document.body?.dataset.lessonSlug || "";
+  if (!slug || !LESSON_GUIDE[slug]) return;
+
+  const currentIndex = LESSON_SEQUENCE.indexOf(slug);
+  if (currentIndex === -1) return;
+
+  const current = idx.find(e => e.u.endsWith(slug + ".html"));
+  const prevSlug = LESSON_SEQUENCE[currentIndex - 1];
+  const nextSlug = LESSON_SEQUENCE[currentIndex + 1];
+  const prev = prevSlug ? idx.find(e => e.u.endsWith(prevSlug + ".html")) : null;
+  const next = nextSlug ? idx.find(e => e.u.endsWith(nextSlug + ".html")) : null;
+  const phaseLabel = current?.b || "";
+  const phaseMatch = phaseLabel.match(/Phase\s+\d+/);
+  const phaseName = phaseMatch ? phaseMatch[0] : "";
+  const guide = LESSON_GUIDE[slug];
+  const box = document.createElement("section");
+  box.className = "lesson-compass";
+
+  const previousHtml = prev ? `
+    <a class="lesson-compass-link" href="${DEPTH + prev.u}">
+      <span class="lesson-compass-kicker">上一站</span>
+      <strong>${escHtml(prev.t)}</strong>
+      <span>${escHtml(prev.b || "")}</span>
+    </a>
+  ` : `
+    <div class="lesson-compass-link is-static">
+      <span class="lesson-compass-kicker">起點</span>
+      <strong>這是整張學習地圖的第一課</strong>
+      <span>先建立操作手感，再一路往公式、分析與自動化推進。</span>
+    </div>
+  `;
+
+  const nextHtml = next ? `
+    <a class="lesson-compass-link" href="${DEPTH + next.u}">
+      <span class="lesson-compass-kicker">下一站</span>
+      <strong>${escHtml(next.t)}</strong>
+      <span>${escHtml(guide.nextWhy)}</span>
+    </a>
+  ` : `
+    <div class="lesson-compass-link is-static">
+      <span class="lesson-compass-kicker">下一步</span>
+      <strong>回頭補強弱點課，開始做自己的模板</strong>
+      <span>${escHtml(guide.nextWhy)}</span>
+    </div>
+  `;
+
+  box.innerHTML = `
+    <div class="lesson-compass-head">
+      <div>
+        <div class="lesson-compass-eyebrow">學習指南針</div>
+        <h2 class="lesson-compass-title">${escHtml(phaseName ? phaseName + " · " : "")}你現在在這裡</h2>
+      </div>
+      <div class="lesson-compass-pill">${currentIndex + 1} / ${LESSON_SEQUENCE.length}</div>
+    </div>
+    <div class="lesson-compass-summary">
+      <div class="lesson-compass-block">
+        <span class="lesson-compass-label">這課在做什麼</span>
+        <p>${escHtml(guide.focus)}</p>
+      </div>
+      <div class="lesson-compass-block">
+        <span class="lesson-compass-label">學完會解鎖</span>
+        <p>${escHtml(guide.unlock)}</p>
+      </div>
+    </div>
+    <div class="lesson-compass-rail">
+      ${previousHtml}
+      ${nextHtml}
+    </div>
+  `;
+
+  const anchor = lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr");
+  if (anchor) anchor.insertAdjacentElement("afterend", box);
+})();
+
 // 標記為「不熟」(spaced repetition)
 document.getElementById("markWeakBtn")?.addEventListener("click", () => {
   const k = "weak:" + PK;
@@ -227,7 +421,6 @@ renderTime();
 document.getElementById("printBtn")?.addEventListener("click", () => window.print());
 
 // Progress / cards
-const idx = SEARCH_INDEX;
 const doneSet = new Set();
 idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (localStorage.getItem(k)) doneSet.add(e.u); });
 
