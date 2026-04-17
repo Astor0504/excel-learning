@@ -175,6 +175,10 @@ def parse_shortcuts(ws):
             continue
         # 群組標題（單欄文字，含 emoji 開頭）
         if cell0 and all(trim(c) == '' for c in r[1:]):
+            # 略過動手練習區塊：放在快捷鍵頁但內容只有打勾欄+難度，沒有實際描述
+            if isinstance(cell0, str) and '動手練習' in cell0:
+                cur = None
+                continue
             cur = {'title': cell0, 'items': []}
             groups.append(cur)
         elif cell0 == 'macOS 快捷鍵' or cell0 == '快捷鍵':

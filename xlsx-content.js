@@ -355,66 +355,6 @@ window.XLSX_CONTENT = {
       ]
      },
      {
-      "title": "🎯 動手練習（做完打 ✓，難度漸進！）",
-      "items": [
-       {
-        "key": "#",
-        "desc": "✓",
-        "note": "難度"
-       },
-       {
-        "key": 1,
-        "desc": "□",
-        "note": "🟢 暖身"
-       },
-       {
-        "key": 2,
-        "desc": "□",
-        "note": "🟢 暖身"
-       },
-       {
-        "key": 3,
-        "desc": "□",
-        "note": "🔵 標準"
-       },
-       {
-        "key": 4,
-        "desc": "□",
-        "note": "🔵 標準"
-       },
-       {
-        "key": 5,
-        "desc": "□",
-        "note": "🟡 變化"
-       },
-       {
-        "key": 6,
-        "desc": "□",
-        "note": "🟡 變化"
-       },
-       {
-        "key": 7,
-        "desc": "□",
-        "note": "🔴 挑戰"
-       },
-       {
-        "key": 8,
-        "desc": "□",
-        "note": "🔴 挑戰"
-       },
-       {
-        "key": 9,
-        "desc": "□",
-        "note": "🟢 暖身"
-       },
-       {
-        "key": 10,
-        "desc": "□",
-        "note": "🔵 標準"
-       }
-      ]
-     },
-     {
       "title": "📊 WPS Office vs Microsoft Excel 差異對照表（macOS）",
       "items": []
      },
@@ -4780,4 +4720,4 @@ window.XLSX_CONTENT = {
    "desc": "VBA 完全新手，但你有 Python 經驗（核對表），概念可遷移。預留 3~4 週"
   }
  ]
-};
+}
