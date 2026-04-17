@@ -314,9 +314,66 @@ html[data-theme="dark"] .hero-capability-default{background:rgba(18,21,20,.5)}
   font-size:11px;
   margin-top:6px;
 }
+.hero-capability-timeline{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+  padding:6px 0 2px;
+}
+.hero-capability-timeline::before{
+  content:"";
+  position:absolute;
+  left:28px;
+  right:28px;
+  top:31px;
+  height:2px;
+  background:linear-gradient(90deg, rgba(123,168,137,.7), rgba(107,143,181,.7), rgba(155,127,191,.7));
+  z-index:0;
+}
+.hero-capability-node{
+  position:relative;
+  z-index:1;
+  display:grid;
+  justify-items:start;
+  gap:10px;
+}
+.hero-capability-node-num{
+  width:62px;
+  height:62px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg, #fbf8ef, #f0ebdd);
+  border:1px solid rgba(123,168,137,.22);
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:.06em;
+  box-shadow:0 8px 20px rgba(66,54,33,.08);
+}
+html[data-theme="dark"] .hero-capability-node-num{
+  background:linear-gradient(180deg, #31352f, #262924);
+  border-color:rgba(123,168,137,.28);
+}
+.hero-capability-node-copy{
+  display:grid;
+  gap:4px;
+  padding-right:10px;
+}
+.hero-capability-node-copy span{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.hero-capability-node-copy strong{
+  font-size:14px;
+  line-height:1.45;
+}
 .hero-capability-grid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
 .hero-capability-card{
@@ -346,6 +403,12 @@ html[data-theme="dark"] .hero-capability-card{
 .hero-capability-card:nth-child(5)::before{
   background:linear-gradient(90deg, rgba(107,143,181,.95), rgba(155,127,191,.9));
 }
+.hero-capability-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
 .hero-capability-card-eyebrow{
   font-size:12px;
   font-weight:700;
@@ -353,6 +416,14 @@ html[data-theme="dark"] .hero-capability-card{
   color:var(--muted);
   text-transform:uppercase;
 }
+.hero-capability-card-num{
+  font-size:28px;
+  font-weight:700;
+  line-height:1;
+  color:rgba(123,168,137,.32);
+  letter-spacing:-.04em;
+}
+html[data-theme="dark"] .hero-capability-card-num{color:rgba(123,168,137,.26)}
 .hero-capability-card h3{
   margin:0;
   font-size:24px;
@@ -398,16 +469,27 @@ main > .hero .progress{margin-top:14px}
   .hero-capability-map{padding:18px 16px 20px}
   .hero-capability-title{font-size:32px}
   .hero-capability-default{font-size:14px}
+  .hero-capability-timeline{grid-template-columns:1fr}
+  .hero-capability-timeline::before{display:none}
+  .hero-capability-node{
+    grid-template-columns:54px 1fr;
+    gap:12px;
+    align-items:center;
+  }
+  .hero-capability-node-num{width:54px;height:54px;border-radius:16px;font-size:16px}
+  .hero-capability-node-copy{padding-right:0}
   .hero-capability-card{min-height:auto}
   .hero-capability-card h3{font-size:22px}
 }
 @media (max-width:980px){
   .hero-capability-defaults,
+  .hero-capability-timeline,
   .hero-capability-grid{
     grid-template-columns:1fr;
   }
 }
 @media (min-width:981px) and (max-width:1240px){
+  .hero-capability-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}
   .hero-capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 

@@ -737,11 +737,27 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
           return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
         }).join("")}
       </div>
+      <div class="hero-capability-timeline">
+        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
+          return `
+            <div class="hero-capability-node">
+              <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
+              <div class="hero-capability-node-copy">
+                <span>${escHtml(stage.eyebrow)}</span>
+                <strong>${escHtml(stage.title)}</strong>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
       <div class="hero-capability-grid">
-        ${HOME_CAPABILITY_MAP.stages.map(function(stage){
+        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
           return `
             <article class="hero-capability-card">
-              <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
+              <div class="hero-capability-card-top">
+                <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
+                <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
+              </div>
               <h3>${escHtml(stage.title)}</h3>
               <p>${escHtml(stage.summary)}</p>
               <div class="hero-capability-skills">
