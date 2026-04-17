@@ -33,7 +33,7 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">SUMIF 系列：在條件下才加總/計算的「會挑食」函數</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">業績報表的核心函數。看懂這 6 個，老闆問你「電子部 3 月業績」可以 30 秒答出來。</p><h2>6 大條件統計函數</h2><table><thead><tr><th>函數</th><th>用途</th></tr></thead><tbody><tr><td>COUNTIF</td><td>符合條件的「個數」</td></tr><tr><td>COUNTIFS</td><td>多條件版</td></tr><tr><td>SUMIF</td><td>符合條件的「加總」</td></tr><tr><td>SUMIFS</td><td>多條件版</td></tr><tr><td>AVERAGEIF</td><td>符合條件的「平均」</td></tr><tr><td>AVERAGEIFS</td><td>多條件版</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">業績報表的核心函數。看懂這 6 個，老闆問你「電子部 3 月業績」可以 30 秒答出來。</p><h2>6 大條件統計函數</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">6 大條件統計函數速查</caption><thead><tr><th>函數</th><th>用途</th></tr></thead><tbody><tr><td>COUNTIF</td><td>符合條件的「個數」</td></tr><tr><td>COUNTIFS</td><td>多條件版</td></tr><tr><td>SUMIF</td><td>符合條件的「加總」</td></tr><tr><td>SUMIFS</td><td>多條件版</td></tr><tr><td>AVERAGEIF</td><td>符合條件的「平均」</td></tr><tr><td>AVERAGEIFS</td><td>多條件版</td></tr></tbody></table>
 <h2>語法差異（關鍵）</h2><pre><code class="lang-excel"># 單條件：條件範圍在前
 =SUMIF(條件範圍, 條件, 加總範圍)
 =SUMIF(A:A, &quot;電子&quot;, C:C)
@@ -46,6 +46,15 @@
 =SUMIF(A:A, &quot;&lt;&gt;已取消&quot;, B:B) # 不等於已取消</code></pre>
 <div class="callout"><strong>⚠️ 注意</strong>SUMIF 跟 SUMIFS 的參數順序不一樣！前者「條件範圍在前、加總範圍在後」，後者「加總範圍在最前面」——記反了結果會錯。</div>
 
+<div class="wps-callout">
+<span class="wps-label">WPS Office</span>
+<strong>條件統計函數相容性</strong>
+<ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
+<li>SUMIF、SUMIFS、COUNTIF、COUNTIFS、AVERAGEIF、AVERAGEIFS 語法與 Excel 完全相同</li>
+<li>萬用字元（*、?）行為一致，可直接沿用</li>
+<li>日期條件格式建議用 DATE() 而非文字，以確保跨平台一致</li>
+</ul>
+</div>
 
     </article>
     <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 SUMIF</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 SUMIFS（雙條件）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用萬用字元 *</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道兩者參數順序差異</span></label></div>
