@@ -38,6 +38,9 @@ a:hover{text-decoration:underline}
   font-family:inherit;transition:transform .15s ease, box-shadow .15s ease}
 .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.tool-btn{display:inline-flex;align-items:center;gap:8px}
+.tool-btn-icon{font-size:15px;line-height:1}
+.tool-btn-label{font-size:13px}
 
 main{max-width:680px;margin:0 auto;padding:24px}
 
@@ -193,6 +196,17 @@ footer{text-align:center;color:var(--muted);font-size:13px;
   font-size:13px;
   color:var(--muted);
 }
+.hero-helper{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  font-size:13px;
+  color:var(--muted);
+}
+.hero-helper strong{color:var(--text);font-weight:700}
+.hero-helper span{color:var(--accent)}
 
 /* 課程目錄頁 hero 進度條 */
 main > .hero .progress{margin-top:14px}
@@ -203,6 +217,8 @@ main > .hero .progress{margin-top:14px}
   .pomo{right:12px;bottom:12px;padding:10px 14px}
   .primary-actions{flex-direction:column}
   .primary-actions .btn{width:100%}
+  .tool-btn{padding:8px 12px}
+  .tool-btn-label{display:none}
 }
 
 /* ===== Scroll-in Animations ===== */
@@ -1163,6 +1179,10 @@ html[data-theme="dark"] .xc-diff-pill{background:transparent}
   background:var(--accent-soft);color:var(--accent);
   padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
 .idx-chip-emoji{font-size:13px}
+.idx-chip.is-done{background:#e7f6ec;color:#2e8b57}
+.idx-chip.is-warm{background:#eef4ff;color:#456ea8}
+html[data-theme="dark"] .idx-chip.is-done{background:#22392b;color:#9bd3ad}
+html[data-theme="dark"] .idx-chip.is-warm{background:#253246;color:#adc8f0}
 
 .idx-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
   margin:18px 0;padding:18px 14px;background:var(--accent-soft);
@@ -1344,6 +1364,9 @@ html[data-theme="light"] .lt-bar,html:not([data-theme]) .lt-bar{background:rgba(
   .lt-tab{padding:8px 6px;font-size:13px}
   .lt-icon{font-size:15px}
   .lt-badge{font-size:10px;padding:1px 6px;min-width:18px}
+  .quiz-card{padding:18px 16px}
+  .quiz-card > div[style*="display:flex"]{flex-direction:column}
+  .quiz-card > div[style*="display:flex"] .btn{width:100%}
 }
 
 /* 列印時展開全部 */

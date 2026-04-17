@@ -16,15 +16,29 @@ import { XLSX_CONTENT } from './xlsx-content.js';
     if (!meta) return;
     var card = a.querySelector('.card');
     if (!card) return;
+    var doneKey = 'done:lessons/' + slug + '.html';
+    var seenKey = 'seen:lessons/' + slug + '.html';
+    var isDone = false;
+    var seen = null;
+    try {
+      isDone = !!localStorage.getItem(doneKey);
+      seen = localStorage.getItem(seenKey);
+    } catch(e){}
 
     var chips = document.createElement('div');
     chips.className = 'idx-chips';
-    function chip(emoji, txt){
+    function chip(emoji, txt, cls){
       if (!txt) return;
       var s = document.createElement('span');
-      s.className = 'idx-chip';
+      s.className = 'idx-chip' + (cls ? ' ' + cls : '');
       s.innerHTML = '<span class="idx-chip-emoji">'+emoji+'</span>'+txt;
       chips.appendChild(s);
+    }
+    if (isDone) {
+      chip('✓', '已完成', 'is-done');
+    } else if (seen) {
+      var days = Math.floor((Date.now() - parseInt(seen, 10)) / 86400000);
+      chip('↺', days <= 0 ? '今天看過' : days === 1 ? '昨天看過' : '最近看過', 'is-warm');
     }
     chip('🎯', meta.difficulty);
     chip('📝', meta.taskCount);

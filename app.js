@@ -12,11 +12,42 @@ const DEPTH = document.body?.dataset.depth || "";
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
+// Toolbar labels for lesson pages
+(function(){
+  if (!document.querySelector(".lesson")) return;
+  var labels = {
+    printBtn: "列印",
+    markWeakBtn: "複習",
+    searchBtn: "搜尋",
+    themeBtn: document.documentElement.dataset.theme === "dark" ? "亮色" : "深色",
+  };
+  Object.keys(labels).forEach(function(id){
+    var btn = document.getElementById(id);
+    if (!btn) return;
+    btn.classList.add("tool-btn");
+    var icon = (btn.textContent || "").trim();
+    btn.innerHTML = '<span class="tool-btn-icon">' + escHtml(icon) + '</span><span class="tool-btn-label">' + labels[id] + '</span>';
+  });
+})();
+
 // Theme
 const themeBtn = document.getElementById("themeBtn");
 const saved = localStorage.getItem("theme");
 if (saved) document.documentElement.dataset.theme = saved;
-function syncTheme(){ if(themeBtn) themeBtn.textContent = document.documentElement.dataset.theme === "dark" ? "☀️" : "🌙"; }
+function syncTheme(){
+  if (!themeBtn) return;
+  const isDark = document.documentElement.dataset.theme === "dark";
+  const icon = isDark ? "☀️" : "🌙";
+  const label = isDark ? "亮色" : "深色";
+  const iconEl = themeBtn.querySelector(".tool-btn-icon");
+  const labelEl = themeBtn.querySelector(".tool-btn-label");
+  if (iconEl && labelEl) {
+    iconEl.textContent = icon;
+    labelEl.textContent = label;
+  } else {
+    themeBtn.textContent = icon;
+  }
+}
 themeBtn?.addEventListener("click", () => {
   const cur = document.documentElement.dataset.theme === "dark" ? "" : "dark";
   document.documentElement.dataset.theme = cur;
@@ -258,6 +289,40 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     const today = new Date().toDateString();
     td.textContent = localStorage.getItem("today:" + today) || "0";
   }
+
+  const helper = document.createElement("div");
+  helper.className = "hero-helper";
+  const helperTarget = document.querySelector(".hero .utility-actions") || document.querySelector(".hero .hero-actions:last-of-type");
+  if (helperTarget) helperTarget.insertAdjacentElement("afterend", helper);
+
+  function updateHeroHelper(){
+    if (!helper) return;
+    const weak = idx.filter(e => {
+      const k = "weak:" + e.u.split("/").slice(-2).join("/");
+      const t = localStorage.getItem(k);
+      if (!t) return false;
+      const days = (Date.now() - parseInt(t)) / 86400000;
+      return days >= 3;
+    });
+    let pick = null;
+    let prefix = "";
+    if (weak.length) {
+      pick = weak[0];
+      prefix = "建議先複習";
+    } else {
+      const undone = idx.filter(e => !doneSet.has(e.u));
+      if (undone.length) {
+        pick = undone[0];
+        prefix = "建議下一課";
+      }
+    }
+    if (!pick) {
+      helper.textContent = "目前進度很完整，去做一題快速測驗或複習筆記也不錯。";
+      return;
+    }
+    helper.innerHTML = `${prefix}：<strong>${escHtml(pick.t)}</strong><span>${escHtml(pick.b || "")}</span>`;
+  }
+  updateHeroHelper();
 
   // 今天學一課（優先選 weak、再選未完成）
   document.getElementById("todayBtn")?.addEventListener("click", () => {
