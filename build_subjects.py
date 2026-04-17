@@ -739,11 +739,11 @@ def _excel_home_page(entries):
 </div>
 <div class="progress"><span></span></div>
 <div class="progress-label" id="overallProgress">尚未開始</div>
-<div class="hero-actions">
+<div class="hero-actions primary-actions">
   <button class="btn primary" id="todayBtn">🎯 今天學一課</button>
   <button class="btn" id="exportBtn">📥 匯出筆記</button>
 </div>
-<div class="hero-actions" style="margin-top:10px">
+<div class="hero-actions utility-actions">
   <a class="btn" href="cheatsheet.html" target="_blank" rel="noopener">📘 速查手冊</a>
   <a class="btn" href="practice.xlsx" download>✏️ 練習簿</a>
 </div>

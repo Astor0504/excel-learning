@@ -71,6 +71,46 @@ function markPageDone(){
 }
 initChecklist();
 
+// Lesson kickoff
+(function(){
+  const lesson = document.querySelector(".lesson");
+  const checklist = lesson?.querySelector(".checklist");
+  if (!lesson || !checklist || lesson.querySelector(".lesson-kickoff")) return;
+
+  const tasks = [...checklist.querySelectorAll("label .txt")]
+    .map(el => (el.textContent || "").trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  if (!tasks.length) return;
+
+  const box = document.createElement("section");
+  box.className = "lesson-kickoff";
+  box.innerHTML = `
+    <div class="lesson-kickoff-head">
+      <div>
+        <div class="lesson-kickoff-eyebrow">開始前先看這裡</div>
+        <h2 class="lesson-kickoff-title">先完成這 ${tasks.length} 件事</h2>
+      </div>
+      <button type="button" class="btn lesson-kickoff-btn">開始任務</button>
+    </div>
+    <div class="lesson-kickoff-list">
+      ${tasks.map((task, i) => `
+        <div class="lesson-kickoff-item">
+          <span class="lesson-kickoff-num">0${i + 1}</span>
+          <span class="lesson-kickoff-text">${escHtml(task)}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+
+  box.querySelector(".lesson-kickoff-btn")?.addEventListener("click", () => {
+    checklist.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
+  if (anchor) anchor.insertAdjacentElement("afterend", box);
+})();
+
 // 標記為「不熟」(spaced repetition)
 document.getElementById("markWeakBtn")?.addEventListener("click", () => {
   const k = "weak:" + PK;
