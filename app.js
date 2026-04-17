@@ -777,10 +777,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     if (!quickNav) return;
     const lastLesson = sessionStorage.getItem("last-lesson");
     const groups = [
-      { key: "all", label: "全部", phases: [] },
-      { key: "starter", label: "新手入門", phases: [1, 2] },
-      { key: "work", label: "職場即用", phases: [2, 3] },
-      { key: "auto", label: "自動化進階", phases: [4, 5] },
+      { key: "all", label: "全部", phases: [], summary: "顯示完整 5 個階段，從基礎操作一路看到自動化。", anchorPhase: 1 },
+      { key: "starter", label: "新手入門", phases: [1, 2], summary: "聚焦 Phase 1-2，先把公式、查找與報表核心打穩。", anchorPhase: 1 },
+      { key: "work", label: "職場即用", phases: [2, 3], summary: "聚焦 Phase 2-3，適合想先補職場報表與資料整理實力。", anchorPhase: 2 },
+      { key: "auto", label: "自動化進階", phases: [4, 5], summary: "聚焦 Phase 4-5，先看 Power Query、資料模型與 VBA。", anchorPhase: 4 },
     ];
     const state = { active: "all" };
 
@@ -795,6 +795,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     chips.className = "hero-mode-chips";
     wrap.appendChild(chips);
 
+    const meta = document.createElement("div");
+    meta.className = "hero-mode-meta";
+    wrap.appendChild(meta);
+
     const continueWrap = document.createElement("div");
     continueWrap.className = "hero-continue";
 
@@ -805,14 +809,18 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       });
       const selected = groups.find(g => g.key === modeKey) || groups[0];
       const allowed = new Set(selected.phases);
+      let visibleLessons = 0;
+      let firstVisibleSection = null;
       document.querySelectorAll(".phase-section").forEach(function(section){
         const phaseMatch = section.className.match(/phase-(\d)/);
         const phaseNo = phaseMatch ? parseInt(phaseMatch[1], 10) : 0;
         const visible = !allowed.size || allowed.has(phaseNo);
         section.style.display = visible ? "" : "none";
+        if (visible && !firstVisibleSection) firstVisibleSection = section;
         var next = section.nextElementSibling;
         while (next && !next.classList.contains("phase-section") && !next.classList.contains("phase-group")) {
           next.style.display = visible ? "" : "none";
+          if (visible && next.matches('a[data-lesson]')) visibleLessons++;
           next = next.nextElementSibling;
         }
         const group = section.nextElementSibling;
@@ -820,6 +828,16 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
           group.style.display = visible ? "" : "none";
         }
       });
+      const phaseText = selected.phases.length ? `Phase ${selected.phases.join("、")}` : "全部 5 個 Phase";
+      meta.innerHTML = `
+        <strong>${escHtml(selected.label)}</strong>
+        <span>${escHtml(selected.summary)}</span>
+        <em>目前顯示 ${phaseText} · ${visibleLessons} 堂課</em>
+      `;
+      if (firstVisibleSection) {
+        var y = window.pageYOffset + firstVisibleSection.getBoundingClientRect().top - 120;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      }
     }
 
     groups.forEach(function(group){
