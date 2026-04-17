@@ -225,6 +225,15 @@ const LESSON_BADGES = {
     { kind: "pro", label: "不是炫技", note: "真正專業是自動化穩定流程，不是寫最長的巨集。" },
   ],
 };
+const LESSON_BADGE_KIND_ORDER = [
+  "mac",
+  "version",
+  "fallback",
+  "pro",
+  "workflow",
+  "platform",
+  "compat",
+];
 const HOME_CAPABILITY_MAP = {
   title: "從新手走到專業的能力地圖",
   intro: "真正專業不是會很多功能，而是知道什麼時候該用哪一種方法、怎麼做出可維護、可交接、可重跑的工作流程。",
@@ -475,10 +484,15 @@ initChecklist();
   const slug = document.body?.dataset.lessonSlug || "";
   const badges = LESSON_BADGES[slug];
   if (!badges || !badges.length) return;
+  const orderedBadges = badges.slice().sort(function(a, b){
+    const ai = LESSON_BADGE_KIND_ORDER.indexOf(a.kind || "");
+    const bi = LESSON_BADGE_KIND_ORDER.indexOf(b.kind || "");
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
 
   const rail = document.createElement("section");
   rail.className = "lesson-badge-rail";
-  rail.innerHTML = badges.map(function(badge){
+  rail.innerHTML = orderedBadges.map(function(badge){
     return `
       <div class="lesson-badge lesson-badge-${escHtml(badge.kind || "note")}">
         <span class="lesson-badge-label">${escHtml(badge.label)}</span>
@@ -789,6 +803,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     const lastLesson = sessionStorage.getItem("last-lesson");
     const groups = HOME_LEARNING_MODES;
     const state = { active: "all" };
+    let hasHydratedMode = false;
 
     const wrap = document.createElement("div");
     wrap.className = "hero-mode-switch";
@@ -922,10 +937,14 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
           }).join("")}
         </div>
       `;
+      featureWrap.dataset.mode = selected.key;
       if (firstVisibleSection) {
-        var y = window.pageYOffset + firstVisibleSection.getBoundingClientRect().top - 120;
-        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+        if (hasHydratedMode) {
+          var y = window.pageYOffset + firstVisibleSection.getBoundingClientRect().top - 120;
+          window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+        }
       }
+      hasHydratedMode = true;
     }
 
     groups.forEach(function(group){
