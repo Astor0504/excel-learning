@@ -1,13 +1,15 @@
+import { CHEATSHEET_DATA } from './cheatsheet-data.js';
+
 /* 本課關鍵速查 — inline 大卡片
    需要：cheatsheet-data.js + <div id="cheatInline" data-slug="P1-01"></div>
    若 slug 無對應卡片則不渲染（例如未設 pick 的章節）
 */
 (function(){
-  if (!window.CHEATSHEET_DATA) return;
+  if (!CHEATSHEET_DATA) return;
   var mount = document.getElementById('cheatInline');
   if (!mount) return;
 
-  var D = window.CHEATSHEET_DATA;
+  var D = CHEATSHEET_DATA;
   var slug = mount.dataset.slug || document.body.dataset.lessonSlug || '';
   var conf = D.lessonMap[slug];
   if (!conf) { mount.style.display = 'none'; return; }

@@ -1,12 +1,14 @@
+import { XLSX_CONTENT } from './xlsx-content.js';
+
 /* xlsx-integrator.js
  * 把 Excel互動練習 / Excel專業養成 的內容深度整合進 lesson 頁。
  * 依 body[data-lesson-slug] 自動找對應內容並注入到主內容區末端。
  */
 (function(){
-  if (!window.XLSX_CONTENT) return;
+  if (!XLSX_CONTENT) return;
   var slug = document.body.getAttribute('data-lesson-slug');
   if (!slug) return;
-  var data = window.XLSX_CONTENT.lessons[slug];
+  var data = XLSX_CONTENT.lessons?.[slug];
   if (!data) return;
 
   // 工具
@@ -248,11 +250,11 @@
   function buildKnowledge(k){
     var nodes = [];
     if (k.subtitle) nodes.push(el('div',{class:'xc-sub',text:k.subtitle}));
-    k.sections.forEach(function(sec){
+    (k.sections || []).forEach(function(sec){
       var card = el('div',{class:'xc-know'});
       card.appendChild(el('h3',null,sec.title));
       var ul = el('ul',{class:'xc-know-list'});
-      sec.items.forEach(function(item){
+      (sec.items || []).forEach(function(item){
         if (!item || !item.length) return;
         var key = item[0];
         var rest = item.slice(1).filter(function(x){return x!=null&&x!=='';});
@@ -273,7 +275,7 @@
   function buildShortcuts(s){
     var nodes = [];
     if (s.intro) nodes.push(el('div',{class:'xc-sub',text:s.intro}));
-    s.groups.forEach(function(g){
+    (s.groups || []).forEach(function(g){
       if (!g.items || !g.items.length) {
         if (g.title) nodes.push(el('div',{class:'xc-sub',text:g.title}));
         return;
@@ -316,12 +318,13 @@
       ops.appendChild(ul);
       nodes.push(ops);
     }
-    v.microTasks.forEach(function(t){
+    (v.microTasks || []).forEach(function(t){
       var box = el('div',{class:'xc-vba'});
       var copyBtn = el('button',{class:'xc-copy',type:'button'}, '📋 複製');
-      var pre = el('pre',null,[el('code',{text: t.code.join('\n')})]);
+      var codeLines = Array.isArray(t.code) ? t.code : [];
+      var pre = el('pre',null,[el('code',{text: codeLines.join('\n')})]);
       copyBtn.addEventListener('click', function(){
-        navigator.clipboard.writeText(t.code.join('\n')).then(function(){
+        navigator.clipboard.writeText(codeLines.join('\n')).then(function(){
           copyBtn.textContent = '✓ 已複製';
           copyBtn.classList.add('copied');
           setTimeout(function(){
@@ -385,11 +388,11 @@
     container.appendChild(sec);
 
     // 2b. 動手練習 checklist（若該 sheet 有）
-    if (data.knowledge.handsTasks && data.knowledge.handsTasks.length){
+    if (data.knowledge?.handsTasks?.length){
       var hsec = el('div',{class:'xc-section','data-xc-type':'hands'});
       hsec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎯'}),document.createTextNode(' 動手練習 — 跟著做、做完打勾')]));
       hsec.appendChild(el('div',{class:'xc-sub',text:'以下是循序漸進的實作任務。打開 Excel 跟著做，做完就打勾。進度會自動記住。'}));
-      var h = buildHandsOn(data.knowledge.handsTasks);
+      var h = buildHandsOn(data.knowledge?.handsTasks);
       if (h) hsec.appendChild(h);
       container.appendChild(hsec);
     }
@@ -405,15 +408,17 @@
 
   // 4. 互動練習（含資料表 + 即時驗證）
   if (data.inter){
+    var interTasks = data.inter?.tasks || [];
+    var interTaskCount = data.inter?.tasks?.length ?? 0;
     var sec = el('div',{class:'xc-section','data-xc-type':'practice-inter'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎯'}),document.createTextNode(' 互動練習 — 輸入公式即時驗證')]));
     sec.appendChild(el('div',{class:'xc-sub',text:'規則：在輸入框寫公式（可省略開頭 =）→ 按 Enter 或「檢查」→ 答對自動變綠 ✅，答錯變紅 ❌'}));
-    var table = buildDataTable(data.inter.dataHeader, data.inter.dataRows, '【練習資料】');
+    var table = buildDataTable(data.inter?.dataHeader || [], data.inter?.dataRows || [], '【練習資料】');
     if (table) sec.appendChild(table);
     var progress = el('div',{class:'xc-progress'},[
       el('span',{text:'答對 '}),
       el('span',{class:'xc-progress-count',text:'0'}),
-      el('span',{text:' / '+data.inter.tasks.length}),
+      el('span',{text:' / '+interTaskCount}),
       el('div',{class:'xc-progress-bar'},el('span'))
     ]);
     sec.appendChild(progress);
@@ -422,7 +427,7 @@
       done[num] = ok;
       var n = Object.keys(done).filter(function(k){return done[k];}).length;
       sec.querySelector('.xc-progress-count').textContent = n;
-      sec.querySelector('.xc-progress-bar > span').style.width = (n/data.inter.tasks.length*100)+'%';
+      sec.querySelector('.xc-progress-bar > span').style.width = interTaskCount ? (n/interTaskCount*100)+'%' : '0%';
       // 持久化
       try {
         localStorage.setItem('xc-inter-'+slug, JSON.stringify(done));
@@ -434,9 +439,9 @@
       done = saved;
       var n = Object.keys(done).filter(function(k){return done[k];}).length;
       sec.querySelector('.xc-progress-count').textContent = n;
-      sec.querySelector('.xc-progress-bar > span').style.width = (n/data.inter.tasks.length*100)+'%';
+      sec.querySelector('.xc-progress-bar > span').style.width = interTaskCount ? (n/interTaskCount*100)+'%' : '0%';
     } catch(e){}
-    data.inter.tasks.forEach(function(t){
+    interTasks.forEach(function(t){
       sec.appendChild(buildInteractiveTask(t, update));
     });
     container.appendChild(sec);
@@ -447,9 +452,9 @@
     var sec = el('div',{class:'xc-section','data-xc-type':'practice-pro'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🧪'}),document.createTextNode(' 微任務練習 — 含原理解說')]));
     sec.appendChild(el('div',{class:'xc-sub',text:'每題提供「💡 提示」與「✅ 答案 + 🧠 解析」按鈕。建議先自己想、再翻答案'}));
-    var table = buildDataTable(data.pro.dataHeader, data.pro.dataRows, '【練習資料】');
+    var table = buildDataTable(data.pro?.dataHeader || [], data.pro?.dataRows || [], '【練習資料】');
     if (table) sec.appendChild(table);
-    data.pro.tasks.forEach(function(t){
+    (data.pro?.tasks || []).forEach(function(t){
       sec.appendChild(buildProTask(t));
     });
     container.appendChild(sec);
@@ -462,4 +467,5 @@
   } else {
     article.appendChild(container);
   }
+  document.dispatchEvent(new CustomEvent('xlsx-integrator:ready'));
 })();

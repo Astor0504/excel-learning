@@ -1,14 +1,16 @@
+import { CHEATSHEET_DATA } from './cheatsheet-data.js';
+
 /* 速查抽屜 (cheat drawer)
    在 lesson 頁右下角浮出「📘 速查」按鈕，點開從右側滑入。
    需要：cheatsheet-data.js 先載入、HTML body data-lesson-slug="P1-01" 用於預設篩選。
    若無 slug 則顯示全部，使用者可自行搜尋/篩選。
 */
 (function(){
-  if (!window.CHEATSHEET_DATA) {
+  if (!CHEATSHEET_DATA) {
     console.warn('drawer: CHEATSHEET_DATA 未載入');
     return;
   }
-  var D = window.CHEATSHEET_DATA;
+  var D = CHEATSHEET_DATA;
   var slug = document.body.dataset.lessonSlug || '';
   var lessonConf = D.lessonMap[slug] || {cats:[], title:'速查手冊'};
 

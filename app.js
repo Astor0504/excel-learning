@@ -1,4 +1,7 @@
 
+import { SEARCH_INDEX } from './search-index.js';
+import { QUIZ_CARDS } from './quiz-data.js';
+
 function pageKey(){
   const parts = location.pathname.split("/").filter(Boolean);
   return parts.slice(-2).join("/");
@@ -25,6 +28,9 @@ syncTheme();
 // 記錄上次學習時間
 function touchPage(){ localStorage.setItem("seen:" + PK, Date.now().toString()); }
 if (document.querySelector(".lesson")) touchPage();
+try {
+  if (document.querySelector(".lesson")) sessionStorage.setItem("last-lesson", PK);
+} catch(e){}
 
 // Checklist
 function initChecklist(){
@@ -150,14 +156,16 @@ renderTime();
 document.getElementById("printBtn")?.addEventListener("click", () => window.print());
 
 // Progress / cards
-const idx = window.SEARCH_INDEX || [];
+const idx = SEARCH_INDEX;
 const doneSet = new Set();
 idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (localStorage.getItem(k)) doneSet.add(e.u); });
 
 (function progress(){
   if (!idx.length) return;
-  document.querySelectorAll(".card[data-lesson]").forEach(card => {
-    const u = card.dataset.lesson;
+  document.querySelectorAll('a[data-lesson]').forEach(link => {
+    const u = link.dataset.lesson;
+    const card = link.querySelector(".card");
+    if (!u || !card) return;
     const k = "done:" + u.split("/").slice(-2).join("/");
     if (localStorage.getItem(k)) card.classList.add("done");
     // 上次學習時間
@@ -278,7 +286,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 (function(){
   const quizBox = document.getElementById("quizBox");
   if (!quizBox) return;
-  const cards = window.QUIZ_CARDS || [];
+  const cards = QUIZ_CARDS;
   if (!cards.length) { quizBox.innerHTML = "<p>沒有測驗資料</p>"; return; }
   let i = 0;
   function render() {

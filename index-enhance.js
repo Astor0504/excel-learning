@@ -1,7 +1,9 @@
+import { XLSX_CONTENT } from './xlsx-content.js';
+
 /* index-enhance.js — 在首頁卡片上注入 XP/題數/難度，並算出總計顯示在 Hero。 */
 (function(){
-  if (!window.XLSX_CONTENT) return;
-  var lessons = window.XLSX_CONTENT.lessons;
+  if (!XLSX_CONTENT) return;
+  var lessons = XLSX_CONTENT.lessons || {};
 
   // 1. 每張卡片加 chips
   var totalXp = 0, totalTasks = 0, totalMinutes = 0;
@@ -9,9 +11,9 @@
     var m = a.getAttribute('href').match(/P\d-\d{2}/);
     if (!m) return;
     var slug = m[0];
-    var data = lessons[slug];
-    if (!data || !data.meta) return;
-    var meta = data.meta;
+    var data = lessons?.[slug];
+    var meta = data?.meta;
+    if (!meta) return;
     var card = a.querySelector('.card');
     if (!card) return;
 

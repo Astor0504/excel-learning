@@ -1,9 +1,11 @@
+import { XLSX_CONTENT } from './xlsx-content.js';
+
 /* index-dashboard.js — 首頁學習儀表板：徽章、學習策略、起點 */
 (function(){
   if (!document.querySelector('.hero')) return;
-  if (!window.XLSX_CONTENT) return;
+  if (!XLSX_CONTENT) return;
 
-  var D = window.XLSX_CONTENT;
+  var D = XLSX_CONTENT;
   var badges = D.badges || [];
   var strategies = D.strategies || [];
 
@@ -15,7 +17,7 @@
     stageXp[k] = xp;
   });
 
-  // 從 localStorage 讀 lesson 完成狀態（以 lesson-check-{slug} 是否有內容 = 已開始看作完成）
+  // 從 localStorage 讀 lesson 完成狀態（與 app.js 的 done:{path} key 保持一致）
   var slugToXp = {
     'P1-01':150,'P1-02':100,'P1-03':100,
     'P2-01':150,'P2-02':200,'P2-03':200,'P2-04':150,
@@ -27,8 +29,8 @@
   var totalXp = 0;
   Object.keys(slugToXp).forEach(function(slug){
     try {
-      var v = localStorage.getItem('lesson-check-'+slug);
-      if (v && JSON.parse(v||'[]').length){
+      var v = localStorage.getItem('done:lessons/' + slug + '.html');
+      if (v){
         done[slug] = true;
         totalXp += slugToXp[slug];
       }

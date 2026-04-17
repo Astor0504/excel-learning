@@ -6,10 +6,12 @@
   function init(){
     var lesson = document.querySelector('main.lesson');
     if (!lesson) return;
-    if (lesson.dataset.tabsInited) return;
+    if (lesson.dataset.tabsInited || lesson.hasAttribute('data-tabs-initialized')) return;
 
     var mdBody = lesson.querySelector('.md-body');
     if (!mdBody) return;
+    lesson.dataset.tabsInited = '1';
+    lesson.setAttribute('data-tabs-initialized', '1');
 
     var slug = document.body.getAttribute('data-lesson-slug') || 'default';
     var KEY = 'lesson-tab-' + slug;
@@ -129,16 +131,20 @@
       nodes.forEach(function(x){ n += x.querySelectorAll(sel).length; });
       return n;
     }
-
-    lesson.dataset.tabsInited = '1';
   }
 
   // 延後到 xlsx-integrator 完成後
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
-      setTimeout(init, 0);
+      document.addEventListener('xlsx-integrator:ready', init, { once: true });
+      setTimeout(function(){
+        if (!document.querySelector('[data-tabs-initialized]')) init();
+      }, 300);
     });
   } else {
-    setTimeout(init, 0);
+    document.addEventListener('xlsx-integrator:ready', init, { once: true });
+    setTimeout(function(){
+      if (!document.querySelector('[data-tabs-initialized]')) init();
+    }, 300);
   }
 })();

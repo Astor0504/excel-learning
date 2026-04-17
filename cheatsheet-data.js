@@ -2,7 +2,6 @@
    被 cheatsheet.html 與 lesson 頁的速查抽屜 (drawer.js) 共用。
    修改這份資料 = 同步更新速查手冊和所有 lesson 頁的抽屜。
 */
-(function(global){
 // ── Formula Data ──
 const formulas = [
   // Math/Stats (Lv.1)
@@ -204,5 +203,5 @@ const LESSON_CHEAT_MAP = {
     highlights:["VBA"]},
 };
 
-global.CHEATSHEET_DATA = { formulas: formulas, vbaTemplates: vbaTemplates, lessonMap: LESSON_CHEAT_MAP };
-})(typeof window !== 'undefined' ? window : this);
+export const CHEATSHEET_DATA = { formulas: formulas, vbaTemplates: vbaTemplates, lessonMap: LESSON_CHEAT_MAP };
+window.CHEATSHEET_DATA = CHEATSHEET_DATA; // cheatsheet.html inline script 需要此 window global

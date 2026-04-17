@@ -1,13 +1,66 @@
 #!/usr/bin/env python3
-"""把 Excel教學 / ISTQB證照 兩個 index.html 轉成 AC 風格的學習網站
-完整版：含實例、考前速查、Quiz、倒數、印刷模式、上次學習、SR 等
+"""生成目前工作區的學習網站資產。
+
+目前 Excel 專案已改為：
+- lesson 頁手工維護
+- index / search index 由 generator 重建
+
+因此 build_excel() 只會重建 Excel 首頁與 search-index，不會覆寫 lessons/。
+ISTQB 仍保留舊生成流程，需明確指定才會執行。
 """
 import re, json, html, shutil, sys
 from pathlib import Path
 
 BASE = Path("/Users/asotr/Desktop/Claude 工作站")
-sys.path.insert(0, str(BASE))
+sys.path.insert(0, str(BASE / "Excel"))
 from excel_content import EXCEL_LESSONS
+
+EXCEL_PHASES = {
+    1: {
+        "name": "Phase 1 · 操作效率",
+        "desc": "完成後你能：不靠滑鼠完成 80% 日常操作，寫出基本公式",
+    },
+    2: {
+        "name": "Phase 2 · 職場即戰力",
+        "desc": "完成後你能：獨立處理跨表查找、自動產出樞紐報表",
+    },
+    3: {
+        "name": "Phase 3 · 專業打磨",
+        "desc": "完成後你能：設計防呆表單、做出專業圖表與報表",
+    },
+    4: {
+        "name": "Phase 4 · 進階自動化",
+        "desc": "完成後你能：用動態陣列取代輔助欄、用 Power Query 自動清資料",
+    },
+    5: {
+        "name": "Phase 5 · VBA",
+        "desc": "完成後你能：寫巨集自動化重複工作、建立完整報表系統",
+    },
+}
+
+EXCEL_EMOJIS = {
+    "P1-01": "⌨️",
+    "P1-02": "📊",
+    "P1-03": "📐",
+    "P2-01": "📈",
+    "P2-02": "🔍",
+    "P2-03": "📊",
+    "P2-04": "🎨",
+    "P3-01": "✅",
+    "P3-02": "📝",
+    "P3-03": "📈",
+    "P3-04": "🔗",
+    "P3-05": "🛡️",
+    "P4-01": "📊",
+    "P4-02": "🧮",
+    "P4-03": "🧩",
+    "P4-04": "⚡",
+    "P4-05": "🔗",
+    "P5-01": "⚙️",
+    "P5-02": "🔧",
+    "P5-03": "🏗️",
+    "P5-04": "🏆",
+}
 
 # ========= 樣式 =========
 STYLES = (BASE / "AC/teaching-site/styles.css").read_text(encoding="utf-8")
@@ -137,6 +190,9 @@ html[data-theme="dark"] .countdown{background:#3a201a;color:#ff9c7c}
 
 # ========= JavaScript =========
 APP_JS = r"""
+import { SEARCH_INDEX } from './search-index.js';
+import { QUIZ_CARDS } from './quiz-data.js';
+
 function pageKey(){
   const parts = location.pathname.split("/").filter(Boolean);
   return parts.slice(-2).join("/");
@@ -160,6 +216,9 @@ syncTheme();
 // 記錄上次學習時間
 function touchPage(){ localStorage.setItem("seen:" + PK, Date.now().toString()); }
 if (document.querySelector(".lesson")) touchPage();
+try {
+  if (document.querySelector(".lesson")) sessionStorage.setItem("last-lesson", PK);
+} catch(e){}
 
 // Checklist
 function initChecklist(){
@@ -285,14 +344,16 @@ renderTime();
 document.getElementById("printBtn")?.addEventListener("click", () => window.print());
 
 // Progress / cards
-const idx = window.SEARCH_INDEX || [];
+const idx = SEARCH_INDEX;
 const doneSet = new Set();
 idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (localStorage.getItem(k)) doneSet.add(e.u); });
 
 (function progress(){
   if (!idx.length) return;
-  document.querySelectorAll(".card[data-lesson]").forEach(card => {
-    const u = card.dataset.lesson;
+  document.querySelectorAll('a[data-lesson]').forEach(link => {
+    const u = link.dataset.lesson;
+    const card = link.querySelector(".card");
+    if (!u || !card) return;
     const k = "done:" + u.split("/").slice(-2).join("/");
     if (localStorage.getItem(k)) card.classList.add("done");
     // 上次學習時間
@@ -413,7 +474,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 (function(){
   const quizBox = document.getElementById("quizBox");
   if (!quizBox) return;
-  const cards = window.QUIZ_CARDS || [];
+  const cards = QUIZ_CARDS;
   if (!cards.length) { quizBox.innerHTML = "<p>沒有測驗資料</p>"; return; }
   let i = 0;
   function render() {
@@ -605,6 +666,140 @@ def slug(s):
     s = re.sub(r"[^\w-]+", "-", s).strip("-")
     return s[:60] or "x"
 
+def _extract(pattern, text, default=""):
+    m = re.search(pattern, text, re.DOTALL)
+    return html.unescape(m.group(1).strip()) if m else default
+
+def _build_excel_entries(folder):
+    lessons_dir = folder / "lessons"
+    entries = []
+    for path in sorted(lessons_dir.glob("P*-*.html")):
+        slug_name = path.stem
+        raw = path.read_text(encoding="utf-8")
+        title = _extract(r"<h1>(.*?)</h1>", raw, slug_name)
+        summary = _extract(r'<meta name="description" content="(.*?)">', raw,
+                           EXCEL_LESSONS.get(slug_name, {}).get("tldr", ""))
+        phase = int(slug_name[1])
+        breadcrumb = f"{slug_name} · {EXCEL_PHASES[phase]['name']}"
+        entries.append({
+            "slug": slug_name,
+            "title": title,
+            "summary": summary,
+            "phase": phase,
+            "breadcrumb": breadcrumb,
+            "emoji": EXCEL_EMOJIS.get(slug_name, ""),
+            "u": f"lessons/{slug_name}.html",
+        })
+    return entries
+
+def _excel_home_page(entries):
+    sections = []
+    for phase in sorted(EXCEL_PHASES):
+        phase_entries = [e for e in entries if e["phase"] == phase]
+        meta = EXCEL_PHASES[phase]
+        sections.append(
+            f'''<div class="phase-section phase-{phase} animate-in">
+  <h2><span class="phase-badge">{phase}</span> {html.escape(meta["name"])}<span class="phase-progress" data-phase="{phase}"></span></h2>
+  <p style="color:var(--muted);font-size:13px;margin:6px 0 0">{html.escape(meta["desc"])}</p>
+  <div class="phase-bar"><span data-phase="{phase}"></span></div>
+</div>'''
+        )
+        for e in phase_entries:
+            sections.append(
+                f'''<a href="{e["u"]}" data-lesson="{e["u"]}" style="color:inherit;text-decoration:none" class="animate-in">
+<div class="card"><div class="meta"><span class="tag">{html.escape(e["slug"])}</span></div>
+<h3>{html.escape(e["emoji"])} {html.escape(e["title"])}</h3>
+<p style="margin:6px 0 0;color:var(--muted)">{html.escape(e["summary"])}</p>
+<div class="last-seen"></div>
+</div></a>'''
+            )
+
+    body = "\n".join(sections)
+    return f"""<!doctype html>
+<html lang="zh-TW"><head>
+<meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Excel 學習地圖（macOS 版）：從快捷鍵到 VBA，5 階段 21 課，含速查表、AI 助教與自然語音朗讀。支援 WPS Office 快捷鍵對照。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Excel 學習地圖">
+<meta property="og:description" content="Excel 學習地圖（macOS 版）：從快捷鍵到 VBA，5 階段 21 課，含速查表、AI 助教與自然語音朗讀。">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<title>Excel 學習地圖</title>
+<link rel="stylesheet" href="styles.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body>
+<nav class="nav"><div class="brand"><span class="dot"></span> Excel 學習地圖</div>
+<div class="tools"><button class="btn" id="searchBtn">🔍 搜尋</button><button class="btn" id="themeBtn">🌙</button></div></nav>
+<main><section class="hero"><h1>Excel 學習地圖</h1>
+<p>macOS 版 · 從快捷鍵到 VBA · 5 階段 21 課<br><span style="font-size:13px;opacity:.7">含 WPS Office 快捷鍵對照</span></p>
+
+<div class="streak-row">
+  <div class="streak-badge"><span class="flame">🔥</span><span id="streakNum">0</span> 天連續學習</div>
+  <div class="streak-badge alt"><span>📚</span><span id="todayDone">0</span> 今天完成</div>
+</div>
+<div class="progress"><span></span></div>
+<div class="progress-label" id="overallProgress">尚未開始</div>
+<div class="hero-actions">
+  <button class="btn primary" id="todayBtn">🎯 今天學一課</button>
+  <button class="btn" id="exportBtn">📥 匯出筆記</button>
+</div>
+<div class="hero-actions" style="margin-top:10px">
+  <a class="btn" href="cheatsheet.html" target="_blank" rel="noopener">📘 速查手冊</a>
+  <a class="btn" href="practice.xlsx" download>✏️ 練習簿</a>
+</div>
+</section>
+
+{body}
+
+<section style="margin:32px 0 8px">
+  <h2 style="font-size:18px;margin-bottom:16px">🎯 快速測驗</h2>
+  <div id="quizBox"></div>
+</section>
+</main>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script type="module" src="app.js"></script>
+<script type="module" src="index-dashboard.js"></script>
+<script type="module" src="index-enhance.js"></script>
+<script type="module" src="index-collapse.js"></script>
+<script>
+(function(){{
+  const obs = new IntersectionObserver(function(entries){{
+    entries.forEach(function(e){{
+      if(e.isIntersecting){{e.target.classList.add('visible');obs.unobserve(e.target)}}
+    }});
+  }},{{threshold:0.08,rootMargin:'0px 0px -40px 0px'}});
+  document.querySelectorAll('.animate-in').forEach(function(el){{obs.observe(el)}});
+
+  var phaseMap = {{1:['P1-01','P1-02','P1-03'],2:['P2-01','P2-02','P2-03','P2-04'],
+    3:['P3-01','P3-02','P3-03','P3-04','P3-05'],4:['P4-01','P4-02','P4-03','P4-04','P4-05'],
+    5:['P5-01','P5-02','P5-03','P5-04']}};
+  Object.keys(phaseMap).forEach(function(p){{
+    var lessons = phaseMap[p];
+    var done = 0;
+    lessons.forEach(function(l){{
+      var found = false;
+      for(var i=0;i<localStorage.length;i++){{
+        var k = localStorage.key(i);
+        if(k && k.indexOf('done:')===0 && k.indexOf(l)!==-1){{found=true;break}}
+      }}
+      if(found) done++;
+    }});
+    var pct = Math.round(done/lessons.length*100);
+    var label = document.querySelector('.phase-progress[data-phase="'+p+'"]');
+    if(label) label.textContent = done+' / '+lessons.length;
+    var bar = document.querySelector('.phase-bar [data-phase="'+p+'"]');
+    if(bar) bar.style.width = pct+'%';
+  }});
+}})();
+</script>
+</body></html>"""
+
 def page_home(title, subtitle, cards_html, total, extra_buttons="", countdown_html=""):
     return f"""<!doctype html>
 <html lang="zh-TW"><head><meta charset="utf-8">
@@ -637,9 +832,7 @@ def page_home(title, subtitle, cards_html, total, extra_buttons="", countdown_ht
   <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
 </div></div>
 <footer>一次一小步，你做得到 🌱</footer>
-<script src="search-index.js"></script>
-<script src="quiz-data.js"></script>
-<script src="app.js"></script></body></html>"""
+<script type="module" src="app.js"></script></body></html>"""
 
 def page_lesson(site_title, title, breadcrumb, body_html, tldr, tasks, prev_link, next_link):
     tldr_html = ""
@@ -655,7 +848,9 @@ def page_lesson(site_title, title, breadcrumb, body_html, tldr, tasks, prev_link
 <html lang="zh-TW"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}｜{html.escape(site_title)}</title>
-<link rel="stylesheet" href="../styles.css"></head><body data-depth="../">
+<link rel="stylesheet" href="../styles.css">
+<script src="../keyboard.js" defer></script>
+</head><body data-depth="../">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> {html.escape(site_title)}</a></div>
   <div class="tools">
@@ -708,9 +903,11 @@ def page_lesson(site_title, title, breadcrumb, body_html, tldr, tasks, prev_link
   <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
 </div></div>
 <footer>一次一小步，你做得到 🌱</footer>
-<script src="../search-index.js"></script>
-<script src="../quiz-data.js"></script>
-<script src="../app.js"></script>
+<script type="module" src="../app.js"></script>
+<script type="module" src="../lesson-cheat-inline.js" defer></script>
+<script type="module" src="../drawer.js" defer></script>
+<script type="module" src="../xlsx-integrator.js" defer></script>
+<script type="module" src="../lesson-tabs.js" defer></script>
 </body></html>"""
 
 def card_html(L):
@@ -764,12 +961,12 @@ def write_site(folder, site_title, subtitle, lessons, group_names=None,
     entries = [{"t": L["title"], "b": L["breadcrumb"], "s": L["summary"],
                 "u": f"lessons/{L['slug']}.html"} for L in lessons]
     (folder / "search-index.js").write_text(
-        "window.SEARCH_INDEX = " + json.dumps(entries, ensure_ascii=False) + ";",
+        "export const SEARCH_INDEX = " + json.dumps(entries, ensure_ascii=False) + ";",
         encoding="utf-8")
 
     quiz_js = ""
     if quiz_cards:
-        quiz_js += "window.QUIZ_CARDS = " + json.dumps(quiz_cards, ensure_ascii=False) + ";\n"
+        quiz_js += "export const QUIZ_CARDS = " + json.dumps(quiz_cards, ensure_ascii=False) + ";\n"
     if anki_cards:
         quiz_js += "window.ANKI_CARDS = " + json.dumps(anki_cards, ensure_ascii=False) + ";\n"
     (folder / "quiz-data.js").write_text(quiz_js, encoding="utf-8")
@@ -795,45 +992,23 @@ def render_excel_blocks(blocks, xlsx_links):
     return "\n".join(out)
 
 def build_excel():
-    folder = BASE / "Excel教學"
-    legacy = folder / "index_legacy.html"
-    src = (legacy if legacy.exists() else folder / "index.html").read_text(encoding="utf-8")
-    m = re.search(r"const CHAPTERS = \[(.*?)\];", src, re.DOTALL)
-    chapters = []
-    for cm in re.finditer(
-        r'\{\s*id:\s*(\d+),\s*phase:\s*(\d+),\s*num:\s*"([^"]+)",\s*title:\s*"([^"]+)",\s*emoji:\s*"([^"]+)",\s*context:\s*"([^"]+)"',
-        m.group(1)):
-        chapters.append({"id":int(cm.group(1)),"phase":int(cm.group(2)),
-                         "num":cm.group(3),"title":cm.group(4),
-                         "emoji":cm.group(5),"context":cm.group(6)})
-    phases = {1:"Phase 1 · 操作效率",2:"Phase 2 · 職場即戰力",3:"Phase 3 · 專業打磨",
-              4:"Phase 4 · 進階自動化",5:"Phase 5 · VBA"}
+    folder = BASE / "Excel"
+    entries = _build_excel_entries(folder)
+    if not entries:
+        raise RuntimeError("找不到 Excel lessons，無法重建首頁。")
 
-    xlsx_links = (
-        '<li>📊 <a href="../Excel互動練習_macOS版.xlsx">Excel 互動練習.xlsx</a></li>'
-        '<li>📈 <a href="../Excel專業養成_macOS版.xlsx">Excel 專業養成.xlsx</a></li>'
-        '<li>📖 <a href="../Excel速查手冊_macOS版.html">Excel 速查手冊（HTML）</a></li>'
+    home = _excel_home_page(entries)
+    (folder / "index.html").write_text(home, encoding="utf-8")
+
+    search_entries = [
+        {"t": e["title"], "b": e["breadcrumb"], "s": e["summary"], "u": e["u"]}
+        for e in entries
+    ]
+    (folder / "search-index.js").write_text(
+        "export const SEARCH_INDEX = " + json.dumps(search_entries, ensure_ascii=False) + ";",
+        encoding="utf-8"
     )
-
-    lessons = []
-    for c in chapters:
-        content = EXCEL_LESSONS.get(c["num"], {})
-        body = render_excel_blocks(content.get("blocks", []), xlsx_links) if content else f"<p>{html.escape(c['context'])}</p>"
-        if content.get("intro"):
-            body = f'<p style="font-size:18px;color:var(--muted);line-height:1.7">{html.escape(content["intro"])}</p>' + body
-        lessons.append({
-            "title": c["title"],
-            "breadcrumb": f'{c["num"]} · {phases.get(c["phase"], "")}',
-            "body": body,
-            "tldr": content.get("tldr", c["context"][:80]),
-            "tasks": content.get("tasks", ["看完本章內容"]),
-            "summary": content.get("tldr", c["context"][:100]),
-            "slug": c["num"],
-            "group": c["phase"],
-            "emoji": c["emoji"],
-        })
-    write_site(folder, "Excel 學習地圖", "macOS 版 · 從快捷鍵到 VBA · 5 階段 21 課",
-               lessons, group_names=phases)
+    print(f"✅ Excel 學習地圖: {len(entries)} 課（已重建 index.html / search-index.js）")
 
 # ========= ISTQB =========
 def build_istqb():
@@ -1030,6 +1205,9 @@ def build_istqb():
     (folder / "quiz.html").write_text(quiz_page, encoding="utf-8")
 
 if __name__ == "__main__":
-    build_excel()
-    build_istqb()
+    targets = set(sys.argv[1:] or ["excel"])
+    if "all" in targets or "excel" in targets:
+        build_excel()
+    if "all" in targets or "istqb" in targets:
+        build_istqb()
     print("\n✨ 完成！")

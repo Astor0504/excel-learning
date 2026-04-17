@@ -3,7 +3,7 @@
 // 目前僅在有 #quizBox 元素的頁面會渲染（cheatsheet 等未來功能）
 // 每題格式：{ q: 題目, options: [選項], answer: 正解 index, explain: 解析 }
 // ============================================================
-window.QUIZ_CARDS = [
+export const QUIZ_CARDS = [
   // === Phase 1：操作效率 ===
   {
     q: "要一次選到表格的最底列，macOS 的快捷鍵是？",

@@ -434,11 +434,10 @@ mark {
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
-<script src="cheatsheet-data.js"></script>
-<script>
-// Data loaded from cheatsheet-data.js (shared with lesson drawer)
-const formulas = window.CHEATSHEET_DATA.formulas;
-const vbaTemplates = window.CHEATSHEET_DATA.vbaTemplates;
+<script type="module">
+import { CHEATSHEET_DATA } from './cheatsheet-data.js';
+const formulas = CHEATSHEET_DATA.formulas;
+const vbaTemplates = CHEATSHEET_DATA.vbaTemplates;
 
 // ── Render ──
 const container = document.getElementById('cardsContainer');

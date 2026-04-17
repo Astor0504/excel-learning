@@ -1,5 +1,5 @@
-// Auto-generated from xlsx files. Do not edit by hand.
-window.XLSX_CONTENT = {
+// Excel 課程知識點資料（手動維護）。原本由 build_xlsx_content.py 從 xlsx 產生，xlsx 已停用；直接編輯本檔即可。
+export const XLSX_CONTENT = {
  "lessons": {
   "P1-01": {
    "shortcuts": {
@@ -233,11 +233,7 @@ window.XLSX_CONTENT = {
       ]
      },
      {
-      "title": "🏦 投行級全鍵盤訓練法（華爾街實戰）",
-      "items": []
-     },
-     {
-      "title": "華爾街投行（Goldman Sachs、Morgan Stanley 等）會在新人訓練期直接拿走滑鼠，強迫練習全鍵盤操作。原因：鍵盤比滑鼠快 2~5 倍。",
+      "title": "⌨️ 全鍵盤操作訓練法（進階）",
       "items": []
      },
      {
