@@ -86,7 +86,7 @@ main{max-width:680px;margin:0 auto;padding:24px}
 /* Checklist */
 .checklist{background:var(--surface);border:1px solid var(--line);
   border-radius:var(--radius);padding:20px 24px;margin:24px 0}
-.checklist h4{margin:0 0 12px;font-size:15px;color:var(--muted);
+.checklist h3{margin:0 0 12px;font-size:15px;color:var(--muted);
   text-transform:uppercase;letter-spacing:1px}
 .checklist label{display:flex;align-items:flex-start;gap:12px;
   padding:8px 0;cursor:pointer;user-select:none}
@@ -161,7 +161,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;
 /* 筆記區 */
 .notes{background:var(--surface);border:1px solid var(--line);
   border-radius:var(--radius);padding:20px 24px;margin:24px 0}
-.notes h4{margin:0 0 12px;font-size:15px;color:var(--muted);
+.notes h3{margin:0 0 12px;font-size:15px;color:var(--muted);
   text-transform:uppercase;letter-spacing:1px}
 .notes textarea{width:100%;min-height:100px;border:1px solid var(--line);
   background:var(--bg);color:var(--text);border-radius:12px;
@@ -398,7 +398,7 @@ html[data-theme="dark"] .countdown{background:#3a201a;color:#ff9c7c}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .ai-header{padding:14px 18px;border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;background:var(--accent-soft)}
-.ai-header h4{margin:0;font-size:15px;color:var(--accent)}
+.ai-header h3{margin:0;font-size:15px;color:var(--accent)}
 .ai-header button{background:none;border:0;font-size:20px;cursor:pointer;color:var(--muted)}
 #aiLog{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .ai-msg{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6;max-width:90%;word-wrap:break-word}
