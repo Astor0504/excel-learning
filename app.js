@@ -179,6 +179,82 @@ const LESSON_PRO_NOTES = {
     ],
   },
 };
+const LESSON_BADGES = {
+  "P1-02": [
+    { kind: "pro", label: "專業基礎", note: "先學會穩定算數，再碰更複雜的邏輯與查找。" },
+  ],
+  "P2-02": [
+    { kind: "version", label: "M365 / 2021+", note: "新版環境優先用 XLOOKUP。" },
+    { kind: "fallback", label: "舊版備案", note: "2016 / 2019 更該熟 INDEX + MATCH。" },
+    { kind: "pro", label: "職場核心", note: "跨表查找幾乎是所有報表工作的基本功。" },
+  ],
+  "P2-03": [
+    { kind: "pro", label: "專業預設", note: "正式資料先轉 Table，再做樞紐會更穩。" },
+    { kind: "workflow", label: "報表入口", note: "這課開始從算公式走向真正整理報表。" },
+  ],
+  "P3-04": [
+    { kind: "pro", label: "專業預設", note: "長期維護的檔案，Table 和結構化參照幾乎是必備。" },
+    { kind: "workflow", label: "維護性", note: "這課直接影響交接、擴充和長期穩定度。" },
+  ],
+  "P4-01": [
+    { kind: "version", label: "M365 / 2021+", note: "動態陣列屬於新世代 Excel 能力。" },
+    { kind: "compat", label: "相容性注意", note: "交付舊版使用者前，要先規劃降級方案。" },
+  ],
+  "P4-04": [
+    { kind: "workflow", label: "可重跑流程", note: "重複清資料時，應優先想 Power Query。" },
+    { kind: "platform", label: "跨平台", note: "Power Query 已可在多平台使用，但功能深度會因環境不同而有差異。" },
+  ],
+  "P4-05": [
+    { kind: "pro", label: "分析建模", note: "這課是從 Excel 技巧邁向 BI 思維的重要門檻。" },
+    { kind: "workflow", label: "多表關聯", note: "遇到關聯、多表、量值時，就該開始思考 Data Model。" },
+  ],
+  "P5-01": [
+    { kind: "workflow", label: "工具分工", note: "流程可重跑先想 Power Query，Excel 操作自動化再想 VBA。" },
+    { kind: "pro", label: "不是炫技", note: "真正專業是自動化穩定流程，不是寫最長的巨集。" },
+  ],
+};
+const HOME_CAPABILITY_MAP = {
+  title: "從新手走到專業的能力地圖",
+  intro: "真正專業不是會很多功能，而是知道什麼時候該用哪一種方法、怎麼做出可維護、可交接、可重跑的工作流程。",
+  defaults: [
+    "原始資料優先轉成 Table，再開始做公式、樞紐與分析。",
+    "新版 Excel 能用 XLOOKUP 就不要把 VLOOKUP 當唯一答案。",
+    "重複清資料流程先想 Power Query，不要只靠手動欄位硬撐。",
+    "多表關聯與量值分析要開始用 Data Model / Power Pivot 思維。",
+  ],
+  stages: [
+    {
+      eyebrow: "Stage 1",
+      title: "操作與公式基本功",
+      summary: "先把輸入速度、基礎函數與條件邏輯練成反射動作。",
+      skills: ["快捷鍵節奏", "基礎函數", "IF / IFS 判斷"],
+    },
+    {
+      eyebrow: "Stage 2",
+      title: "職場報表核心",
+      summary: "學會查找、條件統計、樞紐與格式化，開始能獨立做分析報表。",
+      skills: ["XLOOKUP / INDEX+MATCH", "SUMIFS", "PivotTable", "條件式格式化"],
+    },
+    {
+      eyebrow: "Stage 3",
+      title: "資料結構與可維護性",
+      summary: "從會做結果，升級成能把檔案做得穩、做得久、做得能交接。",
+      skills: ["資料驗證", "文字日期清理", "圖表設計", "Table / Structured References"],
+    },
+    {
+      eyebrow: "Stage 4",
+      title: "可重跑的資料流程",
+      summary: "把分析從單次操作，推進到能重新整理、能處理多來源資料的流程。",
+      skills: ["動態陣列", "進階函數", "Power Query", "Data Model"],
+    },
+    {
+      eyebrow: "Stage 5",
+      title: "自動化與系統化交付",
+      summary: "最後才是巨集與專案化，把前面能力組成真正能落地的工作系統。",
+      skills: ["VBA 基礎", "錯誤處理", "專案化自動化", "綜合挑戰"],
+    },
+  ],
+};
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -311,6 +387,29 @@ initChecklist();
 
   const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
   if (anchor) anchor.insertAdjacentElement("afterend", box);
+})();
+
+// Lesson badge rail
+(function(){
+  const lesson = document.querySelector(".lesson");
+  if (!lesson || lesson.querySelector(".lesson-badge-rail")) return;
+  const slug = document.body?.dataset.lessonSlug || "";
+  const badges = LESSON_BADGES[slug];
+  if (!badges || !badges.length) return;
+
+  const rail = document.createElement("section");
+  rail.className = "lesson-badge-rail";
+  rail.innerHTML = badges.map(function(badge){
+    return `
+      <div class="lesson-badge lesson-badge-${escHtml(badge.kind || "note")}">
+        <span class="lesson-badge-label">${escHtml(badge.label)}</span>
+        <span class="lesson-badge-note">${escHtml(badge.note)}</span>
+      </div>
+    `;
+  }).join("");
+
+  const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
+  if (anchor) anchor.insertAdjacentElement("afterend", rail);
 })();
 
 // Lesson compass
@@ -605,6 +704,45 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     helper.innerHTML = `${prefix}：<strong>${escHtml(pick.t)}</strong><span>${escHtml(pick.b || "")}</span>`;
   }
   updateHeroHelper();
+
+  (function buildCapabilityMap(){
+    if (document.querySelector(".hero-capability-map")) return;
+    const hero = document.querySelector(".hero");
+    if (!hero) return;
+    const block = document.createElement("section");
+    block.className = "hero-capability-map";
+    block.innerHTML = `
+      <div class="hero-capability-head">
+        <div>
+          <div class="hero-capability-eyebrow">Professional Path</div>
+          <h2 class="hero-capability-title">${escHtml(HOME_CAPABILITY_MAP.title)}</h2>
+        </div>
+        <p class="hero-capability-intro">${escHtml(HOME_CAPABILITY_MAP.intro)}</p>
+      </div>
+      <div class="hero-capability-defaults">
+        ${HOME_CAPABILITY_MAP.defaults.map(function(item){
+          return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
+        }).join("")}
+      </div>
+      <div class="hero-capability-grid">
+        ${HOME_CAPABILITY_MAP.stages.map(function(stage){
+          return `
+            <article class="hero-capability-card">
+              <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
+              <h3>${escHtml(stage.title)}</h3>
+              <p>${escHtml(stage.summary)}</p>
+              <div class="hero-capability-skills">
+                ${stage.skills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    `;
+
+    const target = document.querySelector(".hero-quicknav") || document.querySelector(".hero .utility-actions");
+    if (target) target.insertAdjacentElement("afterend", block);
+  })();
 
   (function buildQuickNav(){
     if (!quickNav) return;
