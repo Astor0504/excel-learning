@@ -295,6 +295,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   const helperTarget = document.querySelector(".hero .utility-actions") || document.querySelector(".hero .hero-actions:last-of-type");
   if (helperTarget) helperTarget.insertAdjacentElement("afterend", helper);
 
+  const quickNav = document.createElement("div");
+  quickNav.className = "hero-quicknav";
+  if (helperTarget) helperTarget.insertAdjacentElement("afterend", quickNav);
+
   function updateHeroHelper(){
     if (!helper) return;
     const weak = idx.filter(e => {
@@ -323,6 +327,85 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     helper.innerHTML = `${prefix}：<strong>${escHtml(pick.t)}</strong><span>${escHtml(pick.b || "")}</span>`;
   }
   updateHeroHelper();
+
+  (function buildQuickNav(){
+    if (!quickNav) return;
+    const lastLesson = sessionStorage.getItem("last-lesson");
+    const groups = [
+      { key: "all", label: "全部", phases: [] },
+      { key: "starter", label: "新手入門", phases: [1, 2] },
+      { key: "work", label: "職場即用", phases: [2, 3] },
+      { key: "auto", label: "自動化進階", phases: [4, 5] },
+    ];
+    const state = { active: "all" };
+
+    const wrap = document.createElement("div");
+    wrap.className = "hero-mode-switch";
+    const title = document.createElement("div");
+    title.className = "hero-mode-title";
+    title.textContent = "學習捷徑";
+    wrap.appendChild(title);
+
+    const chips = document.createElement("div");
+    chips.className = "hero-mode-chips";
+    wrap.appendChild(chips);
+
+    const continueWrap = document.createElement("div");
+    continueWrap.className = "hero-continue";
+
+    function applyMode(modeKey){
+      state.active = modeKey;
+      chips.querySelectorAll("button").forEach(function(btn){
+        btn.classList.toggle("is-active", btn.dataset.mode === modeKey);
+      });
+      const selected = groups.find(g => g.key === modeKey) || groups[0];
+      const allowed = new Set(selected.phases);
+      document.querySelectorAll(".phase-section").forEach(function(section){
+        const phaseMatch = section.className.match(/phase-(\d)/);
+        const phaseNo = phaseMatch ? parseInt(phaseMatch[1], 10) : 0;
+        const visible = !allowed.size || allowed.has(phaseNo);
+        section.style.display = visible ? "" : "none";
+        var next = section.nextElementSibling;
+        while (next && !next.classList.contains("phase-section") && !next.classList.contains("phase-group")) {
+          next.style.display = visible ? "" : "none";
+          next = next.nextElementSibling;
+        }
+        const group = section.nextElementSibling;
+        if (group && group.classList.contains("phase-group")) {
+          group.style.display = visible ? "" : "none";
+        }
+      });
+    }
+
+    groups.forEach(function(group){
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "hero-mode-chip";
+      btn.dataset.mode = group.key;
+      btn.textContent = group.label;
+      btn.addEventListener("click", function(){ applyMode(group.key); });
+      chips.appendChild(btn);
+    });
+
+    if (lastLesson) {
+      const match = idx.find(e => e.u.endsWith(lastLesson));
+      if (match) {
+        continueWrap.innerHTML = `
+          <button type="button" class="btn hero-continue-btn">
+            <span>▶</span>
+            <span>繼續上次看到：${escHtml(match.t)}</span>
+          </button>
+        `;
+        continueWrap.querySelector("button")?.addEventListener("click", function(){
+          location.href = DEPTH + match.u;
+        });
+      }
+    }
+
+    quickNav.appendChild(wrap);
+    if (continueWrap.children.length) quickNav.appendChild(continueWrap);
+    applyMode("all");
+  })();
 
   // 今天學一課（優先選 weak、再選未完成）
   document.getElementById("todayBtn")?.addEventListener("click", () => {

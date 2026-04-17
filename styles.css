@@ -207,6 +207,46 @@ footer{text-align:center;color:var(--muted);font-size:13px;
 }
 .hero-helper strong{color:var(--text);font-weight:700}
 .hero-helper span{color:var(--accent)}
+.hero-quicknav{
+  margin-top:18px;
+  display:grid;
+  gap:12px;
+}
+.hero-mode-switch{
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--surface);
+}
+.hero-mode-title{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hero-mode-chips{display:flex;gap:8px;flex-wrap:wrap}
+.hero-mode-chip{
+  border:1px solid var(--line);
+  background:var(--bg);
+  color:var(--text);
+  border-radius:999px;
+  padding:8px 12px;
+  font:inherit;
+  font-size:13px;
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.hero-mode-chip:hover{border-color:var(--accent);background:var(--accent-soft)}
+.hero-mode-chip.is-active{background:var(--accent);border-color:var(--accent);color:#fff}
+.hero-continue-btn{
+  width:100%;
+  justify-content:flex-start;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
 
 /* 課程目錄頁 hero 進度條 */
 main > .hero .progress{margin-top:14px}
@@ -219,6 +259,8 @@ main > .hero .progress{margin-top:14px}
   .primary-actions .btn{width:100%}
   .tool-btn{padding:8px 12px}
   .tool-btn-label{display:none}
+  .hero-mode-chips{display:grid;grid-template-columns:1fr 1fr}
+  .hero-mode-chip{width:100%}
 }
 
 /* ===== Scroll-in Animations ===== */
