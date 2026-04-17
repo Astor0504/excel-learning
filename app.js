@@ -268,6 +268,72 @@ const HOME_CAPABILITY_MAP = {
     },
   ],
 };
+const HOME_LEARNING_MODES = [
+  {
+    key: "all",
+    label: "全部",
+    phases: [],
+    summary: "顯示完整 5 個階段，從基礎操作一路看到自動化。",
+    mindset: "最適合你，如果你想先看完整路線，再決定優先補哪一段。",
+    anchorPhase: 1,
+    roadmapTitle: "從新手走到專業的能力地圖",
+    roadmapIntro: "完整模式會保留整張學習地圖，讓你先看懂能力升級順序，再決定從哪段開始切入。",
+    featuredSkills: ["完整路線", "先看全圖", "再選起點"],
+    featuredLessons: [
+      { slug: "P1-02", badge: "先學這課", reason: "先把函數基本功練成反射動作，後面的查找與分析才會順。" },
+      { slug: "P2-02", badge: "高頻核心", reason: "跨表查找是職場最常遇到的 Excel 任務之一。" },
+      { slug: "P4-04", badge: "專業分水嶺", reason: "開始理解可重跑流程，你的 Excel 會從手工操作升級成系統化工作流。" },
+    ],
+  },
+  {
+    key: "starter",
+    label: "新手入門",
+    phases: [1, 2],
+    summary: "聚焦 Phase 1-2，先把公式、查找與報表核心打穩。",
+    mindset: "最適合你，如果你還不熟 Excel 基本操作，或想先補職場最常用的核心能力。",
+    anchorPhase: 1,
+    roadmapTitle: "先建立公式與報表核心",
+    roadmapIntro: "這個模式把重心放在 Phase 1-2：先把輸入節奏、基礎函數、條件邏輯與查找報表能力打穩，再往更進階的資料流程前進。",
+    featuredSkills: ["快捷鍵節奏", "基礎函數", "XLOOKUP / SUMIFS"],
+    featuredLessons: [
+      { slug: "P1-01", badge: "先暖身", reason: "先把 Mac 鍵位節奏建立起來，後面學公式時會更順手。" },
+      { slug: "P1-02", badge: "主推薦", reason: "這是公式基本功的起點，後面幾乎每課都會用到。" },
+      { slug: "P2-02", badge: "下一個里程碑", reason: "查找比對是從會寫公式走向會做職場報表的關鍵一步。" },
+    ],
+  },
+  {
+    key: "work",
+    label: "職場即用",
+    phases: [2, 3],
+    summary: "聚焦 Phase 2-3，適合想先補職場報表與資料整理實力。",
+    mindset: "最適合你，如果你已經會基本函數，現在想更快補齊工作上最常用的報表能力。",
+    anchorPhase: 2,
+    roadmapTitle: "先補職場報表與資料整理實力",
+    roadmapIntro: "這個模式把重心放在 Phase 2-3：先學會查找、條件統計與樞紐，再把資料結構、清理與可維護性補齊。",
+    featuredSkills: ["SUMIFS", "XLOOKUP", "PivotTable", "Table"],
+    featuredLessons: [
+      { slug: "P2-01", badge: "先學這課", reason: "條件統計是報表工作最常出現的核心技術。" },
+      { slug: "P2-03", badge: "快速見效", reason: "樞紐分析能讓你很快做出真正能交付的報表。" },
+      { slug: "P3-04", badge: "補維護性", reason: "學會 Table 和結構化參照，檔案才真的能交接、能長期維護。" },
+    ],
+  },
+  {
+    key: "auto",
+    label: "自動化進階",
+    phases: [4, 5],
+    summary: "聚焦 Phase 4-5，先看 Power Query、資料模型與 VBA。",
+    mindset: "最適合你，如果你已經會基本報表，現在想把重複流程變成可重跑、可交付的系統。",
+    anchorPhase: 4,
+    roadmapTitle: "從重複操作走向可重跑流程與自動化",
+    roadmapIntro: "這個模式把重心放在 Phase 4-5：先理解動態陣列、Power Query 與資料模型，再把 VBA 接進完整自動化流程。",
+    featuredSkills: ["動態陣列", "Power Query", "Data Model", "VBA"],
+    featuredLessons: [
+      { slug: "P4-01", badge: "先補新工具", reason: "先理解新世代公式能力，後面做資料流程會更順。" },
+      { slug: "P4-04", badge: "主推薦", reason: "Power Query 是把手工清資料升級成可重跑流程的關鍵。" },
+      { slug: "P5-01", badge: "自動化入口", reason: "當流程已經夠穩，再把 VBA 接進來，會更像真正的工作系統。" },
+    ],
+  },
+];
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -718,70 +784,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   }
   updateHeroHelper();
 
-  (function buildCapabilityMap(){
-    if (document.querySelector(".hero-capability-map")) return;
-    const hero = document.querySelector(".hero");
-    if (!hero) return;
-    const block = document.createElement("section");
-    block.className = "hero-capability-map";
-    block.innerHTML = `
-      <div class="hero-capability-head">
-        <div>
-          <div class="hero-capability-eyebrow">Professional Path</div>
-          <h2 class="hero-capability-title">${escHtml(HOME_CAPABILITY_MAP.title)}</h2>
-        </div>
-        <p class="hero-capability-intro">${escHtml(HOME_CAPABILITY_MAP.intro)}</p>
-      </div>
-      <div class="hero-capability-defaults">
-        ${HOME_CAPABILITY_MAP.defaults.map(function(item){
-          return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
-        }).join("")}
-      </div>
-      <div class="hero-capability-timeline">
-        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
-          return `
-            <div class="hero-capability-node">
-              <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
-              <div class="hero-capability-node-copy">
-                <span>${escHtml(stage.eyebrow)}</span>
-                <strong>${escHtml(stage.title)}</strong>
-              </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
-      <div class="hero-capability-grid">
-        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
-          return `
-            <article class="hero-capability-card">
-              <div class="hero-capability-card-top">
-                <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
-                <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
-              </div>
-              <h3>${escHtml(stage.title)}</h3>
-              <p>${escHtml(stage.summary)}</p>
-              <div class="hero-capability-skills">
-                ${stage.skills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
-              </div>
-            </article>
-          `;
-        }).join("")}
-      </div>
-    `;
-
-    const target = document.querySelector(".hero-quicknav") || document.querySelector(".hero .utility-actions");
-    if (target) target.insertAdjacentElement("afterend", block);
-  })();
-
   (function buildQuickNav(){
     if (!quickNav) return;
     const lastLesson = sessionStorage.getItem("last-lesson");
-    const groups = [
-      { key: "all", label: "全部", phases: [], summary: "顯示完整 5 個階段，從基礎操作一路看到自動化。", anchorPhase: 1 },
-      { key: "starter", label: "新手入門", phases: [1, 2], summary: "聚焦 Phase 1-2，先把公式、查找與報表核心打穩。", anchorPhase: 1 },
-      { key: "work", label: "職場即用", phases: [2, 3], summary: "聚焦 Phase 2-3，適合想先補職場報表與資料整理實力。", anchorPhase: 2 },
-      { key: "auto", label: "自動化進階", phases: [4, 5], summary: "聚焦 Phase 4-5，先看 Power Query、資料模型與 VBA。", anchorPhase: 4 },
-    ];
+    const groups = HOME_LEARNING_MODES;
     const state = { active: "all" };
 
     const wrap = document.createElement("div");
@@ -801,6 +807,54 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 
     const continueWrap = document.createElement("div");
     continueWrap.className = "hero-continue";
+    const featureWrap = document.createElement("section");
+    featureWrap.className = "hero-featured-lessons";
+    const roadmapWrap = document.createElement("section");
+    roadmapWrap.className = "hero-capability-map";
+    roadmapWrap.innerHTML = `
+      <div class="hero-capability-head">
+        <div>
+          <div class="hero-capability-eyebrow">Professional Path</div>
+          <h2 class="hero-capability-title"></h2>
+        </div>
+        <p class="hero-capability-intro"></p>
+      </div>
+      <div class="hero-capability-defaults">
+        ${HOME_CAPABILITY_MAP.defaults.map(function(item){
+          return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
+        }).join("")}
+      </div>
+      <div class="hero-capability-timeline">
+        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
+          return `
+            <div class="hero-capability-node" data-phase="${index + 1}">
+              <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
+              <div class="hero-capability-node-copy">
+                <span>${escHtml(stage.eyebrow)}</span>
+                <strong>${escHtml(stage.title)}</strong>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+      <div class="hero-capability-grid">
+        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
+          return `
+            <article class="hero-capability-card" data-phase="${index + 1}">
+              <div class="hero-capability-card-top">
+                <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
+                <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
+              </div>
+              <h3>${escHtml(stage.title)}</h3>
+              <p>${escHtml(stage.summary)}</p>
+              <div class="hero-capability-skills">
+                ${stage.skills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    `;
 
     function applyMode(modeKey){
       state.active = modeKey;
@@ -832,7 +886,41 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       meta.innerHTML = `
         <strong>${escHtml(selected.label)}</strong>
         <span>${escHtml(selected.summary)}</span>
-        <em>目前顯示 ${phaseText} · ${visibleLessons} 堂課</em>
+        <em>${escHtml(selected.mindset)} · 目前顯示 ${phaseText} · ${visibleLessons} 堂課</em>
+      `;
+      roadmapWrap.dataset.mode = selected.key;
+      roadmapWrap.querySelector(".hero-capability-title").textContent = selected.roadmapTitle;
+      roadmapWrap.querySelector(".hero-capability-intro").textContent = selected.roadmapIntro;
+      roadmapWrap.querySelectorAll("[data-phase]").forEach(function(node){
+        var phaseNo = parseInt(node.getAttribute("data-phase"), 10);
+        var isActive = !allowed.size || allowed.has(phaseNo);
+        node.classList.toggle("is-mode-active", isActive);
+        node.classList.toggle("is-mode-muted", !isActive);
+      });
+      featureWrap.innerHTML = `
+        <div class="hero-featured-head">
+          <div>
+            <div class="hero-featured-eyebrow">Mode Focus</div>
+            <h3 class="hero-featured-title">${escHtml(selected.label)} 代表課程</h3>
+          </div>
+          <div class="hero-featured-skills">
+            ${selected.featuredSkills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
+          </div>
+        </div>
+        <div class="hero-featured-grid">
+          ${selected.featuredLessons.map(function(item, index){
+            const lesson = idx.find(function(entry){ return entry.u.endsWith(item.slug + ".html"); });
+            if (!lesson) return "";
+            return `
+              <a class="hero-featured-card ${index === 0 ? "is-primary" : ""}" href="${DEPTH + lesson.u}">
+                <span class="hero-featured-badge">${escHtml(item.badge)}</span>
+                <strong>${escHtml(lesson.t)}</strong>
+                <p>${escHtml(item.reason)}</p>
+                <em>${escHtml(lesson.b || "")}</em>
+              </a>
+            `;
+          }).join("")}
+        </div>
       `;
       if (firstVisibleSection) {
         var y = window.pageYOffset + firstVisibleSection.getBoundingClientRect().top - 120;
@@ -867,6 +955,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 
     quickNav.appendChild(wrap);
     if (continueWrap.children.length) quickNav.appendChild(continueWrap);
+    quickNav.appendChild(featureWrap);
+    quickNav.appendChild(roadmapWrap);
     applyMode("all");
   })();
 
