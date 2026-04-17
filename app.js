@@ -123,6 +123,62 @@ const LESSON_GUIDE = {
     nextWhy: "做完後最有價值的下一步不是再往下衝，而是回頭重做弱點課與建立自己的模板。",
   },
 };
+const LESSON_PRO_NOTES = {
+  "P2-02": {
+    title: "專業現場怎麼選查找工具",
+    eyebrow: "Professional Default",
+    items: [
+      "如果是 Microsoft 365 或 Excel 2021 以上，預設優先用 XLOOKUP；它不用手算欄位，也能向左查找。",
+      "如果你在維護舊公司檔案或 2016 / 2019 環境，請把 INDEX + MATCH 視為真正的通用備案，不要只會 VLOOKUP。",
+      "職場上真正專業的差別不是背函數名，而是先判斷同事的版本、檔案相容性和後續維護成本。",
+    ],
+  },
+  "P3-04": {
+    title: "專業工作簿的預設習慣",
+    eyebrow: "Professional Default",
+    items: [
+      "正式報表或要長期維護的資料，應先轉成 Table，再開始寫公式與做樞紐。",
+      "結構化參照的價值不只是好看，而是新增列、欄位調整、交接給同事時都更穩。",
+      "專業 Excel 使用者通常不是公式最炫的人，而是最能讓檔案在三個月後還維持可讀性的人。",
+    ],
+  },
+  "P4-01": {
+    title: "動態陣列在實務上的邊界",
+    eyebrow: "Professional Default",
+    items: [
+      "動態陣列適合拿來輸出分析結果與中間結果，但溢出公式本身不應該寫在 Table 裡。",
+      "比較穩的做法是：原始資料放 Table，動態陣列公式寫在表格外，用結構化參照去吃資料。",
+      "如果你要交付給舊版 Excel 使用者，請提前規劃降級方案，否則動態函數會變成相容性風險。",
+    ],
+  },
+  "P4-04": {
+    title: "Power Query 為什麼是專業分水嶺",
+    eyebrow: "Professional Default",
+    items: [
+      "真正專業的差別，通常不在於手動清資料多快，而在於能不能把清理流程變成可重跑的步驟。",
+      "Power Query 的核心思維是 Connect → Transform → Combine → Load；一旦建立好，之後應優先按重新整理，而不是重做。",
+      "如果流程每週、每月都要重複一次，通常就該先想 Power Query，而不是再多寫幾欄公式硬撐。",
+    ],
+  },
+  "P4-05": {
+    title: "什麼時候該進資料模型",
+    eyebrow: "Professional Default",
+    items: [
+      "只要開始遇到多張表關聯、數十萬列以上資料，或需要穩定量值計算，就應該考慮 Data Model / Power Pivot。",
+      "這一塊最像真正的分析建模，不再只是單一工作表上的公式技巧。",
+      "如果團隊常做跨表分析與經營報表，這課其實是從 Excel 進入 BI 思維的重要門檻。",
+    ],
+  },
+  "P5-01": {
+    title: "專業自動化的起點不是炫技",
+    eyebrow: "Professional Default",
+    items: [
+      "VBA 最適合拿來解決重複、規則清楚、人工又容易出錯的流程。",
+      "專業做法不是一開始就寫很大的巨集，而是先把手動流程拆清楚，再自動化最穩定的一段。",
+      "如果資料清理是可重跑流程，先想 Power Query；如果是 Excel 內部操作與報表交付流程，再考慮 VBA。",
+    ],
+  },
+};
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -333,6 +389,35 @@ initChecklist();
   `;
 
   const anchor = lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr");
+  if (anchor) anchor.insertAdjacentElement("afterend", box);
+})();
+
+// Professional note
+(function(){
+  const lesson = document.querySelector(".lesson");
+  if (!lesson || lesson.querySelector(".lesson-pro-note")) return;
+  const slug = document.body?.dataset.lessonSlug || "";
+  const note = LESSON_PRO_NOTES[slug];
+  if (!note) return;
+
+  const box = document.createElement("section");
+  box.className = "lesson-pro-note";
+  box.innerHTML = `
+    <div class="lesson-pro-note-head">
+      <div class="lesson-pro-note-eyebrow">${escHtml(note.eyebrow || "Professional Note")}</div>
+      <h2 class="lesson-pro-note-title">${escHtml(note.title)}</h2>
+    </div>
+    <div class="lesson-pro-note-body">
+      ${note.items.map(item => `
+        <div class="lesson-pro-note-item">
+          <span class="lesson-pro-note-dot"></span>
+          <p>${escHtml(item)}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+
+  const anchor = lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff");
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
 

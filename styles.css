@@ -498,6 +498,67 @@ html[data-theme="dark"] .lesson-compass-link{background:rgba(15,18,16,.42)}
   .lesson-compass-rail{grid-template-columns:1fr}
 }
 
+/* Professional note */
+.lesson-pro-note{
+  margin:0 0 24px;
+  padding:18px 20px;
+  border-radius:16px;
+  background:linear-gradient(135deg, #f4f8ff 0%, #edf2fb 100%);
+  border:1px solid #d8e0f2;
+}
+html[data-theme="dark"] .lesson-pro-note{
+  background:linear-gradient(135deg, #202833 0%, #1b222c 100%);
+  border-color:#364254;
+}
+.lesson-pro-note-head{
+  margin-bottom:14px;
+}
+.lesson-pro-note-eyebrow{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#5577c8;
+}
+html[data-theme="dark"] .lesson-pro-note-eyebrow{color:#95b3ff}
+.lesson-pro-note-title{
+  margin:4px 0 0;
+  font-size:22px !important;
+  line-height:1.25;
+}
+.lesson-pro-note-title::after{display:none !important}
+.lesson-pro-note-body{
+  display:grid;
+  gap:10px;
+}
+.lesson-pro-note-item{
+  display:grid;
+  grid-template-columns:14px 1fr;
+  gap:12px;
+  align-items:start;
+  padding:12px 14px;
+  border-radius:12px;
+  background:rgba(255,255,255,.68);
+  border:1px solid var(--line);
+}
+html[data-theme="dark"] .lesson-pro-note-item{background:rgba(14,18,24,.36)}
+.lesson-pro-note-dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  margin-top:7px;
+  background:#5577c8;
+  box-shadow:0 0 0 5px rgba(85,119,200,.14);
+}
+html[data-theme="dark"] .lesson-pro-note-dot{
+  background:#95b3ff;
+  box-shadow:0 0 0 5px rgba(149,179,255,.12);
+}
+.lesson-pro-note-item p{
+  margin:0;
+  line-height:1.65;
+}
+
 /* ===== Floating toolbar (mobile-friendly) ===== */
 .float-toolbar{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;
   gap:8px;z-index:999;align-items:flex-end}
