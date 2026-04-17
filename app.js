@@ -180,10 +180,14 @@ const LESSON_PRO_NOTES = {
   },
 };
 const LESSON_BADGES = {
+  "P1-01": [
+    { kind: "mac", label: "macOS 主路線", note: "這站以 Mac 鍵位與 Excel for Mac 操作為主，不混用 Windows 快捷鍵。" },
+  ],
   "P1-02": [
     { kind: "pro", label: "專業基礎", note: "先學會穩定算數，再碰更複雜的邏輯與查找。" },
   ],
   "P2-02": [
+    { kind: "mac", label: "macOS 可用", note: "XLOOKUP 在 Excel for Microsoft 365 for Mac 與 Excel 2021 for Mac 可用。" },
     { kind: "version", label: "M365 / 2021+", note: "新版環境優先用 XLOOKUP。" },
     { kind: "fallback", label: "舊版備案", note: "2016 / 2019 更該熟 INDEX + MATCH。" },
     { kind: "pro", label: "職場核心", note: "跨表查找幾乎是所有報表工作的基本功。" },
@@ -197,18 +201,26 @@ const LESSON_BADGES = {
     { kind: "workflow", label: "維護性", note: "這課直接影響交接、擴充和長期穩定度。" },
   ],
   "P4-01": [
+    { kind: "mac", label: "macOS 視版本", note: "動態陣列在較新的 Mac 版 Excel 可用，交付舊版前要先確認環境。" },
     { kind: "version", label: "M365 / 2021+", note: "動態陣列屬於新世代 Excel 能力。" },
     { kind: "compat", label: "相容性注意", note: "交付舊版使用者前，要先規劃降級方案。" },
   ],
+  "P4-03": [
+    { kind: "mac", label: "macOS 可用", note: "目標搜尋可直接用；若要用規劃求解，先到 Tools > Excel Add-ins 啟用 Solver。" },
+    { kind: "workflow", label: "決策分析", note: "這課是從公式計算走向商業決策推演的入口。" },
+  ],
   "P4-04": [
+    { kind: "mac", label: "macOS 可用", note: "Power Query 已支援 Excel for Microsoft 365 for Mac，但部分資料來源與功能深度仍要看版本。" },
     { kind: "workflow", label: "可重跑流程", note: "重複清資料時，應優先想 Power Query。" },
-    { kind: "platform", label: "跨平台", note: "Power Query 已可在多平台使用，但功能深度會因環境不同而有差異。" },
+    { kind: "platform", label: "平台差異", note: "Mac 版可匯入與整形多種資料，但像部分資料來源仍可能比 Windows 更受限。" },
   ],
   "P4-05": [
+    { kind: "mac", label: "macOS 非主路線", note: "Power Pivot 不屬於 Office for Mac；這課在 Mac 上更適合理解資料模型概念，而不是當主要操作路線。" },
     { kind: "pro", label: "分析建模", note: "這課是從 Excel 技巧邁向 BI 思維的重要門檻。" },
     { kind: "workflow", label: "多表關聯", note: "遇到關聯、多表、量值時，就該開始思考 Data Model。" },
   ],
   "P5-01": [
+    { kind: "mac", label: "macOS 可用", note: "Excel for Mac 支援 Developer tab、錄製 macro，以及用 VBE 撰寫 VBA。" },
     { kind: "workflow", label: "工具分工", note: "流程可重跑先想 Power Query，Excel 操作自動化再想 VBA。" },
     { kind: "pro", label: "不是炫技", note: "真正專業是自動化穩定流程，不是寫最長的巨集。" },
   ],
@@ -217,6 +229,7 @@ const HOME_CAPABILITY_MAP = {
   title: "從新手走到專業的能力地圖",
   intro: "真正專業不是會很多功能，而是知道什麼時候該用哪一種方法、怎麼做出可維護、可交接、可重跑的工作流程。",
   defaults: [
+    "本站以 macOS Excel 為主；遇到 Windows-only 或 Mac 受限功能，會直接標出來。",
     "原始資料優先轉成 Table，再開始做公式、樞紐與分析。",
     "新版 Excel 能用 XLOOKUP 就不要把 VLOOKUP 當唯一答案。",
     "重複清資料流程先想 Power Query，不要只靠手動欄位硬撐。",

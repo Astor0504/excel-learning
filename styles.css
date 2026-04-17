@@ -523,6 +523,7 @@ html[data-theme="dark"] .lesson-kickoff-item{background:rgba(17,24,20,.35)}
   color:var(--muted);
 }
 .lesson-badge-version .lesson-badge-label{color:#5577c8}
+.lesson-badge-mac .lesson-badge-label{color:#4f8f78}
 .lesson-badge-fallback .lesson-badge-label{color:#9b7a2a}
 .lesson-badge-pro .lesson-badge-label{color:var(--accent)}
 .lesson-badge-workflow .lesson-badge-label{color:#6b8fb5}
