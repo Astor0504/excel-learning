@@ -50,7 +50,80 @@
 
 =SORT(UNIQUE(FILTER(A2:A100, B2:B100&gt;1000)))
 # → 業績破千的人去重後排序，一行搞定！</code></pre>
-<h2>溢出範圍 #</h2><p>動態函數的結果會「溢出」到下方儲存格。寫 D2# 表示「從 D2 開始的整個溢出範圍」。</p>
+<h2>FILTER 公式拆解</h2>
+<div class="formula-demo" id="filterDemo">
+  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
+  <div class="formula-bar">=FILTER(<span class="fp c1" data-step="1">A2:C100</span>, <span class="fp c2" data-step="2">B2:B100="電子"</span>, <span class="fp c3" data-step="3">""</span>)</div>
+  <div class="explain-area" id="filterExplain">
+    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
+  </div>
+  <button class="play-btn" onclick="playFormula('filter')">▶ 播放</button>
+</div>
+<script>
+(function(){
+  var steps = {
+    filter: [
+      {step:1,cls:'c1',label:'參數 1：資料範圍',text:'A2:C100 = 要篩選的來源陣列，包含部門、月份、業績三欄。整個區域都會一起被篩選。'},
+      {step:2,cls:'c2',label:'參數 2：篩選條件',text:'B2:B100="電子" = 每列判斷 B 欄是否等於「電子」，回傳 TRUE/FALSE 陣列。只有 TRUE 的列才會出現在結果。'},
+      {step:3,cls:'c3',label:'參數 3：找不到時',text:'"" = 若沒有符合的資料，回傳空字串而非錯誤。可填 "查無資料" 等提示文字。省略此參數會在空結果時顯示 #CALC! 錯誤。'}
+    ]
+  };
+  function showStep(demoId,stepNum){
+    var demo=document.getElementById(demoId+'Demo');
+    if(!demo)return;
+    var info=steps[demoId].find(function(s){return s.step===stepNum});
+    if(!info)return;
+    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
+    var target=demo.querySelector('.fp[data-step="'+stepNum+'"]');
+    if(target)target.classList.add('active');
+    var area=demo.querySelector('.explain-area');
+    area.innerHTML='<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
+  }
+  if(!window.playFormula){
+    window.playFormula=function(demoId){
+      var s=steps[demoId];if(!s)return;
+      s.forEach(function(item,i){setTimeout(function(){showStep(demoId,item.step)},i*2000)});
+    };
+    document.querySelectorAll('.formula-demo .fp').forEach(function(el){
+      el.addEventListener('click',function(){
+        var demo=el.closest('.formula-demo');
+        var demoId=demo.id.replace('Demo','');
+        showStep(demoId,parseInt(el.dataset.step));
+      });
+    });
+  } else {
+    steps.filter&&(window._formulaSteps=window._formulaSteps||{});
+    window._formulaSteps=Object.assign(window._formulaSteps||{},{filter:steps.filter});
+  }
+})();
+</script>
+
+<h2>溢出範圍 #</h2>
+<p>動態函數的結果會「溢出」到下方儲存格。寫 D2# 表示「從 D2 開始的整個溢出範圍」。</p>
+<p style="color:var(--muted);font-size:14px;margin:8px 0">你只在 D2 輸入一個公式，Excel 自動填滿 D3~D5：</p>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:12px 0">
+  <div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">輸入前（只有名單）</div>
+    <div class="excel-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="cell header">A</div><div class="cell header">D</div>
+      <div class="cell">小明</div><div class="cell" style="color:var(--muted);font-style:italic">（空白）</div>
+      <div class="cell">小華</div><div class="cell"></div>
+      <div class="cell">小明</div><div class="cell"></div>
+      <div class="cell">小李</div><div class="cell"></div>
+    </div>
+  </div>
+  <div style="font-size:24px;color:var(--accent)">→</div>
+  <div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">D2 輸入 =UNIQUE(A2:A5) 後</div>
+    <div class="excel-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="cell header">A</div><div class="cell header">D（溢出）</div>
+      <div class="cell">小明</div><div class="cell highlight">小明　← 你輸入這格</div>
+      <div class="cell">小華</div><div class="cell result">小華　← 自動溢出</div>
+      <div class="cell">小明</div><div class="cell result">小李　← 自動溢出</div>
+      <div class="cell">小李</div><div class="cell"></div>
+    </div>
+  </div>
+</div>
 <h2>SUMPRODUCT（老牌動態）</h2><pre><code class="lang-excel"># 沒有動態陣列也能玩
 =SUMPRODUCT((A:A=&quot;電子&quot;)*(B:B&gt;1000)*C:C)
 # → 電子部且金額&gt;1000 的加總</code></pre>

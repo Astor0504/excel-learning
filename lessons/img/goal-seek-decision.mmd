@@ -1,0 +1,14 @@
+---
+title: 假設分析工具選擇
+---
+flowchart TD
+    A([你有幾個變數要解？]) --> B{變數數量}
+    B -->|1 個變數| C[目標搜尋\nGoal Seek]
+    B -->|1~2 個變數\n想看結果矩陣| D[模擬分析表\nData Table]
+    B -->|比較幾個情境\n樂觀 / 悲觀 / 正常| E[分析藍本\nScenario Manager]
+    B -->|多變數 + 限制條件\n求最佳解| F[規劃求解\nSolver]
+
+    style C fill:#4CAF50,color:#fff,stroke:#388E3C
+    style D fill:#2196F3,color:#fff,stroke:#1565C0
+    style E fill:#FF9800,color:#fff,stroke:#E65100
+    style F fill:#9C27B0,color:#fff,stroke:#6A1B9A

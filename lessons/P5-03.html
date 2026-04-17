@@ -33,7 +33,12 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 實戰：自動產生月報、實務模板</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">把前面學的全部組合起來，做一個真正能用的小工具。</p><h2>範例：自動清資料 + 產樞紐 + 寄報表</h2><pre><code class="lang-vba">Sub 月報自動化()
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">把前面學的全部組合起來，做一個真正能用的小工具。</p><h2>自動化流程總覽</h2>
+<img class="diagram-light" src="img/vba-pipeline.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
+<img class="diagram-dark" src="img/vba-pipeline.dark.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
+<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+
+<h2>範例：自動清資料 + 產樞紐 + 寄報表</h2><pre><code class="lang-vba">Sub 月報自動化()
     Application.ScreenUpdating = False  &#x27;關閉螢幕更新加速
     
     &#x27; 1. 開啟原始資料

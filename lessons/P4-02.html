@@ -50,6 +50,50 @@
 
 =LAMBDA(x, y, x^2 + y^2)(3, 4)
 # 自訂函數（M365 only），可放在「名稱管理員」變成可重用函式</code></pre>
+<h2>LET 公式拆解</h2>
+<div class="formula-demo" id="letDemo">
+  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
+  <div class="formula-bar">=LET(<span class="fp c1" data-step="1">t</span>, <span class="fp c2" data-step="2">A1*0.05</span>, <span class="fp c3" data-step="3">t + t*1.1</span>)</div>
+  <div class="explain-area" id="letExplain">
+    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
+  </div>
+  <button class="play-btn" onclick="playFormula('let')">▶ 播放</button>
+</div>
+<script>
+(function(){
+  var steps = {
+    let: [
+      {step:1,cls:'c1',label:'變數名稱',text:'t = 自訂的變數名稱，可取任何名字。LET 可以同時定義多個變數，格式是「名稱, 值, 名稱, 值, ...結果」。'},
+      {step:2,cls:'c2',label:'變數的值',text:'A1*0.05 = 把這個計算結果存入 t。這樣之後不管用幾次 t，Excel 只算一次，比重複寫 A1*0.05 更快更清楚。'},
+      {step:3,cls:'c3',label:'最終計算式（回傳值）',text:'t + t*1.1 = LET 的最後一個引數是最終的計算結果。這裡相當於 (A1*0.05) + (A1*0.05)*1.1，但只需計算 A1*0.05 一次。'}
+    ]
+  };
+  function showStep(demoId,stepNum){
+    var demo=document.getElementById(demoId+'Demo');
+    if(!demo)return;
+    var info=steps[demoId].find(function(s){return s.step===stepNum});
+    if(!info)return;
+    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
+    var t=demo.querySelector('.fp[data-step="'+stepNum+'"]');
+    if(t)t.classList.add('active');
+    var area=demo.querySelector('.explain-area');
+    area.innerHTML='<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
+  }
+  if(!window.playFormula){
+    window.playFormula=function(demoId){
+      var s=steps[demoId];if(!s)return;
+      s.forEach(function(item,i){setTimeout(function(){showStep(demoId,item.step)},i*2000)});
+    };
+    document.querySelectorAll('.formula-demo .fp').forEach(function(el){
+      el.addEventListener('click',function(){
+        var demo=el.closest('.formula-demo');
+        showStep(demo.id.replace('Demo',''),parseInt(el.dataset.step));
+      });
+    });
+  }
+})();
+</script>
+
 <h2>使用建議</h2><p>LET 是現在最被推薦的「公式重構」工具——把 =A1*0.05 + (A1*0.05)*1.1 改成 =LET(t, A1*0.05, t + t*1.1) 容易讀又只算一次。</p>
 
 

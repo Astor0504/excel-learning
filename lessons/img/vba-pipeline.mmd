@@ -1,0 +1,13 @@
+---
+title: VBA 月報自動化流程
+---
+flowchart TD
+    A([開始]) --> B[開啟原始資料.xlsx]
+    B --> C[清空白列]
+    C --> D[套用篩選條件]
+    D --> E[複製到月報工作表]
+    E --> F[存檔為月報_YYYYMM.xlsx]
+    F --> G([結束])
+
+    style A fill:#4CAF50,color:#fff,stroke:#388E3C
+    style G fill:#F44336,color:#fff,stroke:#B71C1C

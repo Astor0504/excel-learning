@@ -40,6 +40,31 @@
 <img class="diagram-dark" src="img/pivot-concept.dark.svg" alt="樞紐分析概念圖" style="max-width:100%;margin:12px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
 
+<h2>原始資料 → 樞紐結果</h2>
+<p style="color:var(--muted);font-size:14px;margin-bottom:12px">左邊是一筆一筆的交易，右邊是樞紐把它「聚合」後的報表：</p>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:16px 0">
+  <div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">原始資料（流水帳）</div>
+    <div class="excel-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cell header">部門</div><div class="cell header">月份</div><div class="cell header">業績</div>
+      <div class="cell source">電子</div><div class="cell">1月</div><div class="cell">120,000</div>
+      <div class="cell source">電子</div><div class="cell">2月</div><div class="cell">95,000</div>
+      <div class="cell source">家電</div><div class="cell">1月</div><div class="cell">80,000</div>
+      <div class="cell source">家電</div><div class="cell">2月</div><div class="cell">110,000</div>
+      <div class="cell source">電子</div><div class="cell">1月</div><div class="cell">60,000</div>
+    </div>
+  </div>
+  <div style="font-size:28px;color:var(--accent)">→</div>
+  <div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">樞紐分析表（聚合後）</div>
+    <div class="excel-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cell header">部門 ↓ 月份 →</div><div class="cell header">1月</div><div class="cell header">2月</div>
+      <div class="cell source">電子</div><div class="cell result">180,000</div><div class="cell">95,000</div>
+      <div class="cell source">家電</div><div class="cell">80,000</div><div class="cell result">110,000</div>
+    </div>
+  </div>
+</div>
+
 <h2>4 大區域怎麼用</h2><table><thead><tr><th>區域</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>列（Rows）</td><td>變成左邊的「分組」</td><td>部門、產品類別</td></tr><tr><td>欄（Columns）</td><td>變成上方的「分組」</td><td>月份、年度</td></tr><tr><td>值（Values）</td><td>要計算的數字</td><td>業績、數量</td></tr><tr><td>篩選（Filters）</td><td>頂部下拉篩選</td><td>地區、年度</td></tr></tbody></table>
 <h2>超實用功能</h2><p>右鍵 → 群組 → 可以把日期自動分成「年/季/月」。值欄位設定 → 改顯示為「百分比」、「累計」、「差異」等。插入交叉分析篩選器（Slicer）→ 視覺化篩選按鈕。</p>
 <div class="callout"><strong>⚠️ 注意</strong>原始資料有合併儲存格、空白欄位、欄位名稱重複 → 樞紐會壞。建議資料先轉成「表格」（⌘+T）再做樞紐，新增資料會自動納入。</div>
