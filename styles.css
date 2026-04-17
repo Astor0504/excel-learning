@@ -1375,29 +1375,37 @@ html[data-theme="light"] .lt-bar,html:not([data-theme]) .lt-bar{background:rgba(
 /* ===== 知識區：桌機 2 欄 ===== */
 @media (min-width:1100px){
   .lt-panel[data-panel="knowledge"] .xc-section{
-    column-count:2;column-gap:18px
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px 18px;
+    align-items:start;
   }
   .lt-panel[data-panel="knowledge"] .xc-section > h2,
   .lt-panel[data-panel="knowledge"] .xc-section > .xc-sub{
-    column-span:all
+    grid-column:1 / -1;
   }
   .lt-panel[data-panel="knowledge"] .xc-know,
   .lt-panel[data-panel="knowledge"] .xc-vba{
-    break-inside:avoid;margin-top:0;margin-bottom:14px
+    margin-top:0;
+    margin-bottom:0;
   }
 }
 
 /* ===== 參考（快捷鍵）桌機 2 欄 ===== */
 @media (min-width:1100px){
   .lt-panel[data-panel="reference"] .xc-section{
-    column-count:2;column-gap:18px
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px 18px;
+    align-items:start;
   }
   .lt-panel[data-panel="reference"] .xc-section > h2,
   .lt-panel[data-panel="reference"] .xc-section > .xc-sub{
-    column-span:all
+    grid-column:1 / -1;
   }
   .lt-panel[data-panel="reference"] .xc-sc-group{
-    break-inside:avoid;margin-top:0;margin-bottom:14px
+    margin-top:0;
+    margin-bottom:0;
   }
 }
 
