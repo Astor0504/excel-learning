@@ -124,6 +124,15 @@ const LESSON_GUIDE = {
   },
 };
 const LESSON_PRO_NOTES = {
+  "P2-01": {
+    title: "條件統計是報表工作的基本盤",
+    eyebrow: "Professional Default",
+    items: [
+      "SUMIFS、COUNTIFS 這類條件統計公式，通常比複雜巢狀 IF 更適合做正式報表。",
+      "如果需求只是依條件加總與計數，先用條件統計公式；不要太早把簡單問題做成很重的模型。",
+      "真正專業的差別，在於你知道什麼時候該停在公式層，什麼時候才該進樞紐或 Power Query。",
+    ],
+  },
   "P2-02": {
     title: "專業現場怎麼選查找工具",
     eyebrow: "Professional Default",
@@ -131,6 +140,51 @@ const LESSON_PRO_NOTES = {
       "如果是 Microsoft 365 或 Excel 2021 以上，預設優先用 XLOOKUP；它不用手算欄位，也能向左查找。",
       "如果你在維護舊公司檔案或 2016 / 2019 環境，請把 INDEX + MATCH 視為真正的通用備案，不要只會 VLOOKUP。",
       "職場上真正專業的差別不是背函數名，而是先判斷同事的版本、檔案相容性和後續維護成本。",
+    ],
+  },
+  "P2-03": {
+    title: "樞紐不是取代公式，而是接手彙總",
+    eyebrow: "Professional Default",
+    items: [
+      "樞紐分析最適合接手大量原始資料的彙總、切片與觀察，不適合拿來取代所有細部商業規則。",
+      "比較穩的工作流通常是：原始資料先整理成 Table，再用樞紐做彙總，必要時才補公式欄位。",
+      "你越早建立『先整理資料，再彙總報表』的習慣，後面接 Power Query 會越順。",
+    ],
+  },
+  "P2-04": {
+    title: "格式化要幫助決策，不只是上色",
+    eyebrow: "Professional Default",
+    items: [
+      "條件式格式化最有價值的地方，是幫人快速看到異常、門檻與趨勢，而不是把整張表染滿顏色。",
+      "正式報表應先定義哪些數值真的需要被看見，再設規則，不要讓格式化搶走資料本身的可讀性。",
+      "如果每個欄位都在亮，等於沒有任何欄位真正重要。",
+    ],
+  },
+  "P3-01": {
+    title: "專業報表先從防呆開始",
+    eyebrow: "Professional Default",
+    items: [
+      "資料驗證的價值不是限制使用者，而是把髒資料擋在輸入端，減少之後清理與追錯成本。",
+      "如果一份工作簿會交給別人長期輸入，資料驗證幾乎應該視為預設，而不是可選配件。",
+      "真正穩定的流程，永遠比事後補救更省時間。",
+    ],
+  },
+  "P3-02": {
+    title: "清資料能力決定你能不能接住真實世界資料",
+    eyebrow: "Professional Default",
+    items: [
+      "文字與日期函數看起來零碎，但它們處理的是最常見的外部貼上資料、系統匯出資料與格式混亂問題。",
+      "正式工作流中，先把欄位定義清楚，再清理文字與日期，會比邊清邊猜更穩。",
+      "當清理步驟開始重複出現時，就是往 Power Query 過渡的訊號。",
+    ],
+  },
+  "P3-03": {
+    title: "圖表真正的專業感來自選對，不是堆特效",
+    eyebrow: "Professional Default",
+    items: [
+      "專業圖表最重要的是讓讀者更快理解，不是讓圖表本身更花。",
+      "先決定你要比較類別、看趨勢、看占比，圖表類型自然就會縮小到少數幾種合理選項。",
+      "如果資料本身還沒整理乾淨，再漂亮的圖表也只是在放大混亂。",
     ],
   },
   "P3-04": {
@@ -142,6 +196,15 @@ const LESSON_PRO_NOTES = {
       "專業 Excel 使用者通常不是公式最炫的人，而是最能讓檔案在三個月後還維持可讀性的人。",
     ],
   },
+  "P3-05": {
+    title: "保護的目的，是讓檔案能安心交付",
+    eyebrow: "Professional Default",
+    items: [
+      "工作表保護不是為了把檔案藏起來，而是區分哪些欄位可以填、哪些公式不該被誤改。",
+      "真正專業的交付，會把可輸入區、計算區、輸出區責任分清楚，再決定保護策略。",
+      "如果沒有先整理好結構，光上鎖只會讓後續維護更痛苦。",
+    ],
+  },
   "P4-01": {
     title: "動態陣列在實務上的邊界",
     eyebrow: "Professional Default",
@@ -149,6 +212,15 @@ const LESSON_PRO_NOTES = {
       "動態陣列適合拿來輸出分析結果與中間結果，但溢出公式本身不應該寫在 Table 裡。",
       "比較穩的做法是：原始資料放 Table，動態陣列公式寫在表格外，用結構化參照去吃資料。",
       "如果你要交付給舊版 Excel 使用者，請提前規劃降級方案，否則動態函數會變成相容性風險。",
+    ],
+  },
+  "P4-02": {
+    title: "進階函數的重點是可讀與可重用",
+    eyebrow: "Professional Default",
+    items: [
+      "LET 和 LAMBDA 的價值，不是把公式寫得更炫，而是把重複邏輯封裝得更清楚。",
+      "當一條公式長到同事看不懂時，先想可讀性與拆解，而不是再往裡面硬塞一層巢狀。",
+      "如果需求會被反覆複製到很多欄位，才真正值得把邏輯做成可重用的公式模組。",
     ],
   },
   "P4-04": {
@@ -204,6 +276,14 @@ const LESSON_BADGES = {
   "P1-02": [
     { kind: "pro", label: "專業基礎", note: "先學會穩定算數，再碰更複雜的邏輯與查找。" },
   ],
+  "P1-03": [
+    { kind: "workflow", label: "邏輯基礎", note: "這課是從算數跨到條件判斷的分水嶺，後面 SUMIF / COUNTIF 都靠這個思維。" },
+    { kind: "pro", label: "專業基礎", note: "先把條件邏輯學穩，後面做報表規則才不會一直繞路。" },
+  ],
+  "P2-01": [
+    { kind: "workflow", label: "報表核心", note: "條件統計是多數日常報表與 KPI 彙總的核心工具。" },
+    { kind: "pro", label: "專業預設", note: "能用 SUMIFS / COUNTIFS 解決的彙總，通常比複雜巢狀公式更穩。" },
+  ],
   "P2-02": [
     { kind: "mac", label: "macOS 可用", note: "XLOOKUP 在 Excel for Microsoft 365 for Mac 與 Excel 2021 for Mac 可用。" },
     { kind: "version", label: "M365 / 2021+", note: "新版環境優先用 XLOOKUP。" },
@@ -215,14 +295,39 @@ const LESSON_BADGES = {
     { kind: "pro", label: "專業預設", note: "正式資料先轉 Table，再做樞紐會更穩。" },
     { kind: "workflow", label: "報表入口", note: "這課開始從算公式走向真正整理報表。" },
   ],
+  "P2-04": [
+    { kind: "workflow", label: "可視化判讀", note: "這課重點是讓異常值與重點自己浮出來，提升報表可讀性。" },
+    { kind: "pro", label: "專業預設", note: "格式化應幫助判讀，不應該把整張表染成裝飾品。" },
+  ],
+  "P3-01": [
+    { kind: "workflow", label: "防呆輸入", note: "這課是從分析端回頭補輸入端品質，直接影響後面清資料成本。" },
+    { kind: "pro", label: "專業預設", note: "長期會給別人填的表單，資料驗證應該是預設配備。" },
+  ],
+  "P3-02": [
+    { kind: "workflow", label: "清資料核心", note: "真實工作裡最常見的不是新函數，而是貼上後亂掉的文字與日期。" },
+    { kind: "pro", label: "專業預設", note: "當清理動作開始重複，應該意識到這是往 Power Query 過渡的前兆。" },
+  ],
+  "P3-03": [
+    { kind: "workflow", label: "溝通輸出", note: "這課是把分析結果轉成別人看得懂的輸出，不只是畫圖。" },
+    { kind: "pro", label: "專業預設", note: "先想比較、趨勢、占比哪一種問題，再決定圖表類型。" },
+  ],
   "P3-04": [
     { kind: "pro", label: "專業預設", note: "長期維護的檔案，Table 和結構化參照幾乎是必備。" },
     { kind: "workflow", label: "維護性", note: "這課直接影響交接、擴充和長期穩定度。" },
+  ],
+  "P3-05": [
+    { kind: "workflow", label: "交付安全", note: "這課重點是讓可填區與公式區分清楚，避免交付後被誤改。" },
+    { kind: "pro", label: "專業預設", note: "保護應建立在清楚的結構分層上，不是先鎖再說。" },
   ],
   "P4-01": [
     { kind: "mac", label: "macOS 視版本", note: "動態陣列在較新的 Mac 版 Excel 可用，交付舊版前要先確認環境。" },
     { kind: "version", label: "M365 / 2021+", note: "動態陣列屬於新世代 Excel 能力。" },
     { kind: "compat", label: "相容性注意", note: "交付舊版使用者前，要先規劃降級方案。" },
+  ],
+  "P4-02": [
+    { kind: "mac", label: "macOS 視版本", note: "LET、LAMBDA 等進階函數需要較新的 Excel 版本，交付前請先確認環境。" },
+    { kind: "version", label: "M365 / 2021+", note: "這課屬於新世代 Excel 公式能力。" },
+    { kind: "pro", label: "專業預設", note: "進階函數的重點是提升可讀性與重用性，不是把公式寫得更長。" },
   ],
   "P4-03": [
     { kind: "mac", label: "macOS 可用", note: "目標搜尋可直接用；若要用規劃求解，先到 Tools > Excel Add-ins 啟用 Solver。" },
