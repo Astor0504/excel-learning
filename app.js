@@ -124,6 +124,33 @@ const LESSON_GUIDE = {
   },
 };
 const LESSON_PRO_NOTES = {
+  "P1-01": {
+    title: "Mac 鍵位節奏是你的操作地基",
+    eyebrow: "Professional Default",
+    items: [
+      "這站以 macOS Excel 為主路線。你在這裡學到的快捷鍵，預設就是 Mac 版 Excel 的實際按法，不是從 Windows 翻譯過來的。",
+      "先把 ⌘ S / ⌘ Z / ⌘+方向鍵 / ⌃ U 這幾個練成反射，後面學公式時才不會一直被操作介面卡住。",
+      "WPS Office 的說明是補充資訊，不是主路線。如果你主要用 Excel for Mac，照 Excel 欄位的做法走即可。",
+    ],
+  },
+  "P1-02": {
+    title: "先把基礎函數練穩，再往複雜走",
+    eyebrow: "Professional Default",
+    items: [
+      "SUM / AVERAGE / COUNT / COUNTA 看起來簡單，但很多錯誤報表都是因為混用 COUNT 和 COUNTA、或誤解 AVERAGE 對空白與 0 的處理而出現的。",
+      "這課的函數在 Excel for Mac 與 Windows 版行為完全相同，不需要注意平台差異。",
+      "這課是後面所有進階課的地基：先把這幾個練到不用想，SUMIFS / XLOOKUP 才會學得順。",
+    ],
+  },
+  "P1-03": {
+    title: "知道 IF 的邊界，才知道什麼時候該出場",
+    eyebrow: "Professional Default",
+    items: [
+      "IFS 比巢狀 IF 好讀，且不容易出現括號配對錯誤。有 IFS 可以用的環境，沒有理由繼續寫 IF(A, X, IF(B, Y, ...))。",
+      "IF 適合處理欄位層級的條件邏輯。如果你需要『依條件加總或計數』，那是 SUMIFS / COUNTIFS 的場景，不要用 IF 再配 SUM 硬撐。",
+      "這課函數的語法在 macOS Excel 和 Windows 版相同，IFS 在 Excel for Mac 2019 以後可用。",
+    ],
+  },
   "P2-01": {
     title: "條件統計是報表工作的基本盤",
     eyebrow: "Professional Default",
@@ -223,6 +250,15 @@ const LESSON_PRO_NOTES = {
       "如果需求會被反覆複製到很多欄位，才真正值得把邏輯做成可重用的公式模組。",
     ],
   },
+  "P4-03": {
+    title: "假設分析是決策工具，不是計算工具",
+    eyebrow: "Professional Default",
+    items: [
+      "目標搜尋適合「只改一個變數、反推輸入」的場景；Solver 才適合多變數加約束條件的最佳化——不要一開始就用 Solver，先看目標搜尋夠不夠。",
+      "規劃求解（Solver）在 macOS 上需要先到「工具 → Excel 增益集」啟用，不是預設開啟的。",
+      "這課工具的價值在商業決策推演，不是取代公式計算。真正的報表通常是公式算結果，假設分析是反問「要達到這個結果，條件得是什麼」。",
+    ],
+  },
   "P4-04": {
     title: "Power Query 為什麼是專業分水嶺",
     eyebrow: "Professional Default",
@@ -257,6 +293,15 @@ const LESSON_PRO_NOTES = {
       "專業 VBA 不只是跑得動，而是大量資料也跑得穩、出錯時知道怎麼停在安全的位置。",
       "陣列、Dictionary、錯誤處理這些看起來比較工程化，但它們真正解決的是交付品質與維護成本。",
       "如果你的流程邏輯還沒固定，先不要急著把所有步驟都寫成巨集；先穩定流程，再談優化速度。",
+    ],
+  },
+  "P5-04": {
+    title: "能選對工具，才算真的學完了",
+    eyebrow: "Professional Default",
+    items: [
+      "綜合挑戰的重點不是把題目做完，而是每題開始前先判斷：這是公式題、樞紐題、Power Query 題，還是 VBA 題？",
+      "能選對工具再動手，比堆功能完成題目更接近真正的職場能力。",
+      "這課所有挑戰題在 macOS Excel 都可以完整執行，不依賴任何 Windows-only 功能。",
     ],
   },
   "P5-03": {
@@ -472,7 +517,7 @@ const HOME_LEARNING_MODES = [
     mindset: "最適合你，如果你已經會基本報表，現在想把重複流程變成可重跑、可交付的系統。",
     anchorPhase: 4,
     roadmapTitle: "從重複操作走向可重跑流程與自動化",
-    roadmapIntro: "這個模式把重心放在 Phase 4-5：先理解動態陣列、Power Query 與資料模型，再把 VBA 接進完整自動化流程。",
+    roadmapIntro: "這個模式把重心放在 Phase 4-5：先理解動態陣列與 Power Query（Mac 主路線），再了解資料模型概念（Mac 上以觀念為主），最後把 VBA 接進完整自動化流程。",
     featuredSkills: ["動態陣列", "Power Query", "Data Model", "VBA"],
     featuredLessons: [
       { slug: "P4-01", badge: "先補新工具", reason: "先理解新世代公式能力，後面做資料流程會更順。" },

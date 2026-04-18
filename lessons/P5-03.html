@@ -34,27 +34,26 @@
 <img class="diagram-dark" src="img/vba-pipeline.dark.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
 
-<h2>範例：自動清資料 + 產樞紐 + 寄報表</h2><pre><code class="lang-vba">Sub 月報自動化()
-    Application.ScreenUpdating = False  &#x27;關閉螢幕更新加速
-    
-    &#x27; 1. 開啟原始資料
-    Workbooks.Open &quot;~/Desktop/原始資料.xlsx&quot;
-    
-    &#x27; 2. 清空白列
-    Columns(&quot;A&quot;).SpecialCells(xlCellTypeBlanks).EntireRow.Delete
-    
-    &#x27; 3. 套用篩選
-    Range(&quot;A1&quot;).AutoFilter Field:=2, Criteria1:=&quot;&gt;1000&quot;
-    
-    &#x27; 4. 複製到月報
-    &#x27; ... 你的處理邏輯
-    
-    &#x27; 5. 儲存
-    ActiveWorkbook.SaveAs &quot;~/Desktop/月報_&quot; &amp; Format(Date, &quot;yyyymm&quot;) &amp; &quot;.xlsx&quot;
-    
+<h2>範例：月報交付自動化</h2>
+<div class="callout"><strong>工具分工提醒</strong>這個範例的重點是 VBA 負責的部分：<strong>開啟檔案 → 觸發更新 → 控制輸出</strong>。清資料（刪空白、重複值、格式整形）應該先在 Power Query 裡建好可重跑步驟，再讓 VBA 呼叫 <code>RefreshAll</code>。如果你把清資料邏輯寫進 VBA，每次流程變動就要改巨集，不如讓 Power Query 負責「清」，VBA 負責「跑」。</div>
+<pre><code class="lang-vba">Sub 月報自動化()
+    Application.ScreenUpdating = False  &#x27; 關閉螢幕更新加速
+
+    &#x27; 1. 重新整理所有 Power Query 查詢（清資料邏輯留在 PQ）
+    ActiveWorkbook.RefreshAll
+
+    &#x27; 2. 等待重整完成（若有非同步查詢）
+    Application.CalculateUntilAsyncQueriesDone
+
+    &#x27; 3. 切到月報工作表，輸出 PDF
+    Worksheets(&quot;月報&quot;).Activate
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, _
+        Filename:=&quot;~/Desktop/月報_&quot; &amp; Format(Date, &quot;yyyymm&quot;) &amp; &quot;.pdf&quot;
+
     Application.ScreenUpdating = True
-    MsgBox &quot;完成！&quot;
+    MsgBox &quot;月報已更新並輸出！&quot;
 End Sub</code></pre>
+<p style="font-size:13px;color:var(--muted)">這個結構讓 VBA 只負責觸發與交付，清資料的責任留在 Power Query——改清資料規則時不用動巨集，只要改 Query 步驟即可。</p>
 <h2>加速三件事</h2><p>① Application.ScreenUpdating = False（關螢幕更新）② Application.Calculation = xlCalculationManual（暫停自動計算）③ 用陣列代替逐格操作。</p>
 <h2>按鈕綁巨集</h2><p>開發人員 → 插入 → 按鈕 → 拖出來 → 指定巨集。使用者就能一鍵執行。</p>
 

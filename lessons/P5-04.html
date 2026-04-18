@@ -29,17 +29,56 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">綜合挑戰：跨章節整合題目練習</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上。這些題目模擬真實工作場景，但對 macOS 使用者來說，更重要的是練「選對工具」而不是每題都硬塞進同一種解法。</p><h2>挑戰 1：年資與獎金</h2><p>員工表有「入職日期」和「年薪」兩欄。要算出：① 滿幾年（DATEDIF）② 年資 ≥ 3 年的人 ③ 每人應發獎金（IFS 分級）④ 全公司獎金加總（SUMIFS）。</p>
-<h2>挑戰 2：跨表查詢</h2><p>訂單表只有「商品代號」，商品表有「代號→名稱→價格」。要：① 用 XLOOKUP 帶出商品名 ② 帶出單價 ③ 算小計 ④ 用樞紐做月報。</p>
-<h2>挑戰 3：動態儀表板</h2><pre><code class="lang-excel"># 給定銷售明細，做一個 Dashboard：
-=UNIQUE(銷售[業務員])           # 列出所有業務員
-=SUMIFS(銷售[金額], 銷售[業務員], A2)  # 個人業績
-=RANK(B2, B:B)                    # 排名
-=LARGE(銷售[金額], 1)             # 最高一筆
-# 加上條件式格式 + 走勢圖 = 完整儀表板</code></pre>
-<h2>挑戰 4：自動化清單</h2><p>每月收到 N 個分公司的 `.csv` → 用 Power Query 合併 → 用樞紐分析 → 用 VBA 一鍵更新報表。這是一個完整的「自動化報表系統」。如果你在 macOS 上，這題的主軸應放在 Query + 樞紐 + VBA 更新工作簿，不要把重點放在 Windows 才常見的 Outlook / COM 郵件整合。</p>
-<div class="callout"><strong>建議作答方式</strong>做綜合挑戰時，先問自己：這題比較像公式題、彙總題、可重跑清資料題，還是 Excel 內部自動化題。你如果能先選對工具，再開始做題，就已經比只會堆功能更接近真正專業。</div>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上。這些題目模擬真實工作場景——但每題開始前，請先回答一個問題：<strong>「這題我該用哪種工具？」</strong>能選對工具再動手，才是這課真正要驗收的能力。</p>
 
+<div class="callout"><strong>工具選擇提示卡</strong>
+<ul style="margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.9">
+  <li><strong>公式</strong>：單一欄位邏輯、條件判斷、查找對應值</li>
+  <li><strong>樞紐</strong>：快速彙總、切片、觀察分佈——先整理成 Table 再接</li>
+  <li><strong>Power Query</strong>：重複清資料、多來源合併、可重跑的整形流程</li>
+  <li><strong>VBA</strong>：Excel 內部操作自動化、報表交付流程、工作簿批次處理</li>
+  <li><strong>Data Model / Power BI</strong>：多表關聯、量值治理、跨部門指標——Mac 上考慮跨 Windows 或 Power BI</li>
+</ul>
+</div>
+
+<h2>挑戰 1：年資與獎金</h2>
+<p><strong>先選工具：</strong>這是公式題。日期計算用 DATEDIF，條件判斷用 IFS，條件彙總用 SUMIFS。</p>
+<p>員工表有「入職日期」和「年薪」兩欄：</p>
+<ol style="padding-left:18px;line-height:1.9;font-size:14px">
+  <li>計算每人滿幾年（DATEDIF 搭配 TODAY()）</li>
+  <li>用 COUNTIFS 算年資 ≥ 3 年的人數</li>
+  <li>用 IFS 按年資分級計算獎金比例，不要用巢狀 IF</li>
+  <li>用 SUMIFS 加總全公司應發獎金</li>
+</ol>
+<p style="font-size:13px;color:var(--muted)">驗收：你能不能在不用輔助欄的情況下，只靠公式直接輸出每人獎金？</p>
+
+<h2>挑戰 2：跨表查詢</h2>
+<p><strong>先選工具：</strong>單表 JOIN → 公式（XLOOKUP）。彙總報表 → 樞紐。</p>
+<p>訂單表只有「商品代號」，商品表有「代號 → 名稱 → 價格」：</p>
+<ol style="padding-left:18px;line-height:1.9;font-size:14px">
+  <li>用 XLOOKUP 帶出商品名稱與單價（注意：舊版環境改用 INDEX+MATCH）</li>
+  <li>計算每筆訂單小計（數量 × 單價）</li>
+  <li>兩張表都先轉成 Table，再接樞紐做月報</li>
+  <li>驗收：如果商品表新增一筆，訂單表的查找結果能不能自動更新？</li>
+</ol>
+
+<h2>挑戰 3：動態儀表板</h2>
+<p><strong>先選工具：</strong>輸出清單用動態陣列（M365），排名統計用公式，視覺化用條件式格式 + 走勢圖。</p>
+<pre><code class="lang-excel">=UNIQUE(銷售[業務員])                      # 列出所有業務員（動態，不用手動維護）
+=SUMIFS(銷售[金額], 銷售[業務員], A2)      # 個人業績
+=RANK(B2, B$2:B$20)                        # 排名（注意鎖定範圍）
+=LARGE(銷售[金額], 1)                      # 最高單筆</code></pre>
+<p style="font-size:13px;color:var(--muted)">驗收：新增一筆銷售資料後，儀表板的排名與加總有沒有自動更新？條件式格式有沒有跟著變？</p>
+
+<h2>挑戰 4：月報自動化系統</h2>
+<p><strong>先選工具：</strong>合併多個 CSV → Power Query（可重跑）。彙總報表 → 樞紐。工作簿操作自動化 → VBA。</p>
+<p>每月收到 N 個分公司的 <code>.csv</code>：</p>
+<ol style="padding-left:18px;line-height:1.9;font-size:14px">
+  <li>Power Query：資料夾來源 → 合併所有 CSV → 整形清理 → Load 到工作表</li>
+  <li>樞紐：接 Query 的輸出做彙總，設定自動重新整理</li>
+  <li>VBA：一鍵觸發 <code>ActiveWorkbook.RefreshAll</code>，再輸出指定工作表為 PDF</li>
+</ol>
+<div class="callout"><strong>macOS 路線說明</strong>這題的主軸在 macOS 上完全可行：Power Query for Mac、樞紐、VBA 工作簿操作都支援。不要把重點放在 Windows 才有的 COM 郵件自動化（如用 VBA 控制 Outlook 寄信）——那不是這站教的路線，也不是 Mac 版的主路線。</div>
 
     </article>
     <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">完成挑戰 1（年資）</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">完成挑戰 2（跨表）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">完成挑戰 3（儀表板）</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">挑戰 4 做一部分</span></label></div>

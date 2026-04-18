@@ -29,23 +29,55 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">Power Pivot + DAX：把 Excel 變成迷你 BI 工具</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料超過樞紐處理上限（約百萬列）？要跨多張表分析？這時資料模型思維就很重要。不過如果你主要用的是 macOS，這課更適合先理解觀念，而不是期待在 Mac 上完整操作 Power Pivot。</p><h2>資料模型</h2><p>傳統樞紐只能用「一張表」。資料模型可以匯入多張表 → 設定關聯（像資料庫的 JOIN）→ 建立樞紐時跨表分析。</p>
-<h2>DAX 基礎</h2><pre><code class="lang-dax"># 度量值（Measures）= 公式語言版的計算欄位
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料超過樞紐處理上限、需要跨多張表關聯分析、或要建立可重複使用的量值計算——這時就進入資料模型的思維範疇。對 macOS 使用者來說，這課的價值是建立觀念與判斷力，而不是操作 Power Pivot 的路線指引。</p>
+
+<h2>為什麼要學這個概念</h2>
+<p>傳統樞紐只能用「一張表」。當你開始遇到以下情境，就代表已經走到資料模型的邊界：</p>
+<ul style="padding-left:18px;line-height:1.9;font-size:14px">
+  <li>訂單表、商品表、客戶表分開存放，需要跨表彙總分析</li>
+  <li>資料列數超過數十萬，樞紐效能開始下降</li>
+  <li>需要定義「量值」（如毛利率、同期比較）供多個樞紐共用</li>
+  <li>團隊需要一致的指標定義，而不是每人用不同公式各自計算</li>
+</ul>
+<p>這時候的解法路線是：Power Query 負責清資料 → Data Model 負責建關聯與量值 → 樞紐只負責展示。</p>
+
+<h2>核心概念：資料模型與 DAX</h2>
+<p>資料模型（Data Model）允許你把多張表匯入，設定表與表之間的關聯（類似資料庫的 JOIN），再建立跨表樞紐分析。DAX（Data Analysis Expressions）是在模型上寫量值的公式語言：</p>
+<pre><code class="lang-dax"># 量值（Measures）= 定義好的計算邏輯，可被多個樞紐共用
 總業績 := SUM(訂單[金額])
 
 電子部業績 :=
     CALCULATE(
         SUM(訂單[金額]),
-        部門[部門名] = &quot;電子&quot;
+        部門[部門名] = "電子"
     )
 
-# 同期比較
+# 同期比較（Time Intelligence）
 去年同期 :=
-    CALCULATE([總業績], SAMEPERIODLASTYEAR(&#x27;日期&#x27;[日期]))</code></pre>
-<h2>和 Power Query 的差別</h2><p>Power Query：清資料、整形資料；Power Pivot：建模型、寫 DAX、做分析。一個負責「清」，一個負責「算」，常常一起用。</p>
-<div class="callout"><strong>⚠️ macOS 重點</strong>依 Microsoft 官方說明，Power Pivot <b>不包含在 Office for Mac</b>。所以對 Mac 使用者來說，這課的主價值是先建立多表關聯與量值分析的觀念，知道什麼情況該找 Windows Excel、Power BI，或和使用 Windows 的同事協作。</div>
-<div class="callout"><strong>建議路線</strong>如果你現在是在 Mac 上學習，請把主力先放在 Power Query、Table、樞紐分析與可維護的資料結構。等真的遇到多表模型、DAX、量值治理，再把 Power Pivot 視為跨到 Windows / BI 工具的下一步。</div>
+    CALCULATE([總業績], SAMEPERIODLASTYEAR('日期'[日期]))</code></pre>
 
+<h2>Power Query vs Data Model：分工定位</h2>
+<table><thead><tr><th>工具</th><th>負責什麼</th><th>何時用</th></tr></thead><tbody>
+<tr><td>Power Query</td><td>清資料、整形、合併來源</td><td>資料進來時先過一次</td></tr>
+<tr><td>Data Model / Power Pivot</td><td>建關聯、定義量值、多表分析</td><td>需要跨表、大量資料、共用指標時</td></tr>
+<tr><td>樞紐分析</td><td>切片、彙總、展示</td><td>最後一步，接資料模型的輸出</td></tr>
+</tbody></table>
+
+<div class="callout"><strong>⚠️ macOS 主路線說明</strong>依 Microsoft 官方說明，Power Pivot <b>不包含在 Office for Mac</b>。這意味著在 Mac 上你無法直接操作 Power Pivot 介面或建立 DAX 量值。這課對 Mac 使用者的實務價值，是讓你理解資料模型的思維，知道：
+<ul style="margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.9">
+  <li>什麼情況該請 Windows 同事協作或開 VM</li>
+  <li>什麼情況可以先用 Power Query + 樞紐的組合撐住</li>
+  <li>什麼情況應該直接跨到 Power BI（完全支援 Mac 瀏覽器使用）</li>
+</ul>
+</div>
+
+<h2>Mac 使用者的實務決策路線</h2>
+<ol style="padding-left:18px;line-height:1.9;font-size:14px">
+  <li><strong>先問規模：</strong>資料是幾萬列以內、單一來源？→ Power Query + 樞紐就夠，不需要資料模型。</li>
+  <li><strong>再問關聯：</strong>需要跨兩張以上的表、有 ID 可以 JOIN？→ 先評估是否用 XLOOKUP / SUMIFS 拼起來，夠用就不往資料模型走。</li>
+  <li><strong>再問量值：</strong>需要毛利率、同期比較等跨多個樞紐共用的指標？→ 這才是真正需要 Data Model 的訊號，考慮 Windows 環境或 Power BI。</li>
+  <li><strong>最後評估工具：</strong>Power BI Desktop 支援完整的 Data Model + DAX，且 Mac 可透過瀏覽器查看報表；若團隊重度依賴這類分析，這才是比學 Mac 版 Excel 更值得投入的方向。</li>
+</ol>
 
     </article>
     <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">知道資料模型是什麼</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">知道度量值（Measure）跟計算欄位的差</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">認識 CALCULATE 這個 DAX 核心</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">了解 Mac 版的限制</span></label></div>
