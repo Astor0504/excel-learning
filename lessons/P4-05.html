@@ -29,7 +29,7 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">Power Pivot + DAX：把 Excel 變成迷你 BI 工具</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料超過樞紐處理上限（約百萬列）？要跨多張表分析？這時 Power Pivot 就出場了。</p><h2>資料模型</h2><p>傳統樞紐只能用「一張表」。資料模型可以匯入多張表 → 設定關聯（像資料庫的 JOIN）→ 建立樞紐時跨表分析。</p>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料超過樞紐處理上限（約百萬列）？要跨多張表分析？這時資料模型思維就很重要。不過如果你主要用的是 macOS，這課更適合先理解觀念，而不是期待在 Mac 上完整操作 Power Pivot。</p><h2>資料模型</h2><p>傳統樞紐只能用「一張表」。資料模型可以匯入多張表 → 設定關聯（像資料庫的 JOIN）→ 建立樞紐時跨表分析。</p>
 <h2>DAX 基礎</h2><pre><code class="lang-dax"># 度量值（Measures）= 公式語言版的計算欄位
 總業績 := SUM(訂單[金額])
 
@@ -43,7 +43,8 @@
 去年同期 :=
     CALCULATE([總業績], SAMEPERIODLASTYEAR(&#x27;日期&#x27;[日期]))</code></pre>
 <h2>和 Power Query 的差別</h2><p>Power Query：清資料、整形資料；Power Pivot：建模型、寫 DAX、做分析。一個負責「清」，一個負責「算」，常常一起用。</p>
-<div class="callout"><strong>⚠️ 注意</strong>Power Pivot 的資料模型 macOS 版支援有限，部分功能要 Windows 版。Power Query 在 Mac 已經完整支援。</div>
+<div class="callout"><strong>⚠️ macOS 重點</strong>依 Microsoft 官方說明，Power Pivot <b>不包含在 Office for Mac</b>。所以對 Mac 使用者來說，這課的主價值是先建立多表關聯與量值分析的觀念，知道什麼情況該找 Windows Excel、Power BI，或和使用 Windows 的同事協作。</div>
+<div class="callout"><strong>建議路線</strong>如果你現在是在 Mac 上學習，請把主力先放在 Power Query、Table、樞紐分析與可維護的資料結構。等真的遇到多表模型、DAX、量值治理，再把 Power Pivot 視為跨到 Windows / BI 工具的下一步。</div>
 
 
     </article>

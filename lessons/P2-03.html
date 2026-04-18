@@ -29,7 +29,7 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">樞紐分析表：5 秒做出 30 分鐘的報表</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">如果只能學一個 Excel 功能，請學樞紐。它能把幾萬筆原始資料瞬間變成可讀報表。</p><h2>建立步驟</h2><p>① 點任一儲存格 → ② 插入 → 樞紐分析表 → ③ 拖欄位到 4 大區域。</p>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">如果只能學一個 Excel 功能，請學樞紐。它能把幾萬筆原始資料瞬間變成可讀報表。</p><h2>建立步驟</h2><p>① 先把原始資料整理成乾淨欄位，最好直接轉成 Table → ② 點任一儲存格 → ③ 插入 → 樞紐分析表 → ④ 拖欄位到 4 大區域。</p>
 <h2>樞紐分析是什麼？（概念圖）</h2>
 <p>簡單來說：把「原始一筆一筆的交易資料」→ 丟進樞紐 → 用四大區域「切」出你要的報表角度。</p>
 <img class="diagram-light" src="img/pivot-concept.svg" alt="樞紐分析概念圖" style="max-width:100%;margin:12px 0;border-radius:12px">
@@ -62,8 +62,9 @@
 </div>
 
 <h2>4 大區域怎麼用</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">樞紐分析表四大區域說明</caption><thead><tr><th>區域</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>列（Rows）</td><td>變成左邊的「分組」</td><td>部門、產品類別</td></tr><tr><td>欄（Columns）</td><td>變成上方的「分組」</td><td>月份、年度</td></tr><tr><td>值（Values）</td><td>要計算的數字</td><td>業績、數量</td></tr><tr><td>篩選（Filters）</td><td>頂部下拉篩選</td><td>地區、年度</td></tr></tbody></table>
-<h2>超實用功能</h2><p>右鍵 → 群組 → 可以把日期自動分成「年/季/月」。值欄位設定 → 改顯示為「百分比」、「累計」、「差異」等。插入交叉分析篩選器（Slicer）→ 視覺化篩選按鈕。</p>
-<div class="callout"><strong>⚠️ 注意</strong>原始資料有合併儲存格、空白欄位、欄位名稱重複 → 樞紐會壞。建議資料先轉成「表格」（⌘+T）再做樞紐，新增資料會自動納入。</div>
+<h2>超實用功能</h2><p>右鍵 → 群組 → 可以把日期自動分成「年/季/月」。值欄位設定 → 改顯示為「百分比」、「累計」、「差異」等。插入交叉分析篩選器（Slicer）→ 視覺化篩選按鈕，Excel for Mac 也支援這條路線。</p>
+<div class="callout"><strong>⚠️ 注意</strong>原始資料有合併儲存格、空白欄位、欄位名稱重複 → 樞紐會壞。專業做法是先把資料轉成 Table，再做樞紐；新增資料後再重新整理，整套報表才會穩。</div>
+<div class="callout"><strong>macOS 提醒</strong>依 Microsoft 官方說明，PivotTable、PivotChart、Slicer 在 Excel for Microsoft 365 for Mac / Excel 2024 for Mac / Excel 2021 for Mac 都可用。也就是說，Mac 使用者可以把這課當成主路線，不需要先切去 Windows。</div>
 
 
     </article>

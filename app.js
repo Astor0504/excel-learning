@@ -178,6 +178,24 @@ const LESSON_PRO_NOTES = {
       "如果資料清理是可重跑流程，先想 Power Query；如果是 Excel 內部操作與報表交付流程，再考慮 VBA。",
     ],
   },
+  "P5-02": {
+    title: "VBA 進階真正要學的是穩定性",
+    eyebrow: "Professional Default",
+    items: [
+      "專業 VBA 不只是跑得動，而是大量資料也跑得穩、出錯時知道怎麼停在安全的位置。",
+      "陣列、Dictionary、錯誤處理這些看起來比較工程化，但它們真正解決的是交付品質與維護成本。",
+      "如果你的流程邏輯還沒固定，先不要急著把所有步驟都寫成巨集；先穩定流程，再談優化速度。",
+    ],
+  },
+  "P5-03": {
+    title: "把巨集升級成可交付的工作系統",
+    eyebrow: "Professional Default",
+    items: [
+      "實戰專案最重要的不是功能越多越好，而是輸入、處理、輸出三段責任要清楚。",
+      "真正專業的自動化專案會先想檔名規則、錯誤處理、執行前檢查與結果驗證，而不是只想主流程。",
+      "當流程會反覆跑在每月報表或批次檔案上時，文件化和可重複執行比一時寫得快更重要。",
+    ],
+  },
 };
 const LESSON_BADGES = {
   "P1-01": [
@@ -193,6 +211,7 @@ const LESSON_BADGES = {
     { kind: "pro", label: "職場核心", note: "跨表查找幾乎是所有報表工作的基本功。" },
   ],
   "P2-03": [
+    { kind: "mac", label: "macOS 可用", note: "PivotTable、Slicer、PivotChart 在新版 Excel for Mac 都可用。" },
     { kind: "pro", label: "專業預設", note: "正式資料先轉 Table，再做樞紐會更穩。" },
     { kind: "workflow", label: "報表入口", note: "這課開始從算公式走向真正整理報表。" },
   ],
@@ -223,6 +242,20 @@ const LESSON_BADGES = {
     { kind: "mac", label: "macOS 可用", note: "Excel for Mac 支援 Developer tab、錄製 macro，以及用 VBE 撰寫 VBA。" },
     { kind: "workflow", label: "工具分工", note: "流程可重跑先想 Power Query，Excel 操作自動化再想 VBA。" },
     { kind: "pro", label: "不是炫技", note: "真正專業是自動化穩定流程，不是寫最長的巨集。" },
+  ],
+  "P5-02": [
+    { kind: "mac", label: "macOS 可用", note: "陣列、錯誤處理、事件與大部分 VBA 核心語法都可在 Excel for Mac 使用。" },
+    { kind: "compat", label: "相容性注意", note: "部分 Windows 專屬 COM / ActiveX 自動化做法不能直接搬到 Mac。" },
+    { kind: "workflow", label: "穩定交付", note: "這課的重點是讓巨集跑得穩、改得動，而不是只追求功能變多。" },
+  ],
+  "P5-03": [
+    { kind: "mac", label: "macOS 可用", note: "用 VBA 串接工作簿內流程與批次處理，在 Mac 上仍是可行主路線。" },
+    { kind: "workflow", label: "專案化交付", note: "這課開始把前面零散技巧組成完整輸入 → 處理 → 輸出的系統。" },
+    { kind: "pro", label: "專業預設", note: "先定輸入規則與錯誤處理，再做月報自動化，專案才會穩。" },
+  ],
+  "P5-04": [
+    { kind: "mac", label: "macOS 主路線", note: "這課重點是整合 Excel 能力，而不是依賴某個單一 Windows-only 功能。" },
+    { kind: "workflow", label: "能力驗收", note: "建議把挑戰題當成真實工作流練習，而不是只求做完。" },
   ],
 };
 const LESSON_BADGE_KIND_ORDER = [
