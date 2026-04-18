@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VBA 實戰專案｜Command Center Sample</title>
+<meta name="description" content="P5-03 lesson UI sample：Command Center 版型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VBA 實戰專案｜Command Center Sample">
+<meta property="og:description" content="以學習產品儀表板重做 P5-03 的 lesson 版型樣本">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../styles.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-03" data-lesson-variant="command">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-03 Sample · Command Center</div>
+    <h1>VBA 實戰專案</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <section class="lesson-sample-banner">
+      <div>
+        <div class="lesson-sample-eyebrow">Lesson Sample · Command Center</div>
+        <h2>先給任務、工具分工與下一步，再讓內容往下展開</h2>
+        <p>這套在解決「知道很多資訊，但不知道先做什麼」的問題。它更像學習產品儀表板，行動區與內容區切得更明確。</p>
+      </div>
+      <div class="lesson-sample-switcher">
+        <a href="P5-03-studio.html">Studio</a>
+        <a href="P5-03-editorial.html">Editorial</a>
+        <a class="is-active" href="P5-03-command.html">Command Center</a>
+        <a href="P5-03.html">原版</a>
+      </div>
+    </section>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 實戰：自動產生月報、實務模板</p></div>
+    <div id="cheatInline"></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">把前面學的全部組合起來，做一個真正能用的小工具。</p><h2>自動化流程總覽</h2>
+<img class="diagram-light" src="img/vba-pipeline.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
+<img class="diagram-dark" src="img/vba-pipeline.dark.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
+<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+
+<h2>範例：月報交付自動化</h2>
+<div class="callout"><strong>工具分工提醒</strong>這個範例的重點是 VBA 負責的部分：<strong>開啟檔案 → 觸發更新 → 控制輸出</strong>。清資料（刪空白、重複值、格式整形）應該先在 Power Query 裡建好可重跑步驟，再讓 VBA 呼叫 <code>RefreshAll</code>。如果你把清資料邏輯寫進 VBA，每次流程變動就要改巨集，不如讓 Power Query 負責「清」，VBA 負責「跑」。</div>
+<pre><code class="lang-vba">Sub 月報自動化()
+    Application.ScreenUpdating = False  &#x27; 關閉螢幕更新加速
+
+    &#x27; 1. 重新整理所有 Power Query 查詢（清資料邏輯留在 PQ）
+    ActiveWorkbook.RefreshAll
+
+    &#x27; 2. 等待重整完成（若有非同步查詢）
+    Application.CalculateUntilAsyncQueriesDone
+
+    &#x27; 3. 切到月報工作表，輸出 PDF
+    Worksheets(&quot;月報&quot;).Activate
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, _
+        Filename:=&quot;~/Desktop/月報_&quot; &amp; Format(Date, &quot;yyyymm&quot;) &amp; &quot;.pdf&quot;
+
+    Application.ScreenUpdating = True
+    MsgBox &quot;月報已更新並輸出！&quot;
+End Sub</code></pre>
+<p style="font-size:13px;color:var(--muted)">這個結構讓 VBA 只負責觸發與交付，清資料的責任留在 Power Query——改清資料規則時不用動巨集，只要改 Query 步驟即可。</p>
+<h2>加速三件事</h2><p>① Application.ScreenUpdating = False（關螢幕更新）② Application.Calculation = xlCalculationManual（暫停自動計算）③ 用陣列代替逐格操作。</p>
+<h2>按鈕綁巨集</h2><p>開發人員 → 插入 → 按鈕 → 拖出來 → 指定巨集。使用者就能一鍵執行。</p>
+    </article>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個自動化流程</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">加上 ScreenUpdating=False</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">建立一個按鈕綁巨集</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">存成 .xlsm</span></label></div>
+    <div class="notes">
+      <h3>📝 我的筆記</h3>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P5-02.html">← VBA 進階</a><a class="btn primary" href="P5-04.html">綜合挑戰 →</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h3>💬 AI 學習教練</h3>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script type="module" src="../app.js"></script>
+<script type="module" src="../lesson-cheat-inline.js"></script>
+<script type="module" src="../drawer.js"></script>
+<script type="module" src="../xlsx-integrator.js"></script>
+<script type="module" src="../lesson-tabs.js"></script>
+</body></html>
