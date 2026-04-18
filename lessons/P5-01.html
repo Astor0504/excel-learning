@@ -29,8 +29,8 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 基礎：用程式碼自動化重複工作</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">VBA 是 Excel 的內建程式語言。會寫一點 VBA，等於有個 24 小時不抱怨的助理。</p>
-<img src="img/vba-concept.png" alt="VBA 自動化概念圖：從 2 小時手動到 5 秒自動" style="max-width:100%;margin:16px 0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div class="callout"><strong>⚠️ 注意</strong>Mac 沒有 Alt+F11，要用「工具 → 巨集 → Visual Basic 編輯器」進入。Mac 版不支援 UserForm（自訂表單），其他基礎功能都能用。</div>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">VBA 是 Excel 的內建程式語言。不過對 macOS 使用者來說，最重要的不是把它當成萬用解，而是知道什麼時候該用它處理 Excel 內部操作，什麼時候該先交給 Power Query。</p>
+<img src="img/vba-concept.png" alt="VBA 自動化概念圖：從 2 小時手動到 5 秒自動" style="max-width:100%;margin:16px 0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div class="callout"><strong>⚠️ macOS 重點</strong>在 Mac 上沒有 Alt+F11 這種 Windows 習慣捷徑，通常改走「工具 → 巨集 → Visual Basic 編輯器」。另外，這課請先把 VBA 當成 Excel 內部流程自動化工具，不要一開始就期待它能涵蓋所有 Windows 專屬外部整合玩法。</div>
 <h2>第一個巨集</h2><pre><code class="lang-vba">Sub HelloWorld()
     MsgBox &quot;哈囉，VBA！&quot;
 End Sub
@@ -53,18 +53,18 @@ End Sub</code></pre>
     
     MsgBox &quot;加總：&quot; &amp; total
 End Sub</code></pre>
-<h2>執行巨集</h2><p>按 F5 執行；或回 Excel → 工具 → 巨集 → 選一個來執行；或建立按鈕綁定巨集。檔案要存成 .xlsm（啟用巨集的活頁簿）。</p>
+<h2>執行巨集</h2><p>按 F5 執行；或回 Excel → 工具 → 巨集 → 選一個來執行；或建立按鈕綁定巨集。檔案要存成 `.xlsm`。比較穩的做法是先把手動流程跑順，再只自動化其中最固定的一段，不要第一天就把整份報表全交給巨集。</p>
 <h2>⌨️ 本課常用快捷鍵</h2>
 <div class="mac-kb" data-shortcuts='[{"keys": "opt,f11", "label": "⌥ F11 · 開啟 VBE 編輯器"}, {"keys": "f5", "label": "F5 · 執行巨集"}, {"keys": "f8", "label": "F8 · 單步偵錯"}, {"keys": "opt,f8", "label": "⌥ F8 · 開啟巨集清單"}]'></div>
 <script src="../keyboard.js"></script>
 
 
-    <div class="wps-callout">
+<div class="wps-callout">
 <span class="wps-label">WPS Office</span>
 <strong>VBA 相容性</strong>
 <ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
 <li>WPS 支援 VBA（需額外安裝 VBA 運行環境）</li>
-<li>macOS 版 WPS 的 VBA 支援較不穩定，建議用 Windows 版</li>
+<li>如果你主要在 macOS 學習，建議把 Excel for Mac 當主路線，WPS 只視為參考環境</li>
 <li>開啟 VBA 編輯器：WPS 用「開發工具」→「Visual Basic」</li>
 </ul>
 </div>

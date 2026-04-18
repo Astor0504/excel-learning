@@ -29,19 +29,20 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">Power Query：Excel 內建的 ETL 神器</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">再也不用每月手動清資料！Power Query 把整理流程錄起來，下個月一鍵重跑。</p>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">再也不用每月手動清資料。Power Query 真正厲害的地方，不是「匯一次」而是把整理流程存成可重跑步驟；下個月資料一到，重新整理就能再跑一次。</p>
 <h2>什麼是 ETL</h2><p>Extract（取資料）→ Transform（清資料）→ Load（載入 Excel）。Power Query 把這三步全部視覺化，不用寫程式碼。</p>
 <img class="diagram-light" src="img/etl-flow.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
 <img class="diagram-dark" src="img/etl-flow.dark.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
-<h2>常見操作</h2><p>資料 → 取得資料 → 從檔案/資料庫/網頁。匯入後進入 Power Query 編輯器：可以拆欄、合併欄、移除列、轉置、樞紐/反樞紐、合併查詢（類似 JOIN）、附加查詢（類似 UNION）。</p>
+<h2>常見操作</h2><p>在 Mac 上通常也是從「資料 → 取得資料」進去，再從檔案、資料表或其他來源匯入。進入 Power Query 編輯器後，可以拆欄、合併欄、移除列、轉置、樞紐/反樞紐、合併查詢（類似 JOIN）、附加查詢（類似 UNION）。如果某些資料來源選項和 Windows 畫面不完全一樣，先記住流程概念比硬背選單位置更重要。</p>
 <h2>M 語言</h2><pre><code class="lang-powerquery">let
     來源 = Excel.CurrentWorkbook(){[Name=&quot;訂單&quot;]}[Content],
     篩選 = Table.SelectRows(來源, each [金額] &gt; 1000),
     排序 = Table.Sort(篩選, {{&quot;金額&quot;, Order.Descending}})
 in
     排序</code></pre>
-<h2>為什麼要用</h2><p>傳統複製貼上的工作流程：每個月花 2 小時。用 Power Query 第一次設定 30 分鐘，之後每月「重新整理」按一下，10 秒搞定。</p>
+<h2>為什麼要用</h2><p>傳統複製貼上的工作流程：每個月花 2 小時。用 Power Query 第一次設定 30 分鐘，之後每月按「重新整理」，通常只要幾秒到幾十秒。對 macOS 使用者來說，這也是最值得優先建立的自動化主路線，因為它比一開始就跳進 VBA 更穩、更容易交接。</p>
+<div class="callout"><strong>macOS 重點</strong>Mac 版 Excel 已經能把 Power Query 當成正式工作流主力工具，但不同資料來源的支援深度仍可能和 Windows 有差異。學這課時，請先抓住「可重跑清理流程」這件事，而不是糾結每個按鈕位置是否和別人的 Windows 螢幕完全相同。</div>
 
 
     </article>

@@ -29,7 +29,7 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">綜合挑戰：跨章節整合題目練習</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上！這些題目模擬真實工作場景，每題都會用到 3+ 個函數。</p><h2>挑戰 1：年資與獎金</h2><p>員工表有「入職日期」和「年薪」兩欄。要算出：① 滿幾年（DATEDIF）② 年資 ≥ 3 年的人 ③ 每人應發獎金（IFS 分級）④ 全公司獎金加總（SUMIFS）。</p>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上。這些題目模擬真實工作場景，但對 macOS 使用者來說，更重要的是練「選對工具」而不是每題都硬塞進同一種解法。</p><h2>挑戰 1：年資與獎金</h2><p>員工表有「入職日期」和「年薪」兩欄。要算出：① 滿幾年（DATEDIF）② 年資 ≥ 3 年的人 ③ 每人應發獎金（IFS 分級）④ 全公司獎金加總（SUMIFS）。</p>
 <h2>挑戰 2：跨表查詢</h2><p>訂單表只有「商品代號」，商品表有「代號→名稱→價格」。要：① 用 XLOOKUP 帶出商品名 ② 帶出單價 ③ 算小計 ④ 用樞紐做月報。</p>
 <h2>挑戰 3：動態儀表板</h2><pre><code class="lang-excel"># 給定銷售明細，做一個 Dashboard：
 =UNIQUE(銷售[業務員])           # 列出所有業務員
@@ -37,7 +37,8 @@
 =RANK(B2, B:B)                    # 排名
 =LARGE(銷售[金額], 1)             # 最高一筆
 # 加上條件式格式 + 走勢圖 = 完整儀表板</code></pre>
-<h2>挑戰 4：自動化清單</h2><p>每月收到 N 個分公司的 .csv → 用 Power Query 合併 → 用樞紐分析 → 用 VBA 一鍵更新 + 寄信。這是一個完整的「自動化報表系統」。</p>
+<h2>挑戰 4：自動化清單</h2><p>每月收到 N 個分公司的 `.csv` → 用 Power Query 合併 → 用樞紐分析 → 用 VBA 一鍵更新報表。這是一個完整的「自動化報表系統」。如果你在 macOS 上，這題的主軸應放在 Query + 樞紐 + VBA 更新工作簿，不要把重點放在 Windows 才常見的 Outlook / COM 郵件整合。</p>
+<div class="callout"><strong>建議作答方式</strong>做綜合挑戰時，先問自己：這題比較像公式題、彙總題、可重跑清資料題，還是 Excel 內部自動化題。你如果能先選對工具，再開始做題，就已經比只會堆功能更接近真正專業。</div>
 
 
     </article>
