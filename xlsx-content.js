@@ -81,7 +81,7 @@ export const XLSX_CONTENT = {
       "title": "📋 編輯",
       "items": [
        {
-        "key": "⌘ + D",
+        "key": "⌃ + D",
         "desc": "向下填滿",
         "note": "複製上方儲存格內容"
        },
@@ -111,9 +111,9 @@ export const XLSX_CONTENT = {
         "note": "Windows 是 Alt+Enter"
        },
        {
-        "key": "⌃ + U 或 F2",
+        "key": "F2 或 fn+F2",
         "desc": "進入編輯模式",
-        "note": "不用雙擊就能編輯"
+        "note": "官方主路線是 F2；MacBook 常要搭配 fn"
        },
        {
         "key": "⌘ + T",
@@ -131,9 +131,9 @@ export const XLSX_CONTENT = {
       "title": "⚡ 效率神技",
       "items": [
        {
-        "key": "⌘ + T（選取資料時）",
+        "key": "⌃ + T / ⌃ + L（選取資料時）",
         "desc": "轉換為表格",
-        "note": "⚠️ 注意：⌘+T 在公式中=切換參照，在資料上=轉表格"
+        "note": "⚠️ 注意：⌘+T 在公式中=切換參照；建立表格請用 ⌃+T 或 ⌃+L"
        },
        {
         "key": "⌘ + ⇧ + T",
@@ -208,7 +208,7 @@ export const XLSX_CONTENT = {
        {
         "key": "VBA 編輯器",
         "desc": "工具 → 巨集 → Visual Basic 編輯器",
-        "note": "⚠️ Mac 沒有 Alt+F11！用選單開啟"
+        "note": "⚠️ Mac 不走 Alt+F11；請用 ⌥+F11 或從工具選單開啟"
        },
        {
         "key": "UserForm",
@@ -251,7 +251,7 @@ export const XLSX_CONTENT = {
        {
         "key": "儲存格編輯",
         "desc": "",
-        "note": "輸入/刪除/複製貼上、⌘+D 向下填滿、⌘+R 向右填滿"
+        "note": "輸入/刪除/複製貼上、⌃+D 向下填滿、⌘+R 向右填滿"
        },
        {
         "key": "公式建立",
@@ -261,7 +261,7 @@ export const XLSX_CONTENT = {
        {
         "key": "表格操作",
         "desc": "",
-        "note": "⌘+T 建立表格、⌘+⇧+L 開關篩選、排序（KeyTips 觸發）"
+        "note": "⌃+T 建立表格、⌘+⇧+L 開關篩選、排序（KeyTips 觸發）"
        },
        {
         "key": "格式化",
@@ -331,7 +331,7 @@ export const XLSX_CONTENT = {
        {
         "key": "第 2 週",
         "desc": "",
-        "note": "⌘+T 表格 + ⌘+⇧+T 自動SUM + ⌘+1 格式化 + ⌘+⇧+L 篩選"
+        "note": "⌃+T 表格 + ⌘+⇧+T 自動SUM + ⌘+1 格式化 + ⌘+⇧+L 篩選"
        },
        {
         "key": "第 3 週",
@@ -373,9 +373,9 @@ export const XLSX_CONTENT = {
         "note": "完整支援，與 Excel 相同"
        },
        {
-        "key": "⌘+T 建立表格",
-        "desc": "⌘+T",
-        "note": "⌘+T（大致相同）"
+        "key": "⌃+T / ⌃+L 建立表格",
+        "desc": "⌃+T 或 ⌃+L",
+        "note": "WPS 快捷鍵可能依版本不同，建議以選單操作為主"
        },
        {
         "key": "切換絕對參照（$）",
@@ -444,6 +444,126 @@ export const XLSX_CONTENT = {
       "items": []
      }
     ]
+   },
+   "knowledge": {
+    "title": "⌨️ 新手熱身路線",
+    "subtitle": "難度：🟢 Lv.1  |  先把最常用的 6 組操作練成反射  |  不求快，先求穩",
+    "sections": [
+     {
+      "title": "📌 先練這 6 組就夠了",
+      "items": [
+       [
+        "1. 存檔 / 復原",
+        "⌘+S、⌘+Z",
+        "先養成隨時存檔與敢試錯的節奏"
+       ],
+       [
+        "2. 跳邊界",
+        "⌘+方向鍵",
+        "在有資料的表格裡快速移動，比滑鼠快很多"
+       ],
+       [
+        "3. 選整欄 / 整列",
+        "⌃+Space、⇧+Space",
+        "整理資料與套格式時超常用"
+       ],
+       [
+        "4. 編輯儲存格",
+        "F2 或 fn+F2",
+        "進入編輯模式，不用再雙擊儲存格"
+       ],
+       [
+        "5. 向下填滿",
+        "⌃+D",
+        "把公式或內容快速複製到下方"
+       ],
+       [
+        "6. 搜尋",
+        "⌘+F",
+        "表格大了以後，先找再動手"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 10 分鐘案例：整理一張名單",
+      "items": [
+       [
+        "情境",
+        "你拿到一張員工名單，要快速檢查資料、插入新列、搜尋特定姓名"
+       ],
+       [
+        "起手式",
+        "先按 ⌘+方向鍵確認資料邊界，再用 ⇧ 搭配方向鍵做選取"
+       ],
+       [
+        "中段操作",
+        "需要補欄位時用 ⌃+⇧+= 插入列或欄；要改內容先按 F2"
+       ],
+       [
+        "結尾",
+        "最後用 ⌘+F 搜尋關鍵字，確認你剛剛補的資料有沒有到位"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 新手最容易卡住的地方",
+      "items": [
+       [
+        "按了沒反應",
+        "先檢查是不是在中文輸入法組字中，或 F 鍵沒有開標準功能鍵"
+       ],
+       [
+        "方向鍵變成捲動畫面",
+        "可能是 Scroll Lock 狀態異常，先切回正常工作表焦點"
+       ],
+       [
+        "記不起來太多鍵",
+        "不要一次背 20 個。先背 3 個，每天強迫自己用一次"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     {
+      "num": 1,
+      "difficulty": "🟢 暖身",
+      "desc": "開一張任意工作表，連續做 3 次：⌘+S 存檔 → ⌘+Z 復原 → 再輸入一個值"
+     },
+     {
+      "num": 2,
+      "difficulty": "🟢 暖身",
+      "desc": "在有資料的區塊中，練習用 ⌘+→ / ⌘+↓ 跳到資料邊界，再用 ⌘+← / ⌘+↑ 回來"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵 標準",
+      "desc": "選一整欄後插入新欄，再用 F2 編輯其中一格內容，不用滑鼠完成"
+     },
+     {
+      "num": 4,
+      "difficulty": "🔵 標準",
+      "desc": "在 A1 輸入公式或文字後，用 ⌃+D 向下填滿到 A10，感受和拖曳填滿的差異"
+     },
+     {
+      "num": 5,
+      "difficulty": "🟡 變化",
+      "desc": "做一次完整小流程：搜尋姓名 → 編輯內容 → 插入一列 → 存檔"
+     },
+     {
+      "num": 6,
+      "difficulty": "🟡 變化",
+      "desc": "把今天最常用的 3 個快捷鍵寫進筆記區，明天只強迫自己用這 3 個"
+     }
+    ]
+   },
+   "meta": {
+    "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
+    "stage": "第 1 階段",
+    "topics": "導航 / 選取 / 編輯 / 搜尋 / 表格基本操作",
+    "difficulty": "🟢 Lv.1",
+    "taskCount": "6 題",
+    "time": "15 分鐘",
+    "xp": "150 XP"
    }
   },
   "P1-02": {
@@ -1573,7 +1693,7 @@ export const XLSX_CONTENT = {
       "items": [
        [
         "Step 1",
-        "選取資料範圍（建議先轉為表格 ⌘+T）"
+        "選取資料範圍（建議先轉為表格 ⌃+T 或 ⌃+L）"
        ],
        [
         "Step 2",
@@ -1615,6 +1735,27 @@ export const XLSX_CONTENT = {
         "放全域篩選條件",
         "出現在樞紐表上方的下拉選單",
         "適合放年度、部門等大範圍篩選"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 典型案例：月業績彙總",
+      "items": [
+       [
+        "原始資料",
+        "每一列是一筆交易，欄位有：部門、月份、產品、金額"
+       ],
+       [
+        "你想回答的問題",
+        "哪個部門在每個月份的總業績最高？"
+       ],
+       [
+        "樞紐配置",
+        "列放部門、欄放月份、值放金額加總、篩選可放地區或付款狀態"
+       ],
+       [
+        "做完後的結果",
+        "原本幾百筆流水帳，會變成一張 2~3 秒就看懂的交叉表"
        ]
       ]
      },
@@ -1679,7 +1820,7 @@ export const XLSX_CONTENT = {
      {
       "num": 1,
       "difficulty": "🟢 暖身",
-      "desc": "在「📈 條件統計」工作表的訂單資料上，按 ⌘+T 轉為表格，再插入樞紐分析表"
+      "desc": "在「📈 條件統計」工作表的訂單資料上，按 ⌃+T 或 ⌃+L 轉為表格，再插入樞紐分析表"
      },
      {
       "num": 2,
@@ -2386,7 +2527,7 @@ export const XLSX_CONTENT = {
       "items": [
        [
         "動態圖表",
-        "資料轉表格 (⌘+T) → 圖表會自動更新範圍"
+        "資料轉表格 (⌃+T / ⌃+L) → 圖表會自動更新範圍"
        ],
        [
         "圖表範本",
@@ -2509,11 +2650,11 @@ export const XLSX_CONTENT = {
       ]
      },
      {
-      "title": "📊 表格功能（⌘+T）",
+      "title": "📊 表格功能（⌃+T / ⌃+L）",
       "items": [
        [
         "建立",
-        "選取資料 → ⌘+T → 確認範圍",
+        "選取資料 → ⌃+T 或 ⌃+L → 確認範圍",
         "自動加上篩選、格式、結構化參照"
        ],
        [
@@ -2565,7 +2706,7 @@ export const XLSX_CONTENT = {
      {
       "num": 2,
       "difficulty": "🟢 暖身",
-      "desc": "選取任意資料範圍 → ⌘+T 轉為表格 → 觀察公式欄自動變成結構化參照"
+      "desc": "選取任意資料範圍 → ⌃+T 或 ⌃+L 轉為表格 → 觀察公式欄自動變成結構化參照"
      },
      {
       "num": 3,
@@ -3501,6 +3642,27 @@ export const XLSX_CONTENT = {
       ]
      },
      {
+      "title": "🎯 典型案例：每月合併各分店 CSV",
+      "items": [
+       [
+        "原始狀況",
+        "每個分店每月都丟一份 CSV，欄位名稱差不多，但格式不乾淨"
+       ],
+       [
+        "Power Query 要做的事",
+        "從資料夾匯入 → 合併所有檔案 → 去掉空列 → 統一日期與數值格式 → 載入表格"
+       ],
+       [
+        "你最後得到什麼",
+        "下個月只要把新檔案放進資料夾，按重新整理就能重跑整套流程"
+       ],
+       [
+        "專業分工",
+        "Power Query 負責清資料；樞紐或圖表負責展示；VBA 只在需要一鍵交付時補上"
+       ]
+      ]
+     },
+     {
       "title": "🚀 進階技巧",
       "items": [
        [
@@ -3595,7 +3757,7 @@ export const XLSX_CONTENT = {
      }
     ]
    },
-   "meta": {
+  "meta": {
     "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
     "stage": "第15階段",
     "topics": "匯入/清洗/合併/從資料夾匯入",
@@ -3605,15 +3767,148 @@ export const XLSX_CONTENT = {
     "xp": "300 XP"
    }
   },
+  "P4-05": {
+   "knowledge": {
+    "title": "🔗 Power Pivot 與資料模型",
+    "subtitle": "難度：🔴 Lv.5  |  建模思維課  |  Mac 以觀念判斷與協作策略為主",
+    "sections": [
+     {
+      "title": "📌 什麼時候真的需要資料模型",
+      "items": [
+       [
+        "多張表",
+        "訂單表、客戶表、商品表分開存放，需要共同分析"
+       ],
+       [
+        "共用指標",
+        "同一個毛利率、同期比較、部門業績，要給多張樞紐一起用"
+       ],
+       [
+        "大量資料",
+        "資料列數越來越大，用公式或單表樞紐開始難維護"
+       ],
+       [
+        "團隊協作",
+        "不想每個人都各自寫一套版本不同的公式"
+       ]
+      ]
+     },
+     {
+      "title": "🧠 核心概念",
+      "items": [
+       [
+        "Fact Table",
+        "交易明細表，通常列數最多，像訂單、出貨、付款"
+       ],
+       [
+        "Dimension Table",
+        "提供分類與描述的表，像客戶、商品、日期、部門"
+       ],
+       [
+        "Relationship",
+        "用共同欄位把表連起來，例如 訂單[客戶ID] → 客戶[客戶ID]"
+       ],
+       [
+        "Measure",
+        "寫在模型裡的計算邏輯，例如 總業績、毛利率、去年同期"
+       ],
+       [
+        "Calculated Column",
+        "逐列算出的新欄位，適合列層級標記，不適合所有彙總場景"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 典型案例：訂單 / 客戶 / 商品三表分析",
+      "items": [
+       [
+        "原始表",
+        "訂單表有金額與商品ID，客戶表有客戶等級，商品表有類別與成本"
+       ],
+       [
+        "想回答的問題",
+        "高價值客戶在各商品類別的毛利貢獻是多少？"
+       ],
+       [
+        "傳統做法",
+        "多欄 VLOOKUP / XLOOKUP 串接，欄位一改就容易壞"
+       ],
+       [
+        "資料模型做法",
+        "先建關聯，再用 Measure 統一計算毛利與貢獻度，樞紐只負責展示"
+       ]
+      ]
+     },
+     {
+      "title": "🍎 Mac 使用者的決策路線",
+      "items": [
+       [
+        "先撐住",
+        "如果只是兩表、三表的小型分析，先用 Power Query + 樞紐 + XLOOKUP"
+       ],
+       [
+        "需要建模",
+        "一旦需要共用量值或多表關聯，就要評估 Windows Excel 或 Power BI"
+       ],
+       [
+        "團隊協作",
+        "Mac 端最重要的能力不是硬做 Power Pivot，而是知道何時該交給適合的工具"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     {
+      "num": 1,
+      "difficulty": "🟢 暖身",
+      "desc": "拿一個你常見的報表題目，先判斷它是單表問題還是多表關聯問題"
+     },
+     {
+      "num": 2,
+      "difficulty": "🟢 暖身",
+      "desc": "畫一張簡單關聯圖：訂單表連到客戶表、商品表，各自用哪個 ID 連接"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵 標準",
+      "desc": "列出 3 個你常重複計算的指標，思考哪些適合做成 Measure，哪些只是一般欄位"
+     },
+     {
+      "num": 4,
+      "difficulty": "🔵 標準",
+      "desc": "用 Power Query 先整理兩張表，再評估這個題目是否真的需要 Data Model"
+     },
+     {
+      "num": 5,
+      "difficulty": "🟡 變化",
+      "desc": "把「傳統公式串表」和「資料模型建關聯」各寫出 3 個優缺點，建立工具判斷力"
+     },
+     {
+      "num": 6,
+      "difficulty": "🔴 挑戰",
+      "desc": "找一個跨部門或跨月份分析需求，寫下：若在 Mac 上完成，你會選 Power Query + 樞紐、請 Windows 同事協作，還是直接用 Power BI，並說明理由"
+     }
+    ]
+   },
+   "meta": {
+    "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
+    "stage": "第16階段",
+    "topics": "資料模型 / 關聯 / Measure / DAX 判斷力",
+    "difficulty": "🔴 Lv.5",
+    "taskCount": "6 題",
+    "time": "20 分鐘",
+    "xp": "250 XP"
+   }
+  },
   "P5-01": {
    "vba": {
     "title": "⚙️ VBA 基礎  ─  變數 / 迴圈 / 條件 / 儲存格操作",
-    "subtitle": "難度：🟡 Lv.3  |  複製程式碼到 VBE（Alt+F11）執行",
-    "warning": "⚠️ macOS 注意：VBA 編輯器從「工具→巨集→Visual Basic 編輯器」開啟（沒有 Alt+F11）。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
+    "subtitle": "難度：🟡 Lv.3  |  複製程式碼到 VBE 執行（Mac 可用 ⌥+F11 或從工具選單開啟）",
+    "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
     "quickOps": [
      {
       "op": "開啟 VBE",
-      "how": "Alt + F11"
+      "how": "⌥ + F11 或 工具 → 巨集 → Visual Basic 編輯器"
      },
      {
       "op": "插入模組",
@@ -3855,7 +4150,7 @@ export const XLSX_CONTENT = {
    "vba": {
     "title": "🔧 VBA 進階  ─  陣列 / 字典 / 錯誤處理 / 事件",
     "subtitle": "難度：🟠 Lv.4  |  這些技巧讓你從「會用」升級到「很強」",
-    "warning": "⚠️ macOS 注意：VBA 編輯器從「工具→巨集→Visual Basic 編輯器」開啟（沒有 Alt+F11）。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
+    "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
     "quickOps": [],
     "microTasks": [
      {
@@ -4062,9 +4357,9 @@ export const XLSX_CONTENT = {
   },
   "P5-03": {
    "vba": {
-    "title": "🏗️ VBA 實戰  ─  UserForm / 自動報表 / 實務範本",
+    "title": "🏗️ VBA 實戰  ─  輸入流程 / 自動報表 / 實務範本",
     "subtitle": "難度：🔴 Lv.5  |  做完這裡，你就能教別人了",
-    "warning": "⚠️ macOS 注意：VBA 編輯器從「工具→巨集→Visual Basic 編輯器」開啟（沒有 Alt+F11）。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
+    "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm，也不要把 Windows 的 Outlook COM 自動化當成主路線；請優先用 InputBox、工作表表單、PDF 匯出與檔案流程。",
     "quickOps": [],
     "microTasks": [
      {
@@ -4097,28 +4392,24 @@ export const XLSX_CONTENT = {
       "tip": "💡 實務中最常見的需求：自動匯總+產生報表"
      },
      {
-      "title": "實戰 2：UserForm 資料輸入介面",
+      "title": "實戰 2：InputBox 快速輸入流程",
       "time": "⏱ 5 分鐘",
       "code": [
-       "' ⚠️ 先在 VBE 插入 UserForm，加入：",
-       "' TextBox1 (姓名), TextBox2 (金額), CommandButton1 (送出)",
-       "' 在 UserForm 的程式碼中：",
-       "Private Sub CommandButton1_Click()",
+       "Sub QuickEntry()",
+       "Dim userName As String, amountText As String",
        "Dim nextRow As Long",
+       "userName = InputBox(\"請輸入姓名\")",
+       "If userName = \"\" Then Exit Sub",
+       "amountText = InputBox(\"請輸入金額\")",
+       "If amountText = \"\" Then Exit Sub",
        "nextRow = Cells(Rows.Count, 1).End(xlUp).Row + 1",
-       "Cells(nextRow, 1).Value = TextBox1.Value",
-       "Cells(nextRow, 2).Value = CDbl(TextBox2.Value)",
+       "Cells(nextRow, 1).Value = userName",
+       "Cells(nextRow, 2).Value = CDbl(amountText)",
        "Cells(nextRow, 3).Value = Now()",
        "MsgBox \"已新增！\"",
-       "TextBox1.Value = \"\"",
-       "TextBox2.Value = \"\"",
-       "End Sub",
-       "' 在一般模組中（開啟表單）：",
-       "Sub ShowForm()",
-       "UserForm1.Show",
        "End Sub"
       ],
-      "tip": "💡 UserForm 讓非技術同事也能安全輸入資料"
+      "tip": "💡 這是 Mac 可走的安全做法：不用 UserForm，也能快速建立半自動輸入流程"
      },
      {
       "title": "實戰 3：匯出所有工作表為 PDF",
@@ -4127,7 +4418,7 @@ export const XLSX_CONTENT = {
        "Sub ExportAllToPDF()",
        "Dim ws As Worksheet",
        "Dim path As String",
-       "path = ThisWorkbook.Path & \"\\\"",
+       "path = ThisWorkbook.Path & Application.PathSeparator",
        "For Each ws In ThisWorkbook.Worksheets",
        "ws.ExportAsFixedFormat _",
        "Type:=xlTypePDF, _",
@@ -4140,23 +4431,21 @@ export const XLSX_CONTENT = {
       "tip": "💡 批次匯出 PDF 是辦公室最受歡迎的自動化之一"
      },
      {
-      "title": "實戰 4：自動寄送 Email（透過 Outlook）",
+      "title": "實戰 4：建立交付資料夾與輸出摘要",
       "time": "⏱ 3 分鐘",
       "code": [
-       "Sub SendEmail()",
-       "Dim olApp As Object, olMail As Object",
-       "Set olApp = CreateObject(\"Outlook.Application\")",
-       "Set olMail = olApp.CreateItem(0)",
-       "With olMail",
-       ".To = \"colleague@company.com\"",
-       ".Subject = \"自動報表 \" & Format(Date, \"YYYY/MM/DD\")",
-       ".Body = \"附件為今日報表，請查閱。\"",
-       ".Attachments.Add ThisWorkbook.FullName",
-       ".Display  ' 改成 .Send 直接寄出",
-       "End With",
+       "Sub PrepareDelivery()",
+       "Dim folderPath As String",
+       "folderPath = ThisWorkbook.Path & _",
+       "Application.PathSeparator & \"exports\"",
+       "If Dir(folderPath, vbDirectory) = \"\" Then MkDir folderPath",
+       "Range(\"H1\").Value = \"交付摘要\"",
+       "Range(\"H2\").Value = \"輸出路徑：\" & folderPath",
+       "Range(\"H3\").Value = \"產出日期：\" & Format(Now(), \"yyyy/mm/dd hh:mm\")",
+       "MsgBox \"交付資料夾已準備好：\" & vbCrLf & folderPath",
        "End Sub"
       ],
-      "tip": "💡 透過 Outlook 物件模型自動建立郵件"
+      "tip": "💡 先把輸出路徑、檔名規則與交付摘要整理穩，比直接碰 Windows 專屬郵件自動化更實用"
      },
      {
       "title": "實戰 5：建立工作表目錄（含超連結）",
@@ -4281,7 +4570,7 @@ export const XLSX_CONTENT = {
      {
       "num": 6,
       "difficulty": "🟡 變化",
-      "desc": "寫一個 Ribbon 自訂按鈕（⚠️ Mac 限制：用工具→巨集→指定鍵盤快速鍵替代）"
+      "desc": "替常用巨集建立啟動入口：工作表按鈕、快速存取工具列，或指定鍵盤快速鍵（Mac 不走 Windows Ribbon 自訂主路線）"
      },
      {
       "num": 7,

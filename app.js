@@ -16,6 +16,27 @@ const LESSON_SEQUENCE = [
   "P4-01","P4-02","P4-03","P4-04","P4-05",
   "P5-01","P5-02","P5-03","P5-04",
 ];
+const LESSON_WORKBOOK_MAP = {
+  "P1-02": "P1-02 📊 基礎函式",
+  "P1-03": "P1-03 📐 條件判斷",
+  "P2-01": "P2-01 📈 條件統計",
+  "P2-02": "P2-02 🔍 查找比對",
+  "P2-03": "P2-03 📊 樞紐分析表",
+  "P2-04": "P2-04 🎨 條件式格式化",
+  "P3-01": "P3-01 ✅ 資料驗證",
+  "P3-02": "P3-02 ✂️ 文字與日期",
+  "P3-03": "P3-03 📈 圖表設計",
+  "P3-04": "P3-04 🔗 命名範圍",
+  "P3-05": "P3-05 🛡️ 保護與安全",
+  "P4-01": "P4-01 🔢 陣列與動態",
+  "P4-02": "P4-02 🧮 進階函式",
+  "P4-03": "P4-03 🧩 假設分析",
+  "P4-04": "P4-04 ⚡ Power Query",
+  "P5-01": "P5-01 ⚙️ VBA 基礎",
+  "P5-02": "P5-02 🔧 VBA 進階",
+  "P5-03": "P5-03 🏗️ VBA 實戰",
+  "P5-04": "P5-04 🏆 綜合挑戰",
+};
 const LESSON_GUIDE = {
   "P1-01": {
     focus: "先把手從滑鼠搬回鍵盤，建立最基本的 Excel 操作節奏。",
@@ -129,7 +150,7 @@ const LESSON_PRO_NOTES = {
     eyebrow: "Professional Default",
     items: [
       "這站以 macOS Excel 為主路線。你在這裡學到的快捷鍵，預設就是 Mac 版 Excel 的實際按法，不是從 Windows 翻譯過來的。",
-      "先把 ⌘ S / ⌘ Z / ⌘+方向鍵 / ⌃ U 這幾個練成反射，後面學公式時才不會一直被操作介面卡住。",
+      "先把 ⌘ S / ⌘ Z / ⌘+方向鍵 / F2 這幾個練成反射，後面學公式時才不會一直被操作介面卡住。",
       "WPS Office 的說明是補充資訊，不是主路線。如果你主要用 Excel for Mac，照 Excel 欄位的做法走即可。",
     ],
   },
@@ -545,6 +566,8 @@ function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"
     btn.classList.add("tool-btn");
     var icon = (btn.textContent || "").trim();
     btn.innerHTML = '<span class="tool-btn-icon">' + escHtml(icon) + '</span><span class="tool-btn-label">' + labels[id] + '</span>';
+    btn.setAttribute("aria-label", labels[id]);
+    btn.title = labels[id];
   });
 })();
 
@@ -565,6 +588,8 @@ function syncTheme(){
   } else {
     themeBtn.textContent = icon;
   }
+  themeBtn.setAttribute("aria-label", "切換到" + label + "模式");
+  themeBtn.title = "切換到" + label + "模式";
 }
 themeBtn?.addEventListener("click", () => {
   const cur = document.documentElement.dataset.theme === "dark" ? "" : "dark";
@@ -625,6 +650,11 @@ initChecklist();
   const lesson = document.querySelector(".lesson");
   const checklist = lesson?.querySelector(".checklist");
   if (!lesson || !checklist || lesson.querySelector(".lesson-kickoff")) return;
+  const slug = document.body?.dataset.lessonSlug || "";
+  const workbookSheet = LESSON_WORKBOOK_MAP[slug] || "";
+  const workbookNote = workbookSheet
+    ? `這課有對應的練習簿工作表：${workbookSheet}`
+    : "這課目前沒有對應的練習簿工作表，先跟著本頁案例與任務清單做就好。";
 
   const tasks = [...checklist.querySelectorAll("label .txt")]
     .map(el => (el.textContent || "").trim())
@@ -640,8 +670,12 @@ initChecklist();
         <div class="lesson-kickoff-eyebrow">開始前先看這裡</div>
         <h2 class="lesson-kickoff-title">先完成這 ${tasks.length} 件事</h2>
       </div>
-      <button type="button" class="btn lesson-kickoff-btn">開始任務</button>
+      <div class="lesson-kickoff-actions">
+        <button type="button" class="btn primary lesson-kickoff-btn">去做練習</button>
+        ${workbookSheet ? `<a class="btn lesson-kickoff-btn secondary" href="${DEPTH}practice.xlsx" download>打開練習簿</a>` : ""}
+      </div>
     </div>
+    <div class="lesson-kickoff-guidance">建議節奏：先看 TL;DR 與這課案例，再做第一題，最後回來把任務打勾。</div>
     <div class="lesson-kickoff-list">
       ${tasks.map((task, i) => `
         <div class="lesson-kickoff-item">
@@ -650,9 +684,22 @@ initChecklist();
         </div>
       `).join("")}
     </div>
+    <div class="lesson-kickoff-workbook">
+      <strong>練習方式</strong>
+      <span>${escHtml(workbookNote)}</span>
+    </div>
   `;
 
   box.querySelector(".lesson-kickoff-btn")?.addEventListener("click", () => {
+    const practiceTab = document.querySelector('.lt-tab[data-tab="practice"]');
+    if (practiceTab) {
+      practiceTab.click();
+      setTimeout(() => {
+        const activePanel = document.querySelector('.lt-panel.is-active');
+        activePanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+      return;
+    }
     checklist.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
