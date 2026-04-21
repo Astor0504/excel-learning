@@ -105,9 +105,14 @@
     // 6. 顯示：從 localStorage 讀；第一次進課時，若有練習 tab 就優先打開練習
     var saved = null;
     try { saved = localStorage.getItem(KEY); } catch(e){}
+    var preferred = lesson.getAttribute('data-default-tab')
+      || document.body.getAttribute('data-default-tab')
+      || null;
     var initial = saved && panels[saved]
       ? saved
-      : (panels.practice ? 'practice' : tabs[0].id);
+      : (preferred && panels[preferred]
+        ? preferred
+        : (panels.practice ? 'practice' : tabs[0].id));
     show(initial, false);
 
     function show(id, persist){

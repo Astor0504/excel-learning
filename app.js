@@ -652,6 +652,7 @@ initChecklist();
   const lesson = document.querySelector(".lesson");
   const checklist = lesson?.querySelector(".checklist");
   if (!lesson || !checklist || lesson.querySelector(".lesson-kickoff")) return;
+  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
   const slug = document.body?.dataset.lessonSlug || "";
   const workbookSheet = LESSON_WORKBOOK_MAP[slug] || "";
   const workbookNote = workbookSheet
@@ -705,7 +706,9 @@ initChecklist();
     checklist.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
+  const anchor = isEditorial
+    ? lesson.querySelector(".md-body")
+    : (lesson.querySelector(".tldr") || lesson.querySelector(".progress-label"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
 
@@ -741,6 +744,7 @@ initChecklist();
 (function(){
   const lesson = document.querySelector(".lesson");
   if (!lesson || lesson.querySelector(".lesson-compass")) return;
+  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
 
   const slug = document.body?.dataset.lessonSlug || "";
   if (!slug || !LESSON_GUIDE[slug]) return;
@@ -812,7 +816,9 @@ initChecklist();
     </div>
   `;
 
-  const anchor = lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr");
+  const anchor = isEditorial
+    ? (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
+    : (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
 
@@ -820,6 +826,7 @@ initChecklist();
 (function(){
   const lesson = document.querySelector(".lesson");
   if (!lesson || lesson.querySelector(".lesson-pro-note")) return;
+  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
   const slug = document.body?.dataset.lessonSlug || "";
   const note = LESSON_PRO_NOTES[slug];
   if (!note) return;
@@ -841,7 +848,9 @@ initChecklist();
     </div>
   `;
 
-  const anchor = lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff");
+  const anchor = isEditorial
+    ? (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
+    : (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
 
