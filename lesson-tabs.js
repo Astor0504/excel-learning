@@ -102,10 +102,12 @@
       panels[t.id] = panel;
     });
 
-    // 6. 顯示：從 localStorage 讀，或預設第一個（優先非 study，若進度為 0 則 study）
+    // 6. 顯示：從 localStorage 讀；第一次進課時，若有練習 tab 就優先打開練習
     var saved = null;
     try { saved = localStorage.getItem(KEY); } catch(e){}
-    var initial = saved && panels[saved] ? saved : tabs[0].id;
+    var initial = saved && panels[saved]
+      ? saved
+      : (panels.practice ? 'practice' : tabs[0].id);
     show(initial, false);
 
     function show(id, persist){
