@@ -46,6 +46,49 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       if (token) node.classList.add('is-' + token);
     });
   }
+  function columnLabelToIndex(label){
+    var s = String(label || '').toUpperCase().replace(/[^A-Z]/g,'');
+    var n = 0;
+    for (var i = 0; i < s.length; i++) n = n * 26 + (s.charCodeAt(i) - 64);
+    return n ? n - 1 : -1;
+  }
+  function parseCellRef(ref){
+    var m = String(ref || '').toUpperCase().match(/^([A-Z]+)(\d+)$/);
+    if (!m) return null;
+    return { col: columnLabelToIndex(m[1]), row: Math.max(0, parseInt(m[2], 10) - 1) };
+  }
+  function syncSheetScene(card){
+    var stage = card.querySelector('.xc-demo-sheet-stage');
+    var win = card.querySelector('.xc-demo-sheet-window');
+    if (!stage || !win) return;
+    var active = win.querySelector('.xc-demo-sheet-cell.is-active');
+    var rowHeads = win.querySelectorAll('.xc-demo-sheet-rowhead');
+    var colHeads = win.querySelectorAll('.xc-demo-sheet-colhead');
+    rowHeads.forEach(function(node){ node.classList.remove('is-active'); });
+    colHeads.forEach(function(node){ node.classList.remove('is-active'); });
+
+    if (active) {
+      var rowIndex = active.parentNode ? (active.parentNode.rowIndex - 1) : -1;
+      var colIndex = typeof active.cellIndex === 'number' ? active.cellIndex - 1 : -1;
+      if (rowHeads[rowIndex]) rowHeads[rowIndex].classList.add('is-active');
+      if (colHeads[colIndex]) colHeads[colIndex].classList.add('is-active');
+
+      var cursor = win.querySelector('.xc-demo-sheet-cursor');
+      if (cursor) {
+        var winRect = win.getBoundingClientRect();
+        var cellRect = active.getBoundingClientRect();
+        cursor.style.setProperty('--cursor-x', Math.round(cellRect.left - winRect.left + cellRect.width - 6) + 'px');
+        cursor.style.setProperty('--cursor-y', Math.round(cellRect.top - winRect.top + cellRect.height - 6) + 'px');
+      }
+    }
+
+    stage.classList.remove('is-ready');
+    win.classList.remove('is-ready');
+    requestAnimationFrame(function(){
+      stage.classList.add('is-ready');
+      win.classList.add('is-ready');
+    });
+  }
   // 公式正規化（比較用）
   function normFormula(s){
     return String(s||'').trim().toUpperCase()
@@ -388,11 +431,13 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
         panel.context ? el('span',{class:'xc-demo-sheet-context',text:panel.context}) : null
       ].filter(Boolean))
     ]);
+    var formulaCopy = el('span',{class:'xc-demo-sheet-formula-copy',text:panel.formula || '準備操作這張工作表'});
     var formula = el('div',{class:'xc-demo-sheet-formula'},[
       el('div',{class:'xc-demo-sheet-namebox',text:panel.nameBox || panel.activeCell || 'A1'}),
       el('div',{class:'xc-demo-sheet-fx',text:'fx'}),
-      el('div',{class:'xc-demo-sheet-formula-text',text:panel.formula || '準備操作這張工作表'})
+      el('div',{class:'xc-demo-sheet-formula-text'}, formulaCopy)
     ]);
+    formula.querySelector('.xc-demo-sheet-formula-text').style.setProperty('--formula-chars', Math.max(12, String(panel.formula || '準備操作這張工作表').length));
     var table = el('table',{class:'xc-demo-sheet-grid'});
     var cols = panel.columns || [];
 
@@ -428,6 +473,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     window.appendChild(el('div',{class:'xc-demo-sheet-tabs'},[
       el('span',{class:'xc-demo-sheet-tab is-active',text:panel.sheetName || 'Sheet1'})
     ]));
+    window.appendChild(el('div',{class:'xc-demo-sheet-cursor','aria-hidden':'true'}));
 
     var stageChildren = [window];
     if (panel.sidebar && (panel.sidebar.title || (panel.sidebar.items || []).length)){
@@ -445,6 +491,8 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     shell.appendChild(el('div',{class:'xc-demo-sheet-stage' + (stageChildren.length > 1 ? ' has-side' : '')},stageChildren));
     if (panel.footer) shell.appendChild(el('div',{class:'xc-demo-sheet-footer',text:panel.footer}));
     card.appendChild(shell);
+    requestAnimationFrame(function(){ syncSheetScene(card); });
+    setTimeout(function(){ syncSheetScene(card); }, 160);
     return card;
   }
 
@@ -517,12 +565,18 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     var prevBtn = el('button',{class:'xc-btn ghost',type:'button'},'← 上一步');
     var playBtn = el('button',{class:'xc-btn primary',type:'button','aria-pressed':'false'},'▶ 播放');
     var nextBtn = el('button',{class:'xc-btn ghost',type:'button'},'下一步 →');
+    var meterFill = el('span');
+    var meter = el('div',{class:'xc-demo-meter'},meterFill);
     var status = el('span',{class:'xc-demo-status'});
     var shell = el('div',{class:'xc-demo-controls'},[
       el('div',{class:'xc-demo-transport'},[prevBtn, playBtn, nextBtn]),
-      status
+      el('div',{class:'xc-demo-controls-side'},[meter, status])
     ]);
 
+    function updateMeter(){
+      meterFill.style.width = totalSteps ? (((index + 1) / totalSteps) * 100) + '%' : '0%';
+      meter.classList.toggle('is-playing', !!timer);
+    }
     function stop(){
       if (timer) {
         clearInterval(timer);
@@ -531,6 +585,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       playBtn.textContent = '▶ 播放';
       playBtn.setAttribute('aria-pressed','false');
       shell.classList.remove('is-playing');
+      updateMeter();
     }
     function setIndex(nextIndex){
       index = Math.max(0, Math.min(totalSteps - 1, nextIndex));
@@ -538,6 +593,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       status.textContent = '步驟 ' + (index + 1) + ' / ' + totalSteps;
       prevBtn.disabled = index === 0;
       nextBtn.disabled = index === totalSteps - 1;
+      updateMeter();
     }
     function step(delta){
       stop();
@@ -554,6 +610,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       playBtn.textContent = '⏸ 暫停';
       playBtn.setAttribute('aria-pressed','true');
       shell.classList.add('is-playing');
+      updateMeter();
       timer = setInterval(function(){
         if (index >= totalSteps - 1) {
           stop();
