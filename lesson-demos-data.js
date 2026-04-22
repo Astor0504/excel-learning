@@ -112,15 +112,54 @@ export const LESSON_DEMOS = {
           text: "先確認每欄都有欄位名，而且沒有空白欄與合併儲存格。樞紐分析吃的是乾淨欄位，不是漂亮排版。",
           panels: [
             {
-              title: "原始資料",
-              columns: ["部門", "月份", "業績"],
+              type: "sheet",
+              title: "Sales 原始資料工作表",
+              sheetName: "Sales",
+              nameBox: "B3",
+              formula: "站在資料區內任一格，準備插入樞紐分析表",
+              columns: ["A", "B", "C"],
               rows: [
-                ["電子", "1月", "120,000"],
-                ["電子", "2月", "95,000"],
-                ["家電", "1月", "80,000"],
-                ["家電", "2月", "110,000"],
-                ["電子", "1月", "60,000"]
-              ]
+                [
+                  { text: "部門", tone: "header selection" },
+                  { text: "月份", tone: "header selection" },
+                  { text: "業績", tone: "header selection" }
+                ],
+                [
+                  { text: "電子", tone: "selection" },
+                  { text: "1月", tone: "selection" },
+                  { text: "120,000", tone: "selection result" }
+                ],
+                [
+                  { text: "電子", tone: "selection" },
+                  { text: "2月", tone: "selection" },
+                  { text: "95,000", tone: "selection" }
+                ],
+                [
+                  { text: "家電", tone: "selection" },
+                  { text: "1月", tone: "selection" },
+                  { text: "80,000", tone: "selection" }
+                ],
+                [
+                  { text: "家電", tone: "selection" },
+                  { text: "2月", tone: "selection" },
+                  { text: "110,000", tone: "selection result" }
+                ],
+                [
+                  { text: "電子", tone: "selection" },
+                  { text: "1月", tone: "selection" },
+                  { text: "60,000", tone: "selection result" }
+                ]
+              ],
+              activeCell: "B3",
+              sidebar: {
+                title: "這一步先檢查",
+                items: [
+                  "第一列要是欄位名",
+                  "中間不要有空白欄或合併儲存格",
+                  "最好先整理成 Table 再做樞紐"
+                ]
+              },
+              footer: "Excel 會從你目前站的位置往外抓資料範圍，所以只要站在資料裡就好。"
             }
           ],
           caption: "這時候資料還是一筆一筆的交易，看不出總結。"
@@ -132,12 +171,30 @@ export const LESSON_DEMOS = {
           text: "Excel 會保留原始資料，另外開一個樞紐分析表空白畫布。重點不是複製貼上，而是建立一個可重算的彙總視圖。",
           panels: [
             {
-              title: "新畫布會出現",
-              lines: [
-                "資料來源：整張原始資料表",
-                "位置：新工作表或目前工作表",
-                "狀態：先得到一張空的樞紐畫布"
-              ]
+              type: "sheet",
+              title: "Pivot 新工作表",
+              sheetName: "Pivot",
+              nameBox: "A3",
+              formula: "PivotTable from Table1",
+              columns: ["A", "B", "C", "D"],
+              rows: [
+                ["", "", "", ""],
+                ["", "", "", ""],
+                [{ text: "樞紐分析表", tone: "focus strong" }, "", "", ""],
+                [{ text: "在這裡建立報表", tone: "selection" }, "", "", ""],
+                ["", "", "", ""],
+                ["", "", "", ""]
+              ],
+              activeCell: "A4",
+              sidebar: {
+                title: "插入設定",
+                items: [
+                  "資料來源：整張原始資料表",
+                  "位置：新工作表或目前工作表",
+                  "結果：先得到一張空的樞紐畫布"
+                ]
+              },
+              footer: "插入之後先看到空白是正常的，真正的內容要等你拖欄位。"
             }
           ],
           caption: "插入後先不用怕空白，真正的報表會在拖欄位時長出來。"
@@ -149,13 +206,46 @@ export const LESSON_DEMOS = {
           text: "先想你要怎麼切報表，再決定誰放列、誰放欄、誰放值。對新手最穩的起手式是：列 = 分類，欄 = 時間，值 = 數字。",
           panels: [
             {
-              title: "這題的拖法",
-              lines: [
-                "列（Rows）→ 部門",
-                "欄（Columns）→ 月份",
-                "值（Values）→ 業績（加總）",
-                "篩選（Filters）→ 先留空"
-              ]
+              type: "sheet",
+              title: "拖完欄位後的報表骨架",
+              sheetName: "Pivot",
+              nameBox: "A3",
+              formula: "Rows = 部門 / Columns = 月份 / Values = 業績",
+              columns: ["A", "B", "C", "D"],
+              rows: [
+                ["", "", "", ""],
+                ["", "", "", ""],
+                [
+                  { text: "部門", tone: "header focus" },
+                  { text: "1月", tone: "header result" },
+                  { text: "2月", tone: "header result" },
+                  ""
+                ],
+                [
+                  { text: "電子", tone: "selection" },
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  { text: "家電", tone: "selection" },
+                  "",
+                  "",
+                  ""
+                ],
+                ["", "", "", ""]
+              ],
+              activeCell: "A3",
+              sidebar: {
+                title: "這題的拖法",
+                items: [
+                  "列（Rows）→ 部門",
+                  "欄（Columns）→ 月份",
+                  "值（Values）→ 業績（加總）",
+                  "篩選（Filters）→ 先留空"
+                ]
+              },
+              footer: "你拖的不是公式，而是報表視角。先把骨架長出來，數字就會自己補上。"
             }
           ],
           caption: "你拖的不是公式，而是報表角度。"
@@ -167,12 +257,39 @@ export const LESSON_DEMOS = {
           text: "一旦欄位就位，樞紐會自動把重複列聚合。這就是它比手寫 SUMIFS 快很多的原因。",
           panels: [
             {
-              title: "樞紐結果",
-              columns: ["部門 ↓ 月份 →", "1月", "2月"],
+              type: "sheet",
+              title: "完成後的樞紐分析表",
+              sheetName: "Pivot",
+              nameBox: "B4",
+              formula: "電子 1 月 = 120,000 + 60,000，自動彙總成 180,000",
+              columns: ["A", "B", "C"],
               rows: [
-                ["電子", "180,000", "95,000"],
-                ["家電", "80,000", "110,000"]
-              ]
+                [
+                  { text: "部門", tone: "header" },
+                  { text: "1月", tone: "header" },
+                  { text: "2月", tone: "header" }
+                ],
+                [
+                  { text: "電子", tone: "selection" },
+                  { text: "180,000", tone: "result strong" },
+                  { text: "95,000", tone: "selection" }
+                ],
+                [
+                  { text: "家電", tone: "selection" },
+                  { text: "80,000", tone: "selection" },
+                  { text: "110,000", tone: "result strong" }
+                ]
+              ],
+              activeCell: "B2",
+              sidebar: {
+                title: "你現在得到",
+                items: [
+                  "同部門、同月份的資料已自動加總",
+                  "原始資料沒有被改壞，報表只是另一個視圖",
+                  "之後換月份或加篩選器都能繼續擴充"
+                ]
+              },
+              footer: "原始 5 筆交易，現在已經變成可以直接讀的部門 × 月份報表。"
             }
           ],
           caption: "電子部 1 月原本有兩筆，樞紐自動幫你加總成 180,000。"
@@ -202,13 +319,48 @@ export const LESSON_DEMOS = {
           text: "Power Query 的起點不是公式，而是資料來源。你可以連到 CSV、資料夾或其他表格，先把原始檔讀進來。",
           panels: [
             {
-              title: "原始 CSV",
-              columns: ["訂單日期", "部門", "金額", "備註"],
+              type: "sheet",
+              title: "March.csv 原始資料",
+              sheetName: "March.csv",
+              nameBox: "A2",
+              formula: "先讀進原始來源，不急著在這一步整理乾淨",
+              columns: ["A", "B", "C", "D"],
               rows: [
-                ["2026/03/01", "電子", "32,000", "北區"],
-                ["2026/03/04", "家電", "18,500", "南區"],
-                ["2026/03/05", "電子", "29,000", "北區"]
-              ]
+                [
+                  { text: "訂單日期", tone: "header selection" },
+                  { text: "部門", tone: "header selection" },
+                  { text: "金額", tone: "header selection" },
+                  { text: "備註", tone: "header selection" }
+                ],
+                [
+                  { text: "2026/03/01", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "32,000", tone: "selection result" },
+                  { text: "北區", tone: "selection" }
+                ],
+                [
+                  { text: "2026/03/04", tone: "selection" },
+                  { text: "家電", tone: "selection" },
+                  { text: "18,500", tone: "selection" },
+                  { text: "南區", tone: "selection" }
+                ],
+                [
+                  { text: "2026/03/05", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "29,000", tone: "selection result" },
+                  { text: "北區", tone: "selection" }
+                ]
+              ],
+              activeCell: "A2",
+              sidebar: {
+                title: "來源觀念",
+                items: [
+                  "先接受資料很醜是正常的",
+                  "Power Query 最擅長接住 CSV / 資料夾 / 匯出報表",
+                  "第一次先把來源接進來"
+                ]
+              },
+              footer: "這一步先建立連線，不要急著在工作表手修。"
             }
           ],
           caption: "這時候先接受資料很醜，Power Query 的工作就是接住這種資料。"
@@ -220,22 +372,46 @@ export const LESSON_DEMOS = {
           text: "真正有價值的是把每一步都記下來，例如改日期格式、移除備註欄、把金額轉成數值欄位。",
           panels: [
             {
-              title: "已記住的步驟",
-              lines: [
-                "變更型別：訂單日期 → 日期",
-                "變更型別：金額 → 數值",
-                "移除欄位：備註",
-                "欄位重新命名：訂單日期 / 部門 / 金額"
-              ]
-            },
-            {
-              title: "整理後預覽",
-              columns: ["訂單日期", "部門", "金額"],
+              type: "sheet",
+              title: "Query Editor 整理後預覽",
+              sheetName: "Query1",
+              context: "Power Query Editor",
+              nameBox: "A2",
+              formula: "已記住：變更型別 / 移除欄位 / 重新命名",
+              columns: ["A", "B", "C"],
               rows: [
-                ["2026-03-01", "電子", "32,000"],
-                ["2026-03-04", "家電", "18,500"],
-                ["2026-03-05", "電子", "29,000"]
-              ]
+                [
+                  { text: "訂單日期", tone: "header" },
+                  { text: "部門", tone: "header" },
+                  { text: "金額", tone: "header" }
+                ],
+                [
+                  { text: "2026-03-01", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "32,000", tone: "result strong" }
+                ],
+                [
+                  { text: "2026-03-04", tone: "selection" },
+                  { text: "家電", tone: "selection" },
+                  { text: "18,500", tone: "selection" }
+                ],
+                [
+                  { text: "2026-03-05", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "29,000", tone: "result strong" }
+                ]
+              ],
+              activeCell: "C2",
+              sidebar: {
+                title: "已記住的步驟",
+                items: [
+                  "變更型別：訂單日期 → 日期",
+                  "變更型別：金額 → 數值",
+                  "移除欄位：備註",
+                  "欄位重新命名：訂單日期 / 部門 / 金額"
+                ]
+              },
+              footer: "關鍵不是這次清乾淨，而是下次同樣的髒資料也能自動套這些步驟。"
             }
           ],
           caption: "重點不是這次清乾淨，而是下次同樣的髒資料也能自動被清乾淨。"
@@ -247,15 +423,54 @@ export const LESSON_DEMOS = {
           text: "當三個月份結構一樣時，不要手貼。用附加查詢把它們接成同一張長表，後面樞紐與圖表才會穩。",
           panels: [
             {
-              title: "附加後結果",
-              columns: ["月份", "部門", "金額"],
+              type: "sheet",
+              title: "Append 後的正式長表",
+              sheetName: "Fact_Sales",
+              nameBox: "A2",
+              formula: "把 1 月、2 月、3 月資料附加成同一張分析表",
+              columns: ["A", "B", "C"],
               rows: [
-                ["1月", "電子", "120,000"],
-                ["1月", "家電", "80,000"],
-                ["2月", "電子", "95,000"],
-                ["2月", "家電", "110,000"],
-                ["3月", "電子", "132,000"]
-              ]
+                [
+                  { text: "月份", tone: "header" },
+                  { text: "部門", tone: "header" },
+                  { text: "金額", tone: "header" }
+                ],
+                [
+                  { text: "1月", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "120,000", tone: "result strong" }
+                ],
+                [
+                  { text: "1月", tone: "selection" },
+                  { text: "家電", tone: "selection" },
+                  { text: "80,000", tone: "selection" }
+                ],
+                [
+                  { text: "2月", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "95,000", tone: "selection" }
+                ],
+                [
+                  { text: "2月", tone: "selection" },
+                  { text: "家電", tone: "selection" },
+                  { text: "110,000", tone: "selection" }
+                ],
+                [
+                  { text: "3月", tone: "selection" },
+                  { text: "電子", tone: "selection" },
+                  { text: "132,000", tone: "result strong" }
+                ]
+              ],
+              activeCell: "A2",
+              sidebar: {
+                title: "現在這張表可拿去",
+                items: [
+                  "餵樞紐分析表",
+                  "餵圖表和儀表板",
+                  "餵資料模型與 Power Pivot"
+                ]
+              },
+              footer: "真正專業的做法，是把月資料做成同一張長表，而不是每月各一張表。"
             }
           ],
           caption: "這時你得到的是可以餵給樞紐、圖表與資料模型的正式長表。"
@@ -267,13 +482,55 @@ export const LESSON_DEMOS = {
           text: "真正的時間節省發生在第二次之後。四月檔案放進資料夾後，你不再重做步驟，只是重跑同一條流程。",
           panels: [
             {
-              title: "四月進來後",
-              lines: [
-                "新增來源：2026-04.csv",
-                "動作：重新整理查詢",
-                "結果：新資料自動套用既有清理步驟",
-                "報表：樞紐與圖表同步更新"
-              ]
+              type: "sheet",
+              title: "重新整理後的月營收報表",
+              sheetName: "Monthly_Report",
+              nameBox: "A2",
+              formula: "新增 2026-04.csv 後按重新整理，報表自動更新",
+              columns: ["A", "B", "C", "D"],
+              rows: [
+                [
+                  { text: "月份", tone: "header" },
+                  { text: "電子", tone: "header" },
+                  { text: "家電", tone: "header" },
+                  { text: "總計", tone: "header" }
+                ],
+                [
+                  { text: "1月", tone: "selection" },
+                  { text: "120,000", tone: "selection" },
+                  { text: "80,000", tone: "selection" },
+                  { text: "200,000", tone: "result strong" }
+                ],
+                [
+                  { text: "2月", tone: "selection" },
+                  { text: "95,000", tone: "selection" },
+                  { text: "110,000", tone: "selection" },
+                  { text: "205,000", tone: "result strong" }
+                ],
+                [
+                  { text: "3月", tone: "selection" },
+                  { text: "132,000", tone: "selection" },
+                  { text: "98,000", tone: "selection" },
+                  { text: "230,000", tone: "result strong" }
+                ],
+                [
+                  { text: "4月", tone: "focus" },
+                  { text: "141,000", tone: "focus result strong" },
+                  { text: "105,000", tone: "focus" },
+                  { text: "246,000", tone: "focus result strong" }
+                ]
+              ],
+              activeCell: "A5",
+              sidebar: {
+                title: "四月進來後",
+                items: [
+                  "新增來源：2026-04.csv",
+                  "動作：重新整理查詢",
+                  "新資料自動套用既有清理步驟",
+                  "樞紐與圖表同步更新"
+                ]
+              },
+              footer: "真正省時間的不是第一次，而是之後每個月都不用再重做。"
             }
           ],
           caption: "這就是 Power Query 比手動整理更專業的地方。"

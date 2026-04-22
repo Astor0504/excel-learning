@@ -41,6 +41,11 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     void node.offsetWidth;
     node.classList.add('is-swapping');
   }
+  function applyToneClasses(node, tone){
+    String(tone || '').split(/\s+/).forEach(function(token){
+      if (token) node.classList.add('is-' + token);
+    });
+  }
   // 公式正規化（比較用）
   function normFormula(s){
     return String(s||'').trim().toUpperCase()
@@ -368,7 +373,83 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
   }
 
   // ---------- 動畫 / 操作 demo ----------
+  function buildSheetPanel(panel){
+    var card = el('div',{class:'xc-demo-panel xc-demo-sheet-panel'});
+    if (panel.title) card.appendChild(el('div',{class:'xc-demo-panel-title',text:panel.title}));
+
+    var shell = el('div',{class:'xc-demo-sheet-shell'});
+    var window = el('div',{class:'xc-demo-sheet-window'});
+    var toolbar = el('div',{class:'xc-demo-sheet-toolbar'},[
+      el('div',{class:'xc-demo-sheet-dots'},[
+        el('span'), el('span'), el('span')
+      ]),
+      el('div',{class:'xc-demo-sheet-ribbon'},[
+        el('span',{class:'xc-demo-sheet-ribbon-tab is-active',text:panel.sheetName || 'Sheet1'}),
+        panel.context ? el('span',{class:'xc-demo-sheet-context',text:panel.context}) : null
+      ].filter(Boolean))
+    ]);
+    var formula = el('div',{class:'xc-demo-sheet-formula'},[
+      el('div',{class:'xc-demo-sheet-namebox',text:panel.nameBox || panel.activeCell || 'A1'}),
+      el('div',{class:'xc-demo-sheet-fx',text:'fx'}),
+      el('div',{class:'xc-demo-sheet-formula-text',text:panel.formula || '準備操作這張工作表'})
+    ]);
+    var table = el('table',{class:'xc-demo-sheet-grid'});
+    var cols = panel.columns || [];
+
+    table.appendChild(el('thead',null,el('tr',null,[
+      el('th',{class:'xc-demo-sheet-corner',text:''})
+    ].concat(cols.map(function(col){
+      return el('th',{class:'xc-demo-sheet-colhead',text:col});
+    })))));
+
+    table.appendChild(el('tbody',null,(panel.rows || []).map(function(row, rowIdx){
+      return el('tr',null,[
+        el('th',{class:'xc-demo-sheet-rowhead',text:String(rowIdx + 1)})
+      ].concat((row || []).map(function(cell, colIdx){
+        var meta = (cell && typeof cell === 'object' && !Array.isArray(cell)) ? cell : { text: cell };
+        var colRef = cols[colIdx] || String.fromCharCode(65 + colIdx);
+        var ref = colRef + (rowIdx + 1);
+        var td = el('td',{class:'xc-demo-sheet-cell',text:meta.text == null ? '' : String(meta.text)});
+        if (meta.tone) applyToneClasses(td, meta.tone);
+        if (meta.align === 'right' || (/^-?[\d,.%]+$/.test(String(meta.text || '')) && String(meta.text || '').length)) {
+          td.classList.add('is-right');
+        }
+        if (meta.strong) td.classList.add('is-strong');
+        if ((panel.activeCell && String(panel.activeCell).toUpperCase() === ref.toUpperCase()) || meta.active) {
+          td.classList.add('is-active');
+        }
+        return td;
+      })));
+    })));
+
+    window.appendChild(toolbar);
+    window.appendChild(formula);
+    window.appendChild(el('div',{class:'xc-demo-sheet-scroll'},table));
+    window.appendChild(el('div',{class:'xc-demo-sheet-tabs'},[
+      el('span',{class:'xc-demo-sheet-tab is-active',text:panel.sheetName || 'Sheet1'})
+    ]));
+
+    var stageChildren = [window];
+    if (panel.sidebar && (panel.sidebar.title || (panel.sidebar.items || []).length)){
+      stageChildren.push(
+        el('aside',{class:'xc-demo-sheet-side'},[
+          panel.sidebar.title ? el('div',{class:'xc-demo-sheet-side-title',text:panel.sidebar.title}) : null,
+          panel.sidebar.items && panel.sidebar.items.length
+            ? el('ul',{class:'xc-demo-sheet-side-list'},
+                panel.sidebar.items.map(function(item){ return el('li',{text:item}); }))
+            : null
+        ].filter(Boolean))
+      );
+    }
+
+    shell.appendChild(el('div',{class:'xc-demo-sheet-stage' + (stageChildren.length > 1 ? ' has-side' : '')},stageChildren));
+    if (panel.footer) shell.appendChild(el('div',{class:'xc-demo-sheet-footer',text:panel.footer}));
+    card.appendChild(shell);
+    return card;
+  }
+
   function buildDemoPanel(panel){
+    if (panel.type === 'sheet') return buildSheetPanel(panel);
     var card = el('div',{class:'xc-demo-panel'});
     if (panel.title) card.appendChild(el('div',{class:'xc-demo-panel-title',text:panel.title}));
     if (panel.columns && panel.rows){
