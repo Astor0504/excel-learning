@@ -549,12 +549,152 @@ const HOME_LEARNING_MODES = [
     ],
   },
 ];
+const FOCUS_MODE_KEY = "lesson-focus-mode";
+if (document.body?.dataset.lessonSlug) {
+  try {
+    document.body.dataset.focusMode = localStorage.getItem(FOCUS_MODE_KEY) === "1" ? "on" : "off";
+  } catch (e) {
+    document.body.dataset.focusMode = "off";
+  }
+}
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function usesReadingLessonFlow(){
   const variant = document.body?.dataset.lessonVariant || "";
   return variant !== "command" && variant !== "studio";
+}
+function isLessonPage(){
+  return !!document.body?.dataset.lessonSlug;
+}
+function isFocusModeOn(){
+  return document.body?.dataset.focusMode === "on";
+}
+function getLessonFocusState(){
+  const boxes = [...document.querySelectorAll(".checklist input[type=checkbox]")];
+  const done = boxes.filter(function(box){ return box.checked; }).length;
+  const firstOpen = boxes.find(function(box){ return !box.checked; }) || null;
+  const firstText = firstOpen?.closest("label")?.querySelector(".txt")?.textContent?.trim() || "";
+  const practiceBtn = document.querySelector('.lt-tab[data-tab="practice"]');
+  const activeTab = document.querySelector('.lt-tab.is-active')?.getAttribute("data-tab") || "";
+  const nextLink = document.querySelector(".lesson-nav .btn.primary[href]");
+  return {
+    total: boxes.length,
+    done: done,
+    firstOpen: firstOpen,
+    firstText: firstText,
+    practiceBtn: practiceBtn,
+    activeTab: activeTab,
+    nextLink: nextLink,
+  };
+}
+function syncFocusModeUI(){
+  const on = isFocusModeOn();
+  const navBtn = document.getElementById("focusModeBtn");
+  if (navBtn) {
+    navBtn.classList.toggle("is-active", on);
+    navBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    const icon = navBtn.querySelector(".tool-btn-icon");
+    const label = navBtn.querySelector(".tool-btn-label");
+    if (icon) icon.textContent = on ? "🎯" : "🧠";
+    if (label) label.textContent = on ? "專注中" : "專注";
+    navBtn.title = on ? "結束專注模式" : "開啟專注模式";
+    navBtn.setAttribute("aria-label", navBtn.title);
+  }
+  const stripToggle = document.querySelector(".lesson-focus-toggle");
+  if (stripToggle) {
+    stripToggle.textContent = on ? "結束專注模式" : "開啟專注模式";
+    stripToggle.classList.toggle("is-active", on);
+    stripToggle.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  const state = document.querySelector(".lesson-focus-state strong");
+  if (state) state.textContent = on ? "已開啟" : "未開啟";
+}
+function setFocusMode(on){
+  if (!isLessonPage()) return;
+  document.body.dataset.focusMode = on ? "on" : "off";
+  try {
+    localStorage.setItem(FOCUS_MODE_KEY, on ? "1" : "0");
+  } catch (e) {}
+  if (on) {
+    document.getElementById("aiPanel")?.classList.remove("open");
+    document.getElementById("aiFab")?.classList.remove("hidden");
+    document.getElementById("ttsPanel")?.classList.remove("open");
+    document.getElementById("cheatDrawer")?.classList.remove("open");
+    document.getElementById("cheatBackdrop")?.classList.remove("show");
+  }
+  syncFocusModeUI();
+  updateLessonFocusStrip();
+}
+function updateLessonFocusStrip(){
+  const strip = document.querySelector(".lesson-focus-strip");
+  if (!strip) return;
+  const state = getLessonFocusState();
+  const progress = strip.querySelector(".lesson-focus-progress");
+  const step = strip.querySelector(".lesson-focus-step");
+  const task = strip.querySelector("[data-focus-task]");
+  const caption = strip.querySelector("[data-focus-caption]");
+  const primary = strip.querySelector(".lesson-focus-primary");
+
+  if (progress) {
+    progress.textContent = state.total
+      ? `${state.done} / ${state.total} 已完成`
+      : "先讀重點，再做一小題";
+  }
+  if (step) step.textContent = state.firstOpen ? String(state.done + 1).padStart(2, "0") : "✓";
+
+  let action = "study";
+  let taskText = state.firstText || "先把這頁的核心案例看完";
+  let captionText = "一次只做一小步，不用現在就把整課想完。";
+  let primaryLabel = "去下一步";
+
+  if (state.practiceBtn && state.activeTab !== "practice") {
+    action = "practice";
+    taskText = state.firstText || "先切去練習區做第一題";
+    captionText = "先做第一題就好，不需要一次把整個練習區清完。";
+    primaryLabel = "切到練習";
+  } else if (state.firstOpen) {
+    action = "checklist";
+    taskText = state.firstText;
+    captionText = "看完這段後，回到任務清單把這一項打勾就好。";
+    primaryLabel = "前往任務";
+  } else if (state.nextLink) {
+    action = "next";
+    taskText = "這課已完成，可以往下一課前進";
+    captionText = state.nextLink.textContent.trim();
+    primaryLabel = "前往下一課";
+  }
+
+  if (task) task.textContent = taskText;
+  if (caption) caption.textContent = captionText;
+  if (primary) {
+    primary.textContent = primaryLabel;
+    primary.dataset.action = action;
+  }
+  syncFocusModeUI();
+}
+function runLessonFocusPrimaryAction(){
+  const state = getLessonFocusState();
+  const primary = document.querySelector(".lesson-focus-primary");
+  const action = primary?.dataset.action || "study";
+  if (action === "practice" && state.practiceBtn) {
+    state.practiceBtn.click();
+    setTimeout(function(){
+      document.querySelector('.lt-panel.is-active')?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 90);
+    return;
+  }
+  if (action === "checklist") {
+    const checklist = document.querySelector(".checklist");
+    checklist?.scrollIntoView({ behavior: "smooth", block: "start" });
+    state.firstOpen?.focus({ preventScroll: true });
+    return;
+  }
+  if (action === "next" && state.nextLink) {
+    location.href = state.nextLink.href;
+    return;
+  }
+  document.querySelector(".lesson .md-body")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 // Toolbar labels for lesson pages
@@ -605,6 +745,23 @@ themeBtn?.addEventListener("click", () => {
 });
 syncTheme();
 
+// Focus mode toggle
+(function(){
+  if (!document.querySelector(".lesson")) return;
+  const tools = document.querySelector(".nav .tools");
+  if (!tools || document.getElementById("focusModeBtn")) return;
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.id = "focusModeBtn";
+  btn.className = "btn tool-btn";
+  btn.innerHTML = '<span class="tool-btn-icon">🧠</span><span class="tool-btn-label">專注</span>';
+  btn.addEventListener("click", function(){
+    setFocusMode(!isFocusModeOn());
+  });
+  tools.insertBefore(btn, document.getElementById("searchBtn") || tools.firstChild);
+  syncFocusModeUI();
+})();
+
 // 記錄上次學習時間
 function touchPage(){ localStorage.setItem("seen:" + PK, Date.now().toString()); }
 if (document.querySelector(".lesson")) touchPage();
@@ -621,10 +778,12 @@ function initChecklist(){
       localStorage.setItem(key, cb.checked ? "1" : "0");
       updateLessonProgress();
       markPageDone();
+      updateLessonFocusStrip();
     });
   });
   updateLessonProgress();
   markPageDone();
+  updateLessonFocusStrip();
 }
 function updateLessonProgress(){
   const boxes = document.querySelectorAll(".checklist input[type=checkbox]");
@@ -742,6 +901,57 @@ initChecklist();
 
   const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
   if (anchor) anchor.insertAdjacentElement("afterend", rail);
+})();
+
+// Lesson focus strip
+(function(){
+  const lesson = document.querySelector(".lesson");
+  if (!lesson || lesson.querySelector(".lesson-focus-strip")) return;
+
+  const strip = document.createElement("section");
+  strip.className = "lesson-focus-strip";
+  strip.innerHTML = `
+    <div class="lesson-focus-head">
+      <div>
+        <div class="lesson-focus-eyebrow">Focus Friendly</div>
+        <h2 class="lesson-focus-title">現在先做 1 件事</h2>
+      </div>
+      <div class="lesson-focus-state">專注模式 <strong>未開啟</strong></div>
+    </div>
+    <div class="lesson-focus-next">
+      <span class="lesson-focus-step">01</span>
+      <div class="lesson-focus-copy">
+        <strong data-focus-task>先把這頁的核心案例看完</strong>
+        <span data-focus-caption>一次只做一小步，不用現在就把整課想完。</span>
+      </div>
+      <div class="lesson-focus-progress">0 / 0 已完成</div>
+    </div>
+    <div class="lesson-focus-actions">
+      <button type="button" class="btn primary lesson-focus-primary" data-action="study">去下一步</button>
+      <button type="button" class="btn lesson-focus-toggle" aria-pressed="false">開啟專注模式</button>
+    </div>
+  `;
+  strip.querySelector(".lesson-focus-primary")?.addEventListener("click", runLessonFocusPrimaryAction);
+  strip.querySelector(".lesson-focus-toggle")?.addEventListener("click", function(){
+    setFocusMode(!isFocusModeOn());
+  });
+
+  const anchor = lesson.querySelector(".lesson-badge-rail")
+    || lesson.querySelector(".tldr")
+    || lesson.querySelector(".progress-label");
+  if (anchor) anchor.insertAdjacentElement("afterend", strip);
+  else lesson.insertAdjacentElement("afterbegin", strip);
+
+  document.addEventListener("click", function(ev){
+    if (ev.target.closest(".lt-tab")) {
+      setTimeout(updateLessonFocusStrip, 80);
+    }
+  });
+  document.addEventListener("xlsx-integrator:ready", function(){
+    setTimeout(updateLessonFocusStrip, 360);
+  }, { once: true });
+  setTimeout(updateLessonFocusStrip, 500);
+  syncFocusModeUI();
 })();
 
 // Lesson compass
@@ -1025,9 +1235,11 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     });
     let pick = null;
     let prefix = "";
+    let cta = "開始這課";
     if (weak.length) {
       pick = weak[0];
       prefix = "建議先複習";
+      cta = "開始複習";
     } else {
       const undone = idx.filter(e => !doneSet.has(e.u));
       if (undone.length) {
@@ -1036,10 +1248,30 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       }
     }
     if (!pick) {
-      helper.textContent = "目前進度很完整，去做一題快速測驗或複習筆記也不錯。";
+      helper.innerHTML = `
+        <div class="hero-helper-copy">
+          <span class="hero-helper-label">今天先做這一件</span>
+          <strong>先做一題快速測驗或回顧筆記</strong>
+          <span>目前進度很完整，現在最值得做的是保持熟悉感，而不是再塞新內容。</span>
+        </div>
+        <button type="button" class="btn primary hero-helper-btn">開始測驗</button>
+      `;
+      helper.querySelector(".hero-helper-btn")?.addEventListener("click", function(){
+        document.getElementById("quizBox")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
       return;
     }
-    helper.innerHTML = `${prefix}：<strong>${escHtml(pick.t)}</strong><span>${escHtml(pick.b || "")}</span>`;
+    helper.innerHTML = `
+      <div class="hero-helper-copy">
+        <span class="hero-helper-label">${escHtml(prefix)}</span>
+        <strong>${escHtml(pick.t)}</strong>
+        <span>${escHtml(pick.b || "")}</span>
+      </div>
+      <button type="button" class="btn primary hero-helper-btn">${escHtml(cta)}</button>
+    `;
+    helper.querySelector(".hero-helper-btn")?.addEventListener("click", function(){
+      location.href = DEPTH + pick.u;
+    });
   }
   updateHeroHelper();
 
@@ -1054,11 +1286,11 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     wrap.className = "hero-mode-switch";
     const title = document.createElement("div");
     title.className = "hero-mode-title";
-    title.textContent = "學習捷徑";
+    title.textContent = "選一條現在最適合你的路線";
     wrap.appendChild(title);
 
     const chips = document.createElement("div");
-    chips.className = "hero-mode-chips";
+    chips.className = "hero-mode-grid";
     wrap.appendChild(chips);
 
     const meta = document.createElement("div");
@@ -1069,52 +1301,62 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     continueWrap.className = "hero-continue";
     const featureWrap = document.createElement("section");
     featureWrap.className = "hero-featured-lessons";
-    const roadmapWrap = document.createElement("section");
+    const roadmapWrap = document.createElement("details");
     roadmapWrap.className = "hero-capability-map";
+    roadmapWrap.open = false;
     roadmapWrap.innerHTML = `
-      <div class="hero-capability-head">
-        <div>
-          <div class="hero-capability-eyebrow">Professional Path</div>
-          <h2 class="hero-capability-title"></h2>
+      <summary class="hero-capability-summary">
+        <div class="hero-capability-head">
+          <div>
+            <div class="hero-capability-eyebrow">Professional Path</div>
+            <h2 class="hero-capability-title"></h2>
+          </div>
+          <p class="hero-capability-intro"></p>
         </div>
-        <p class="hero-capability-intro"></p>
-      </div>
-      <div class="hero-capability-defaults">
-        ${HOME_CAPABILITY_MAP.defaults.map(function(item){
-          return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
-        }).join("")}
-      </div>
-      <div class="hero-capability-timeline">
-        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
-          return `
-            <div class="hero-capability-node" data-phase="${index + 1}">
-              <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
-              <div class="hero-capability-node-copy">
-                <span>${escHtml(stage.eyebrow)}</span>
-                <strong>${escHtml(stage.title)}</strong>
+        <span class="hero-capability-toggle">展開完整路線</span>
+      </summary>
+      <div class="hero-capability-body">
+        <div class="hero-capability-defaults">
+          ${HOME_CAPABILITY_MAP.defaults.map(function(item){
+            return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
+          }).join("")}
+        </div>
+        <div class="hero-capability-timeline">
+          ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
+            return `
+              <div class="hero-capability-node" data-phase="${index + 1}">
+                <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
+                <div class="hero-capability-node-copy">
+                  <span>${escHtml(stage.eyebrow)}</span>
+                  <strong>${escHtml(stage.title)}</strong>
+                </div>
               </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
-      <div class="hero-capability-grid">
-        ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
-          return `
-            <article class="hero-capability-card" data-phase="${index + 1}">
-              <div class="hero-capability-card-top">
-                <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
-                <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
-              </div>
-              <h3>${escHtml(stage.title)}</h3>
-              <p>${escHtml(stage.summary)}</p>
-              <div class="hero-capability-skills">
-                ${stage.skills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
-              </div>
-            </article>
-          `;
-        }).join("")}
+            `;
+          }).join("")}
+        </div>
+        <div class="hero-capability-grid">
+          ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
+            return `
+              <article class="hero-capability-card" data-phase="${index + 1}">
+                <div class="hero-capability-card-top">
+                  <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
+                  <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
+                </div>
+                <h3>${escHtml(stage.title)}</h3>
+                <p>${escHtml(stage.summary)}</p>
+                <div class="hero-capability-skills">
+                  ${stage.skills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
       </div>
     `;
+    roadmapWrap.addEventListener("toggle", function(){
+      const toggle = roadmapWrap.querySelector(".hero-capability-toggle");
+      if (toggle) toggle.textContent = roadmapWrap.open ? "收起完整路線" : "展開完整路線";
+    });
 
     function applyMode(modeKey){
       state.active = modeKey;
@@ -1160,8 +1402,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       featureWrap.innerHTML = `
         <div class="hero-featured-head">
           <div>
-            <div class="hero-featured-eyebrow">Mode Focus</div>
-            <h3 class="hero-featured-title">${escHtml(selected.label)} 代表課程</h3>
+            <div class="hero-featured-eyebrow">Start Here</div>
+            <h3 class="hero-featured-title">${escHtml(selected.label)} 先學哪 3 課</h3>
           </div>
           <div class="hero-featured-skills">
             ${selected.featuredSkills.map(function(skill){ return `<span>${escHtml(skill)}</span>`; }).join("")}
@@ -1193,11 +1435,21 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     }
 
     groups.forEach(function(group){
+      const starter = group.featuredLessons[0];
+      const starterLesson = starter ? idx.find(function(entry){ return entry.u.endsWith(starter.slug + ".html"); }) : null;
+      const phaseLabel = group.phases.length ? `Phase ${group.phases.join(" · ")}` : "Phase 1-5";
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "hero-mode-chip";
+      btn.className = "hero-mode-card";
       btn.dataset.mode = group.key;
-      btn.textContent = group.label;
+      btn.innerHTML = `
+        <span class="hero-mode-card-head">
+          <span class="hero-mode-card-title">${escHtml(group.label)}</span>
+          <span class="hero-mode-card-phase">${escHtml(phaseLabel)}</span>
+        </span>
+        <span class="hero-mode-card-summary">${escHtml(group.summary)}</span>
+        <span class="hero-mode-card-start">${escHtml(starterLesson ? "從 " + starterLesson.t + " 開始" : "先看完整路線")}</span>
+      `;
       btn.addEventListener("click", function(){ applyMode(group.key); });
       chips.appendChild(btn);
     });
@@ -1219,9 +1471,69 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 
     quickNav.appendChild(wrap);
     if (continueWrap.children.length) quickNav.appendChild(continueWrap);
-    quickNav.appendChild(featureWrap);
-    quickNav.appendChild(roadmapWrap);
     applyMode("all");
+
+    (function composeHero(){
+      const hero = document.querySelector(".hero");
+      if (!hero || hero.querySelector(".hero-shell")) return;
+      const titleNode = hero.querySelector("h1");
+      const copyNode = hero.querySelector("p");
+      const streakNode = hero.querySelector(".streak-row");
+      const progressNode = hero.querySelector(".progress");
+      const progressLabelNode = hero.querySelector(".progress-label");
+      const primaryActionsNode = hero.querySelector(".primary-actions");
+      const utilityActionsNode = hero.querySelector(".utility-actions");
+      const helperNode = hero.querySelector(".hero-helper");
+      const quickNavNode = hero.querySelector(".hero-quicknav");
+      if (!titleNode || !copyNode || !quickNavNode) return;
+
+      const shell = document.createElement("div");
+      shell.className = "hero-shell";
+      const mainCol = document.createElement("div");
+      mainCol.className = "hero-main";
+      const sideCol = document.createElement("div");
+      sideCol.className = "hero-side";
+      const copyGroup = document.createElement("div");
+      copyGroup.className = "hero-copy-group";
+      const eyebrow = document.createElement("div");
+      eyebrow.className = "hero-eyebrow";
+      eyebrow.textContent = "Modern Academy · 從 Excel 新手一路走到專業";
+      copyGroup.appendChild(eyebrow);
+      copyGroup.appendChild(titleNode);
+      copyGroup.appendChild(copyNode);
+
+      const progressStack = document.createElement("div");
+      progressStack.className = "hero-progress-stack";
+      [streakNode, progressNode, progressLabelNode].forEach(function(node){
+        if (node) progressStack.appendChild(node);
+      });
+
+      const actionStack = document.createElement("div");
+      actionStack.className = "hero-action-stack";
+      [primaryActionsNode, utilityActionsNode].forEach(function(node){
+        if (node) actionStack.appendChild(node);
+      });
+
+      mainCol.appendChild(copyGroup);
+      if (progressStack.children.length) mainCol.appendChild(progressStack);
+      if (actionStack.children.length) mainCol.appendChild(actionStack);
+
+      if (helperNode) sideCol.appendChild(helperNode);
+      sideCol.appendChild(quickNavNode);
+      shell.appendChild(mainCol);
+      shell.appendChild(sideCol);
+      hero.appendChild(shell);
+
+      const academyStack = document.createElement("section");
+      academyStack.className = "home-academy-stack";
+      academyStack.appendChild(featureWrap);
+      academyStack.appendChild(roadmapWrap);
+      requestAnimationFrame(function(){
+        const dashboard = document.querySelector(".idx-dashboard");
+        if (dashboard) dashboard.insertAdjacentElement("afterend", academyStack);
+        else hero.insertAdjacentElement("afterend", academyStack);
+      });
+    })();
   })();
 
   // 今天學一課（優先選 weak、再選未完成）
