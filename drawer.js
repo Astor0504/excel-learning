@@ -24,6 +24,7 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
   var fab = document.createElement('button');
   fab.id = 'cheatFab';
   fab.title = '打開速查';
+  fab.setAttribute('aria-label', '打開速查手冊');
   fab.innerHTML = '📘<span class="cd-badge" style="display:none">0</span>';
   document.body.appendChild(fab);
 
@@ -209,4 +210,18 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
   // 初始渲染
   buildTabs();
   render();
+
+  // 課程頁把浮動工具收成同一條 rail，避免互相蓋住內容
+  if (document.body.dataset.lessonSlug) {
+    var rail = document.getElementById('lessonFabRail');
+    if (!rail) {
+      rail = document.createElement('div');
+      rail.id = 'lessonFabRail';
+      document.body.appendChild(rail);
+    }
+    ['ttsFab', 'aiFab', 'cheatFab'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) rail.appendChild(el);
+    });
+  }
 })();

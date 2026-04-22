@@ -30,6 +30,23 @@
       if (n.classList && n.classList.contains('xc-section')) return;
       studyNodes.push(n);
     });
+    var variant = document.body.getAttribute('data-lesson-variant') || '';
+    var prefersStudy = variant !== 'command' && (
+      studyNodes.length >= 3 ||
+      studyNodes.some(function(n){
+        var tag = n.tagName || '';
+        return /^H[2-4]$/.test(tag)
+          || tag === 'TABLE'
+          || tag === 'PRE'
+          || tag === 'BLOCKQUOTE'
+          || tag === 'IMG'
+          || (n.classList && (
+            n.classList.contains('formula-demo')
+            || n.classList.contains('mac-kb')
+            || n.classList.contains('wps-callout')
+          ));
+      })
+    );
 
     // 分派 xlsx-integrator 的 sections（可能在 .lesson 下面，不一定在 .md-body 裡）
     lesson.querySelectorAll('.xc-section[data-xc-type]').forEach(function(sec){
@@ -112,7 +129,9 @@
       ? saved
       : (preferred && panels[preferred]
         ? preferred
-        : (panels.practice ? 'practice' : tabs[0].id));
+        : ((prefersStudy && panels.study)
+          ? 'study'
+          : (panels.practice ? 'practice' : tabs[0].id)));
     show(initial, false);
 
     function show(id, persist){

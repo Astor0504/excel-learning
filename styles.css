@@ -53,6 +53,18 @@ html[data-theme="dark"] body{
     radial-gradient(circle at 88% 4%, rgba(142,176,213,.12), transparent 20%),
     linear-gradient(180deg, #181B19 0%, var(--bg) 30%, #151816 100%);
 }
+body[data-lesson-slug]{
+  background:
+    radial-gradient(circle at 10% 0%, rgba(110,147,109,.12), transparent 20%),
+    radial-gradient(circle at 86% 6%, rgba(92,126,167,.11), transparent 18%),
+    linear-gradient(180deg, #FBF8F1 0%, var(--bg) 38%, #F2EBDF 100%);
+}
+html[data-theme="dark"] body[data-lesson-slug]{
+  background:
+    radial-gradient(circle at 10% 0%, rgba(148,182,144,.1), transparent 18%),
+    radial-gradient(circle at 86% 6%, rgba(142,176,213,.09), transparent 16%),
+    linear-gradient(180deg, #181B19 0%, var(--bg) 36%, #141715 100%);
+}
 body::before{
   content:"";
   position:fixed;
@@ -65,6 +77,7 @@ body::before{
   background-size:34px 34px;
   mask-image:linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,0) 38%);
 }
+body[data-lesson-slug]::before{opacity:.18}
 html[data-theme="dark"] body::before{opacity:.14}
 a{color:var(--accent-2);text-decoration:none;transition:color .15s ease, text-decoration-color .15s ease}
 a:hover{color:var(--accent);text-decoration:underline;text-decoration-color:rgba(110,147,109,.35)}
@@ -86,6 +99,7 @@ button:focus-visible,
 
 .nav{max-width:760px;margin:0 auto;padding:20px 24px;display:flex;
   align-items:center;justify-content:space-between}
+body[data-lesson-slug] .nav{max-width:1180px;padding:20px 28px}
 .nav .brand{
   font-weight:700;
   font-size:18px;
@@ -1499,18 +1513,15 @@ body[data-lesson-variant="editorial"] .lesson .md-body p[style*="font-size:18px"
   color:var(--text) !important;
 }
 
-body[data-lesson-variant="command"] .layout,
-body:not([data-lesson-variant]) .layout:has(main.lesson){
+body[data-lesson-variant="command"] .layout{
   max-width:1540px;
   gap:26px;
 }
-body[data-lesson-variant="command"] .toc,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .toc{
+body[data-lesson-variant="command"] .toc{
   width:190px;
   padding-top:20px;
 }
-body[data-lesson-variant="command"] .layout main.lesson,
-body:not([data-lesson-variant]) .layout:has(main.lesson) main.lesson{
+body[data-lesson-variant="command"] .layout main.lesson{
   display:grid;
   grid-template-columns:repeat(12,minmax(0,1fr));
   gap:16px 20px;
@@ -1522,37 +1533,23 @@ body[data-lesson-variant="command"] .lesson > .progress,
 body[data-lesson-variant="command"] .lesson > .progress-label,
 body[data-lesson-variant="command"] .lesson > .lesson-sample-banner,
 body[data-lesson-variant="command"] .lesson > .tldr,
-body[data-lesson-variant="command"] .lesson > #cheatInline,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > div:first-child,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > h1,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .progress,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .progress-label,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .tldr,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > #cheatInline{
+body[data-lesson-variant="command"] .lesson > #cheatInline{
   grid-column:1 / span 7;
 }
 body[data-lesson-variant="command"] .lesson > .lesson-badge-rail,
 body[data-lesson-variant="command"] .lesson > .lesson-kickoff,
 body[data-lesson-variant="command"] .lesson > .lesson-compass,
-body[data-lesson-variant="command"] .lesson > .lesson-pro-note,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-kickoff,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-compass,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-pro-note{
+body[data-lesson-variant="command"] .lesson > .lesson-pro-note{
   grid-column:8 / -1;
 }
-body[data-lesson-variant="command"] .lesson > .md-body,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .md-body{
+body[data-lesson-variant="command"] .lesson > .md-body{
   grid-column:1 / span 8;
 }
 body[data-lesson-variant="command"] .lesson > .checklist,
-body[data-lesson-variant="command"] .lesson > .notes,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
+body[data-lesson-variant="command"] .lesson > .notes{
   grid-column:9 / -1;
 }
-body[data-lesson-variant="command"] .lesson > .lesson-nav,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-nav{
+body[data-lesson-variant="command"] .lesson > .lesson-nav{
   grid-column:1 / -1;
 }
 body[data-lesson-variant="command"] .lesson > .lesson-badge-rail,
@@ -1560,64 +1557,168 @@ body[data-lesson-variant="command"] .lesson > .lesson-kickoff,
 body[data-lesson-variant="command"] .lesson > .lesson-compass,
 body[data-lesson-variant="command"] .lesson > .lesson-pro-note,
 body[data-lesson-variant="command"] .lesson > .checklist,
-body[data-lesson-variant="command"] .lesson > .notes,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-kickoff,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-compass,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-pro-note,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
+body[data-lesson-variant="command"] .lesson > .notes{
   margin:0;
 }
-body[data-lesson-variant="command"] .lesson .md-body,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body{
+body[data-lesson-variant="command"] .lesson .md-body{
   padding:22px 24px 26px;
   border-radius:24px;
   border:1px solid var(--line);
   background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(246,243,236,.88));
   box-shadow:0 18px 36px rgba(66,54,33,.08);
 }
-html[data-theme="dark"] body[data-lesson-variant="command"] .lesson .md-body,
-html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body{
+html[data-theme="dark"] body[data-lesson-variant="command"] .lesson .md-body{
   background:linear-gradient(180deg, rgba(34,37,35,.94), rgba(23,26,24,.88));
 }
 body[data-lesson-variant="command"] .lesson > .checklist,
-body[data-lesson-variant="command"] .lesson > .notes,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
+body[data-lesson-variant="command"] .lesson > .notes{
   position:sticky;
   top:24px;
 }
-body[data-lesson-variant="command"] .lesson > .lesson-badge-rail,
-body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail{
+body[data-lesson-variant="command"] .lesson > .lesson-badge-rail{
   grid-template-columns:1fr;
 }
 
+body:not([data-lesson-variant]) .layout:has(main.lesson){
+  max-width:1240px;
+  gap:34px;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .toc{
+  width:168px;
+  padding-top:28px;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .toc ul{
+  border-left:0;
+  padding-left:14px;
+  position:relative;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .toc ul::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:4px;
+  bottom:4px;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(110,147,109,.58), rgba(92,126,167,.18));
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .toc a{
+  margin-left:0;
+  border-left:0;
+  border-radius:12px;
+  padding:6px 10px;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .toc a.active{
+  background:rgba(110,147,109,.1);
+  color:var(--accent);
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) main.lesson{
+  max-width:900px;
+  display:block;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > div:first-child{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(110,147,109,.18);
+  background:rgba(255,253,248,.72);
+  font-size:13px !important;
+  letter-spacing:.02em;
+}
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > div:first-child{
+  background:rgba(35,40,38,.78);
+  border-color:rgba(148,182,144,.16);
+}
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > h1{
-  font-size:38px;
-  line-height:1.06;
+  font-size:48px;
+  line-height:1.05;
   letter-spacing:-.04em;
-  margin:8px 0 10px;
+  margin:10px 0 8px;
 }
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .progress{
-  margin-top:8px;
+  max-width:380px;
+  margin-top:18px;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .progress-label{
+  margin-bottom:18px;
 }
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .tldr{
-  margin:10px 0 0;
-  padding:18px 20px;
-  border-radius:20px;
-  border:1px solid var(--line);
-  background:linear-gradient(135deg, rgba(123,168,137,.12), rgba(255,255,255,.9));
+  padding:0;
+  margin:22px 0 20px;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  border-radius:0;
 }
-html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .tldr{
-  background:linear-gradient(135deg, rgba(123,168,137,.15), rgba(24,27,25,.88));
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .tldr strong{
+  color:var(--accent);
+  font-size:12px;
+  letter-spacing:.12em;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail{
+  display:inline-grid;
+  grid-template-columns:minmax(240px, 380px);
+  gap:12px;
+  margin:18px 0 26px;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail .lesson-badge{
+  background:rgba(255,255,255,.8);
+  border-color:rgba(110,147,109,.16);
+}
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail .lesson-badge{
+  background:rgba(35,40,38,.82);
+  border-color:rgba(148,182,144,.16);
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body{
+  padding:26px 28px 30px;
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,243,236,.88));
+  box-shadow:0 18px 36px rgba(66,54,33,.08);
+}
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body{
+  background:linear-gradient(180deg, rgba(34,37,35,.94), rgba(23,26,24,.88));
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body .lt-bar{
+  margin:28px 0 20px;
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body .lt-panel > .xc-section{
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,243,235,.86));
+  border:1px solid rgba(110,147,109,.12);
+  box-shadow:none;
+}
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body .lt-panel > .xc-section{
+  background:linear-gradient(180deg, rgba(34,38,36,.92), rgba(25,29,27,.84));
+  border-color:rgba(148,182,144,.12);
 }
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-kickoff,
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-compass,
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-pro-note,
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
 body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
-  box-shadow:0 16px 30px rgba(66,54,33,.06);
+  margin:28px 0;
+  padding:24px 26px;
+  border-radius:24px;
+  border:1px solid rgba(110,147,109,.14);
+  background:linear-gradient(180deg, rgba(255,255,255,.86), rgba(248,244,236,.74));
+  box-shadow:0 14px 30px rgba(66,54,33,.06);
+}
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-kickoff,
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-compass,
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-pro-note,
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
+html[data-theme="dark"] body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
+  background:linear-gradient(180deg, rgba(36,40,38,.86), rgba(27,31,29,.76));
+  border-color:rgba(148,182,144,.16);
+}
+body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-nav{
+  margin-top:34px;
 }
 
 @media (max-width:1180px){
@@ -1625,23 +1726,44 @@ body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
   body[data-lesson-variant="command"] .toc,
   body:not([data-lesson-variant]) .layout:has(main.lesson) .toc{display:none}
   body[data-lesson-variant="studio"] .layout main.lesson,
-  body[data-lesson-variant="command"] .layout main.lesson,
-  body:not([data-lesson-variant]) .layout:has(main.lesson) main.lesson{
+  body[data-lesson-variant="command"] .layout main.lesson{
     display:grid;
     grid-template-columns:1fr;
   }
   body[data-lesson-variant="studio"] .lesson > *,
-  body[data-lesson-variant="command"] .lesson > *,
-  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > *{
+  body[data-lesson-variant="command"] .lesson > *{
     grid-column:1 !important;
     position:relative !important;
     top:auto !important;
+  }
+  body:not([data-lesson-variant]) .layout:has(main.lesson){
+    padding:0 18px;
+  }
+  body:not([data-lesson-variant]) .layout:has(main.lesson) main.lesson{
+    max-width:860px;
   }
 }
 @media (max-width:760px){
   .lesson-sample-banner{padding:16px}
   .lesson-sample-banner h2{font-size:24px}
   .lesson-sample-switcher a{min-width:0;flex:1 1 46%}
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > div:first-child{
+    display:flex;
+    white-space:normal;
+  }
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > h1{font-size:36px}
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-badge-rail{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson .md-body,
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-kickoff,
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-compass,
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .lesson-pro-note,
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .checklist,
+  body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
+    padding:20px 18px;
+  }
   body[data-lesson-variant="editorial"] .lesson > div:first-child{
     display:flex;
     white-space:normal;
@@ -1666,13 +1788,64 @@ body:not([data-lesson-variant]) .layout:has(main.lesson) .lesson > .notes{
   border-radius:14px;padding:10px 14px;box-shadow:var(--shadow);
   font-variant-numeric:tabular-nums;align-items:center;gap:8px}
 .float-toolbar .pomo-mini.open{display:flex}
+body[data-lesson-slug] footer{padding-bottom:180px}
+body[data-lesson-slug] #lessonFabRail{
+  position:fixed;
+  right:20px;
+  bottom:92px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:flex-end;
+  z-index:1000;
+}
+body[data-lesson-slug] #lessonFabRail > #aiFab,
+body[data-lesson-slug] #lessonFabRail > #ttsFab,
+body[data-lesson-slug] #lessonFabRail > #cheatFab{
+  position:relative;
+  inset:auto;
+  right:auto;
+  bottom:auto;
+  left:auto;
+  top:auto;
+  margin:0;
+  transform:none;
+}
+body[data-lesson-slug] #lessonFabRail > #aiFab:hover,
+body[data-lesson-slug] #lessonFabRail > #ttsFab:hover,
+body[data-lesson-slug] #lessonFabRail > #cheatFab:hover{
+  transform:scale(1.08);
+}
 @media (max-width:520px){
   .float-toolbar{right:10px;bottom:10px}
   .float-toolbar .fab{width:42px;height:42px;font-size:18px}
 }
 @media (max-width:640px){
   body[data-lesson-slug] .pomo{display:none}
-  body[data-lesson-slug] #aiFab{bottom:16px}
+  body[data-lesson-slug] #lessonFabRail{
+    right:12px;
+    bottom:calc(env(safe-area-inset-bottom, 0px) + 12px);
+    flex-direction:row;
+    gap:6px;
+    padding:6px;
+    border-radius:999px;
+    border:1px solid rgba(110,147,109,.16);
+    background:rgba(255,253,248,.78);
+    box-shadow:0 10px 24px rgba(66,54,33,.12);
+    backdrop-filter:blur(14px);
+  }
+  body[data-lesson-slug] #lessonFabRail > #aiFab,
+  body[data-lesson-slug] #lessonFabRail > #ttsFab,
+  body[data-lesson-slug] #lessonFabRail > #cheatFab{
+    width:42px;
+    height:42px;
+    font-size:18px;
+  }
+  html[data-theme="dark"] body[data-lesson-slug] #lessonFabRail{
+    background:rgba(31,35,33,.82);
+    border-color:rgba(148,182,144,.16);
+  }
+  body[data-lesson-slug] footer{padding-bottom:132px}
 }
 
 /* ===== Formula Breakdown Animation ===== */

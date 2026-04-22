@@ -552,6 +552,10 @@ const HOME_LEARNING_MODES = [
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function usesReadingLessonFlow(){
+  const variant = document.body?.dataset.lessonVariant || "";
+  return variant !== "command" && variant !== "studio";
+}
 
 // Toolbar labels for lesson pages
 (function(){
@@ -652,7 +656,7 @@ initChecklist();
   const lesson = document.querySelector(".lesson");
   const checklist = lesson?.querySelector(".checklist");
   if (!lesson || !checklist || lesson.querySelector(".lesson-kickoff")) return;
-  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
+  const isReadingLayout = usesReadingLessonFlow();
   const slug = document.body?.dataset.lessonSlug || "";
   const workbookSheet = LESSON_WORKBOOK_MAP[slug] || "";
   const workbookNote = workbookSheet
@@ -706,7 +710,7 @@ initChecklist();
     checklist.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  const anchor = isEditorial
+  const anchor = isReadingLayout
     ? lesson.querySelector(".md-body")
     : (lesson.querySelector(".tldr") || lesson.querySelector(".progress-label"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
@@ -744,7 +748,7 @@ initChecklist();
 (function(){
   const lesson = document.querySelector(".lesson");
   if (!lesson || lesson.querySelector(".lesson-compass")) return;
-  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
+  const isReadingLayout = usesReadingLessonFlow();
 
   const slug = document.body?.dataset.lessonSlug || "";
   if (!slug || !LESSON_GUIDE[slug]) return;
@@ -816,7 +820,7 @@ initChecklist();
     </div>
   `;
 
-  const anchor = isEditorial
+  const anchor = isReadingLayout
     ? (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
     : (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
@@ -826,7 +830,7 @@ initChecklist();
 (function(){
   const lesson = document.querySelector(".lesson");
   if (!lesson || lesson.querySelector(".lesson-pro-note")) return;
-  const isEditorial = document.body?.dataset.lessonVariant === "editorial";
+  const isReadingLayout = usesReadingLessonFlow();
   const slug = document.body?.dataset.lessonSlug || "";
   const note = LESSON_PRO_NOTES[slug];
   if (!note) return;
@@ -848,7 +852,7 @@ initChecklist();
     </div>
   `;
 
-  const anchor = isEditorial
+  const anchor = isReadingLayout
     ? (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
     : (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
@@ -1722,7 +1726,7 @@ window.__TTS = (function(){
   });
 
   const fab = document.createElement('button');
-  fab.id = 'ttsFab'; fab.title = '朗讀工具'; fab.textContent = '🔊';
+  fab.id = 'ttsFab'; fab.title = '朗讀工具'; fab.setAttribute('aria-label', '打開朗讀工具'); fab.textContent = '🔊';
   fab.onclick = () => panel.classList.toggle('open');
   document.body.appendChild(fab);
 
