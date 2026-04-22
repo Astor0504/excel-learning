@@ -1,4 +1,5 @@
 import { XLSX_CONTENT } from './xlsx-content.js';
+import { LESSON_DEMOS } from './lesson-demos-data.js';
 
 /* xlsx-integrator.js
  * 把 Excel互動練習 / Excel專業養成 的內容深度整合進 lesson 頁。
@@ -31,6 +32,14 @@ import { XLSX_CONTENT } from './xlsx-content.js';
     return String(s||'').replace(/[&<>"']/g, function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
+  }
+  function clearNode(node){
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+  function forceSwap(node){
+    node.classList.remove('is-swapping');
+    void node.offsetWidth;
+    node.classList.add('is-swapping');
   }
   // 公式正規化（比較用）
   function normFormula(s){
@@ -358,11 +367,323 @@ import { XLSX_CONTENT } from './xlsx-content.js';
     return nodes;
   }
 
+  // ---------- 動畫 / 操作 demo ----------
+  function buildDemoPanel(panel){
+    var card = el('div',{class:'xc-demo-panel'});
+    if (panel.title) card.appendChild(el('div',{class:'xc-demo-panel-title',text:panel.title}));
+    if (panel.columns && panel.rows){
+      var tableWrap = el('div',{class:'xc-demo-mini'});
+      var table = el('table',{class:'xc-demo-table'});
+      var thead = el('thead',null,el('tr',null,(panel.columns || []).map(function(col){
+        return el('th',{text:col});
+      })));
+      var tbody = el('tbody',null,(panel.rows || []).map(function(row){
+        return el('tr',null,(row || []).map(function(cell){
+          return el('td',{text:cell == null ? '' : String(cell)});
+        }));
+      }));
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      tableWrap.appendChild(table);
+      card.appendChild(tableWrap);
+    } else if (panel.lines && panel.lines.length){
+      card.appendChild(el('ul',{class:'xc-demo-lines'},
+        panel.lines.map(function(line){ return el('li',{text:line}); })
+      ));
+    }
+    return card;
+  }
+
+  function createBoardView(board){
+    var shell = el('div',{class:'xc-demo-board'});
+    if (board.title) shell.appendChild(el('div',{class:'xc-demo-board-title',text:board.title}));
+    var table = el('table',{class:'xc-demo-table xc-demo-table-board'});
+    var refs = [];
+
+    if (board.columns && board.columns.length){
+      table.appendChild(el('thead',null,el('tr',null,
+        board.columns.map(function(col){ return el('th',{text:col}); })
+      )));
+    }
+
+    table.appendChild(el('tbody',null,(board.rows || []).map(function(row){
+      return el('tr',null,(row || []).map(function(cell){
+        var meta = (cell && typeof cell === 'object' && !Array.isArray(cell))
+          ? cell
+          : { text: cell };
+        var td = el('td',{text:meta.text == null ? '' : String(meta.text)});
+        refs.push({ node: td, marks: meta.marks || {} });
+        return td;
+      }));
+    })));
+
+    shell.appendChild(table);
+
+    function setStep(stepNum){
+      refs.forEach(function(ref){
+        ref.node.classList.remove('is-focus','is-match','is-result');
+        var mark = ref.marks[String(stepNum)] || ref.marks[stepNum];
+        if (mark) ref.node.classList.add('is-' + mark);
+      });
+    }
+
+    return { node: shell, setStep: setStep };
+  }
+
+  function createDemoControls(totalSteps, onChange){
+    var index = 0;
+    var timer = null;
+    var prevBtn = el('button',{class:'xc-btn ghost',type:'button'},'← 上一步');
+    var playBtn = el('button',{class:'xc-btn primary',type:'button','aria-pressed':'false'},'▶ 播放');
+    var nextBtn = el('button',{class:'xc-btn ghost',type:'button'},'下一步 →');
+    var status = el('span',{class:'xc-demo-status'});
+    var shell = el('div',{class:'xc-demo-controls'},[
+      el('div',{class:'xc-demo-transport'},[prevBtn, playBtn, nextBtn]),
+      status
+    ]);
+
+    function stop(){
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+      playBtn.textContent = '▶ 播放';
+      playBtn.setAttribute('aria-pressed','false');
+      shell.classList.remove('is-playing');
+    }
+    function setIndex(nextIndex){
+      index = Math.max(0, Math.min(totalSteps - 1, nextIndex));
+      onChange(index, { stop: stop });
+      status.textContent = '步驟 ' + (index + 1) + ' / ' + totalSteps;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === totalSteps - 1;
+    }
+    function step(delta){
+      stop();
+      setIndex(index + delta);
+    }
+    prevBtn.addEventListener('click', function(){ step(-1); });
+    nextBtn.addEventListener('click', function(){ step(1); });
+    playBtn.addEventListener('click', function(){
+      if (timer) {
+        stop();
+        return;
+      }
+      if (index === totalSteps - 1) setIndex(0);
+      playBtn.textContent = '⏸ 暫停';
+      playBtn.setAttribute('aria-pressed','true');
+      shell.classList.add('is-playing');
+      timer = setInterval(function(){
+        if (index >= totalSteps - 1) {
+          stop();
+          return;
+        }
+        setIndex(index + 1);
+      }, 2400);
+    });
+    setIndex(0);
+    return {
+      node: shell,
+      setIndex: function(nextIndex){
+        stop();
+        setIndex(nextIndex);
+      },
+      stop: stop
+    };
+  }
+
+  function buildFormulaDemo(demo){
+    var card = el('section',{class:'xc-demo xc-demo-formula-card'});
+    var summary = el('div',{class:'xc-demo-summary','aria-live':'polite'});
+    var summaryStep = el('div',{class:'xc-demo-step-label'});
+    var summaryTitle = el('div',{class:'xc-demo-summary-title'});
+    var summaryText = el('div',{class:'xc-demo-summary-text'});
+    var summaryCaption = el('div',{class:'xc-demo-summary-caption'});
+    summary.appendChild(summaryStep);
+    summary.appendChild(summaryTitle);
+    summary.appendChild(summaryText);
+    summary.appendChild(summaryCaption);
+
+    var partButtons = [];
+    var formulaBar = el('div',{class:'xc-demo-formula'});
+    (demo.formulaParts || []).forEach(function(part){
+      var cls = 'xc-demo-part';
+      if (part.tone) cls += ' ' + part.tone;
+      if (!part.step) cls += ' is-passive';
+      var btn = el('button',{
+        class:cls,
+        type:'button',
+        text:part.text || '',
+        'data-step': part.step || ''
+      });
+      if (!part.step) btn.disabled = true;
+      formulaBar.appendChild(btn);
+      partButtons.push(btn);
+    });
+
+    var stepsRail = el('div',{class:'xc-demo-steps'});
+    var stepButtons = [];
+    (demo.steps || []).forEach(function(step, idx){
+      var btn = el('button',{class:'xc-demo-stepbtn ' + (step.tone || ''),type:'button'},[
+        el('span',{class:'xc-demo-stepnum',text:String(idx + 1).padStart(2,'0')}),
+        el('span',{class:'xc-demo-stepcopy',text:step.label || ('步驟 ' + (idx + 1))})
+      ]);
+      stepsRail.appendChild(btn);
+      stepButtons.push(btn);
+    });
+
+    var boardView = createBoardView(demo.board || {});
+    var rightRail = el('div',{class:'xc-demo-side'},[
+      demo.outcome ? el('div',{class:'xc-demo-outcome',text:demo.outcome}) : null,
+      boardView.node
+    ].filter(Boolean));
+
+    var body = el('div',{class:'xc-demo-body'},[
+      el('div',{class:'xc-demo-main'},[
+        formulaBar,
+        stepsRail,
+        summary
+      ]),
+      rightRail
+    ]);
+
+    card.appendChild(el('div',{class:'xc-demo-head'},[
+      el('div',{class:'xc-demo-kicker'},[
+        demo.badge ? el('span',{class:'xc-demo-badge',text:demo.badge}) : null,
+        demo.title ? el('h3',{class:'xc-demo-title',text:demo.title}) : null,
+        demo.subtitle ? el('p',{class:'xc-demo-subtitle',text:demo.subtitle}) : null
+      ].filter(Boolean))
+    ]));
+    card.appendChild(body);
+
+    var controls = createDemoControls((demo.steps || []).length, function(idx, api){
+      var step = (demo.steps || [])[idx];
+      if (!step) return;
+      partButtons.forEach(function(btn){
+        var btnStep = Number(btn.getAttribute('data-step') || 0);
+        btn.classList.toggle('is-active', btnStep === idx + 1);
+      });
+      stepButtons.forEach(function(btn, sidx){
+        btn.classList.toggle('is-active', sidx === idx);
+        btn.classList.toggle('is-done', sidx < idx);
+      });
+      summary.className = 'xc-demo-summary ' + (step.tone || '');
+      summaryStep.textContent = '步驟 ' + (idx + 1);
+      summaryTitle.textContent = step.label || '';
+      summaryText.textContent = step.text || '';
+      summaryCaption.textContent = step.caption || '';
+      boardView.setStep(idx + 1);
+      forceSwap(summary);
+      if (idx === (demo.steps || []).length - 1) api.stop();
+    });
+    card.appendChild(controls.node);
+
+    partButtons.forEach(function(btn){
+      var btnStep = Number(btn.getAttribute('data-step') || 0);
+      if (!btnStep) return;
+      btn.addEventListener('click', function(){ controls.setIndex(btnStep - 1); });
+    });
+    stepButtons.forEach(function(btn, idx){
+      btn.addEventListener('click', function(){ controls.setIndex(idx); });
+    });
+
+    return card;
+  }
+
+  function buildWorkflowDemo(demo){
+    var card = el('section',{class:'xc-demo xc-demo-workflow-card'});
+    var stageRail = el('div',{class:'xc-demo-stage-rail'});
+    var stageButtons = [];
+    (demo.stages || []).forEach(function(stage, idx){
+      var btn = el('button',{class:'xc-demo-stage ' + (stage.tone || ''),type:'button'},[
+        el('span',{class:'xc-demo-stage-num',text:String(idx + 1).padStart(2,'0')}),
+        el('span',{class:'xc-demo-stage-text',text:stage.text || ''})
+      ]);
+      stageRail.appendChild(btn);
+      stageButtons.push(btn);
+    });
+
+    var bodyTitle = el('div',{class:'xc-demo-summary-title'});
+    var bodyText = el('div',{class:'xc-demo-summary-text'});
+    var bodyCaption = el('div',{class:'xc-demo-summary-caption'});
+    var bodyBox = el('div',{class:'xc-demo-summary','aria-live':'polite'},[
+      el('div',{class:'xc-demo-step-label'}),
+      bodyTitle,
+      bodyText,
+      bodyCaption
+    ]);
+    var bodyStep = bodyBox.querySelector('.xc-demo-step-label');
+
+    var panelHost = el('div',{class:'xc-demo-panels'});
+    var body = el('div',{class:'xc-demo-body xc-demo-body-single'},[
+      el('div',{class:'xc-demo-main'},[
+        stageRail,
+        bodyBox,
+        panelHost
+      ]),
+      demo.outcome ? el('aside',{class:'xc-demo-side'},[
+        el('div',{class:'xc-demo-outcome',text:demo.outcome})
+      ]) : null
+    ].filter(Boolean));
+
+    card.appendChild(el('div',{class:'xc-demo-head'},[
+      el('div',{class:'xc-demo-kicker'},[
+        demo.badge ? el('span',{class:'xc-demo-badge',text:demo.badge}) : null,
+        demo.title ? el('h3',{class:'xc-demo-title',text:demo.title}) : null,
+        demo.subtitle ? el('p',{class:'xc-demo-subtitle',text:demo.subtitle}) : null
+      ].filter(Boolean))
+    ]));
+    card.appendChild(body);
+
+    var controls = createDemoControls((demo.steps || []).length, function(idx, api){
+      var step = (demo.steps || [])[idx];
+      if (!step) return;
+      var activeStage = Math.max(0, (step.stage || idx + 1) - 1);
+      var activeStageMeta = (demo.stages || [])[activeStage] || {};
+      stageButtons.forEach(function(btn, sidx){
+        btn.classList.toggle('is-active', sidx === activeStage);
+        btn.classList.toggle('is-done', sidx < activeStage);
+      });
+      bodyBox.className = 'xc-demo-summary ' + (step.tone || '');
+      bodyStep.textContent = '階段 ' + (activeStage + 1) + ' · ' + (activeStageMeta.text || ('步驟 ' + (idx + 1)));
+      bodyTitle.textContent = step.label || ('步驟 ' + (idx + 1));
+      bodyText.textContent = step.text || '';
+      bodyCaption.textContent = step.caption || '';
+      clearNode(panelHost);
+      (step.panels || []).forEach(function(panel){
+        panelHost.appendChild(buildDemoPanel(panel));
+      });
+      forceSwap(bodyBox);
+      forceSwap(panelHost);
+      if (idx === (demo.steps || []).length - 1) api.stop();
+    });
+    card.appendChild(controls.node);
+
+    stageButtons.forEach(function(btn, idx){
+      btn.addEventListener('click', function(){ controls.setIndex(idx); });
+    });
+
+    return card;
+  }
+
+  function buildDemoSection(demos){
+    if (!demos || !demos.length) return null;
+    var sec = el('div',{class:'xc-section','data-xc-type':'demo'});
+    sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎬'}),document.createTextNode(' 實作動畫範例')]));
+    sec.appendChild(el('div',{class:'xc-sub',text:'先用一個可播放的小案例看懂流程，再切回 Excel 自己做一次。這些示範會一步一步走，不會一直自動亂跑。'}));
+    demos.forEach(function(demo){
+      if (demo.kind === 'formula') sec.appendChild(buildFormulaDemo(demo));
+      else sec.appendChild(buildWorkflowDemo(demo));
+    });
+    return sec;
+  }
+
   // ---------- 組裝 sections ----------
   var article = document.querySelector('.lesson .md-body') || document.querySelector('.lesson');
   if (!article) return;
 
   var container = el('div', {class:'xc-integrated'});
+  var demos = LESSON_DEMOS[slug] || [];
 
   var meta = buildMetaSection();
   if (meta) {
@@ -396,6 +717,12 @@ import { XLSX_CONTENT } from './xlsx-content.js';
       if (h) hsec.appendChild(h);
       container.appendChild(hsec);
     }
+  }
+
+  // 2c. 操作動畫 / 公式拆解
+  if (demos.length){
+    var dsec = buildDemoSection(demos);
+    if (dsec) container.appendChild(dsec);
   }
 
   // 3. VBA
