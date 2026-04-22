@@ -833,6 +833,28 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     return card;
   }
 
+  function buildMediaDemo(demo){
+    var card = el('section',{class:'xc-demo xc-demo-media-card'});
+    card.appendChild(el('div',{class:'xc-demo-head'},[
+      el('div',{class:'xc-demo-kicker'},[
+        demo.badge ? el('span',{class:'xc-demo-badge',text:demo.badge}) : null,
+        demo.title ? el('h3',{class:'xc-demo-title',text:demo.title}) : null,
+        demo.subtitle ? el('p',{class:'xc-demo-subtitle',text:demo.subtitle}) : null
+      ].filter(Boolean))
+    ]));
+    if (demo.media){
+      var mediaNode = buildDemoMedia(demo.media);
+      if (mediaNode) card.appendChild(mediaNode);
+    }
+    if (demo.outcome || demo.followup){
+      card.appendChild(el('div',{class:'xc-demo-outcome xc-demo-outcome-compact'},[
+        demo.outcome ? el('div',{class:'xc-demo-outcome-primary',text:demo.outcome}) : null,
+        demo.followup ? el('div',{class:'xc-demo-outcome-next',text:demo.followup}) : null
+      ].filter(Boolean)));
+    }
+    return card;
+  }
+
   function buildDemoSection(demos){
     if (!demos || !demos.length) return null;
     var sec = el('div',{class:'xc-section','data-xc-type':'demo'});
@@ -840,6 +862,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     sec.appendChild(el('div',{class:'xc-sub',text:'先用一個可播放的小案例看懂流程，再切回 Excel 自己做一次。這些示範會一步一步走，不會一直自動亂跑。'}));
     demos.forEach(function(demo){
       if (demo.kind === 'formula') sec.appendChild(buildFormulaDemo(demo));
+      else if (demo.kind === 'media') sec.appendChild(buildMediaDemo(demo));
       else sec.appendChild(buildWorkflowDemo(demo));
     });
     return sec;

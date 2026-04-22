@@ -20,6 +20,7 @@ GREEN = "#51b36f"
 PURPLE = "#a482ff"
 SHADOW = (44, 52, 46, 24)
 DIM = (42, 48, 42)
+DURATION_SCALE = 1.4
 
 FONT_SANS = "/System/Library/Fonts/STHeiti Medium.ttc"
 FONT_SANS_LIGHT = "/System/Library/Fonts/STHeiti Light.ttc"
@@ -790,6 +791,7 @@ def build_animation():
 
 def main():
     frames, durations = build_animation()
+    durations = [int(round(d * DURATION_SCALE)) for d in durations]
 
     gif_path = MEDIA_DIR / "p2-03-pivot-demo.gif"
     webp_path = MEDIA_DIR / "p2-03-pivot-demo.webp"

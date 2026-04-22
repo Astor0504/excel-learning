@@ -2629,11 +2629,14 @@ html[data-theme="dark"] .xc-demo-media{background:rgba(27,30,28,.96)}
   border:1px solid rgba(214,186,103,.28);
   color:#8a5c12;font-size:13.5px;line-height:1.65;font-weight:600
 }
+.xc-demo-outcome-compact{display:grid;gap:8px}
+.xc-demo-outcome-next{font-weight:500;color:var(--text)}
 html[data-theme="dark"] .xc-demo-outcome{
   background:rgba(66,49,18,.44);
   color:#f4d38a;
   border-color:rgba(214,186,103,.22)
 }
+html[data-theme="dark"] .xc-demo-outcome-next{color:#ede8dc}
 .xc-demo-formula{
   display:flex;flex-wrap:wrap;gap:4px;
   padding:16px 18px;border-radius:16px;
