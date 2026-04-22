@@ -793,19 +793,8 @@ def main():
     frames, durations = build_animation()
     durations = [int(round(d * DURATION_SCALE)) for d in durations]
 
-    gif_path = MEDIA_DIR / "p2-03-pivot-demo.gif"
     webp_path = MEDIA_DIR / "p2-03-pivot-demo.webp"
     poster_path = MEDIA_DIR / "p2-03-pivot-demo-poster.png"
-
-    frames[0].save(
-        gif_path,
-        save_all=True,
-        append_images=frames[1:],
-        duration=durations,
-        loop=0,
-        disposal=2,
-        optimize=True,
-    )
     frames[0].save(
         webp_path,
         format="WEBP",
@@ -817,7 +806,6 @@ def main():
         method=6,
     )
     frames[-1].save(poster_path)
-    print(gif_path)
     print(webp_path)
     print(poster_path)
 

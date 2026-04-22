@@ -859,7 +859,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     if (!demos || !demos.length) return null;
     var sec = el('div',{class:'xc-section','data-xc-type':'demo'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎬'}),document.createTextNode(' 實作動畫範例')]));
-    sec.appendChild(el('div',{class:'xc-sub',text:'先用一個可播放的小案例看懂流程，再切回 Excel 自己做一次。這些示範會一步一步走，不會一直自動亂跑。'}));
+    sec.appendChild(el('div',{class:'xc-sub',text:'操作課先看慢速短片抓節奏，公式課看拆解動畫抓邏輯。先看一次，再回 Excel 自己做，會比一開始就硬讀規則更容易進狀況。'}));
     demos.forEach(function(demo){
       if (demo.kind === 'formula') sec.appendChild(buildFormulaDemo(demo));
       else if (demo.kind === 'media') sec.appendChild(buildMediaDemo(demo));
