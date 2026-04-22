@@ -1801,8 +1801,9 @@ window.__TTS = (function(){
   const synth = window.speechSynthesis;
   const LS = { rate:'tts.rate', voice:'tts.voice', mode:'tts.mode', azVoice:'tts.azVoice' };
   let voices = [], queue = [], qIdx = 0;
-  let azVoices = [], audio = null, azAvailable = false;
+  let azVoices = [], audio = null, audioUrl = '', azAvailable = false;
   let epoch = 0;
+  let panel = null;
 
   const __ttsMeta = document.querySelector('meta[name="api-base"]');
   const API_BASE = (__ttsMeta && __ttsMeta.content) ? __ttsMeta.content.replace(/\/$/,'')
@@ -1824,9 +1825,11 @@ window.__TTS = (function(){
   function loadVoices(){
     voices = synth.getVoices().filter(v => /zh|cmn|yue/i.test(v.lang));
     if (!voices.length) voices = synth.getVoices();
+    refreshVoiceList();
   }
   loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
+  if (speechSynthesis.addEventListener) speechSynthesis.addEventListener('voiceschanged', loadVoices);
+  else speechSynthesis.onvoiceschanged = loadVoices;
 
   function pickVoice(){
     const saved = localStorage.getItem(LS.voice);
@@ -1837,11 +1840,22 @@ window.__TTS = (function(){
   function getRate(){ return parseFloat(localStorage.getItem(LS.rate) || '1.05'); }
   function getMode(){ return localStorage.getItem(LS.mode) || (azAvailable?'azure':'browser'); }
   function getAzVoice(){ return localStorage.getItem(LS.azVoice) || 'zh-TW-HsiaoChenNeural'; }
+  function clearAudio(){
+    if (!audio) {
+      if (audioUrl){ URL.revokeObjectURL(audioUrl); audioUrl = ''; }
+      return;
+    }
+    audio.onended = audio.onerror = null;
+    audio.pause();
+    audio.src = '';
+    audio = null;
+    if (audioUrl){ URL.revokeObjectURL(audioUrl); audioUrl = ''; }
+  }
 
   function stopAll(){
     epoch++;
     synth.cancel();
-    if (audio){ audio.onended = audio.onerror = null; audio.pause(); audio.src=''; audio=null; }
+    clearAudio();
   }
   function speakChunks(chunks, startIdx=0){
     stopAll(); queue = chunks; qIdx = startIdx; nextChunk();
@@ -1863,9 +1877,17 @@ window.__TTS = (function(){
         if (!resp.ok){ throw new Error('tts '+resp.status); }
         const blob = await resp.blob();
         if (epoch !== myEpoch) return;
-        audio = new Audio(URL.createObjectURL(blob));
-        audio.onended = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
-        audio.onerror = () => { if (epoch === myEpoch){ qIdx++; nextChunk(); } };
+        clearAudio();
+        audioUrl = URL.createObjectURL(blob);
+        audio = new Audio(audioUrl);
+        audio.onended = () => {
+          clearAudio();
+          if (epoch === myEpoch){ qIdx++; nextChunk(); }
+        };
+        audio.onerror = () => {
+          clearAudio();
+          if (epoch === myEpoch){ qIdx++; nextChunk(); }
+        };
         audio.play();
       } catch(e){
         if (epoch !== myEpoch) return;
@@ -1887,31 +1909,97 @@ window.__TTS = (function(){
     setStatus('playing');
     synth.speak(u);
   }
-  function splitText(text){
-    return text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s+/g,' ').split(/(?<=[。！？!?；;])/).map(s=>s.trim()).filter(s=>s.length);
+  function chunkLine(line, max = 80){
+    const source = line.trim();
+    if (!source) return [];
+    const parts = source.split(/(?<=[。！？!?；;：:，,、])/).map(s => s.trim()).filter(Boolean);
+    if (!parts.length) return [source];
+    const chunks = [];
+    let current = '';
+    parts.forEach(part => {
+      if (!current) { current = part; return; }
+      if ((current + part).length > max) {
+        chunks.push(current);
+        current = part;
+      } else current += part;
+    });
+    if (current) chunks.push(current);
+    return chunks;
   }
-  function getSectionText(sec){
-    const clone = sec.cloneNode(true);
-    clone.querySelectorAll('button,.tts-btn,pre').forEach(n => n.remove());
-    return splitText(clone.innerText || clone.textContent || '');
+  function splitText(text){
+    const cleaned = String(text || '')
+      .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
+      .replace(/\r/g, '\n')
+      .replace(/[ \t]+\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+    if (!cleaned) return [];
+
+    const lines = cleaned
+      .split(/\n+/)
+      .map(s => s.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+    const chunks = [];
+    lines.forEach(line => {
+      chunkLine(line).forEach(chunk => {
+        if (chunk) chunks.push(chunk);
+      });
+    });
+    return chunks;
+  }
+  function sanitizeReadableText(node){
+    const clone = node.cloneNode(true);
+    clone.querySelectorAll('button,.tts-btn').forEach(n => n.remove());
+    clone.querySelectorAll('pre').forEach(pre => {
+      const note = document.createElement('p');
+      note.textContent = '以下有一段程式碼或公式範例，可視需要自行閱讀。';
+      pre.replaceWith(note);
+    });
+    return clone.innerText || clone.textContent || '';
+  }
+  function getSectionNodes(heading){
+    const level = parseInt((heading.tagName || 'H2').slice(1), 10) || 2;
+    const nodes = [heading];
+    let node = heading.nextElementSibling;
+    while (node){
+      if (/^H[1-6]$/.test(node.tagName || '')){
+        const nextLevel = parseInt(node.tagName.slice(1), 10);
+        if (nextLevel <= level) break;
+      }
+      nodes.push(node);
+      node = node.nextElementSibling;
+    }
+    return nodes;
+  }
+  function getSectionText(heading){
+    const wrap = document.createElement('div');
+    getSectionNodes(heading).forEach(node => {
+      wrap.appendChild(node.cloneNode(true));
+    });
+    return splitText(sanitizeReadableText(wrap));
+  }
+  function getReadableRoot(){
+    return document.querySelector('.lesson .lt-panel.is-active')
+      || document.querySelector('.lesson .md-body')
+      || document.querySelector('.md-body')
+      || document.querySelector('main');
   }
 
   function injectButtons(){
     document.querySelectorAll('.lesson .md-body h2').forEach(h2 => {
       if (h2.querySelector('.tts-btn')) return;
       const b = document.createElement('button');
-      b.className = 'tts-btn'; b.title = '朗讀本段'; b.textContent = '🔊';
+      b.className = 'tts-btn'; b.title = '朗讀本段'; b.setAttribute('aria-label', `朗讀：${h2.textContent.trim()}`); b.textContent = '🔊';
       b.onclick = (e) => {
         e.stopPropagation();
-        const section = h2.parentElement;
-        speakChunks(getSectionText(section));
+        speakChunks(getSectionText(h2));
         panel.classList.add('open');
       };
       h2.appendChild(b);
     });
   }
 
-  const panel = document.createElement('div');
+  panel = document.createElement('div');
   panel.id = 'ttsPanel';
   panel.innerHTML = `
     <button class="tts-ico" data-act="prev" title="上一句">⏮</button>
@@ -1924,13 +2012,13 @@ window.__TTS = (function(){
     </select></label>
     <select class="tts-voice" data-act="voice"></select>
     <label class="tts-rate"><input type="checkbox" data-act="mode"> Azure 自然</label>
-    <label class="tts-rate"><input type="checkbox" data-act="autoai"> AI 朗讀</label>
     <button class="tts-ico" data-act="page" title="朗讀整頁">📖</button>
     <button class="tts-ico" data-act="close" title="收起">✕</button>
   `;
   document.body.appendChild(panel);
 
   function refreshVoiceList(){
+    if (!panel) return;
     const sel = panel.querySelector('[data-act="voice"]');
     if (!sel) return;
     sel.innerHTML = '';
@@ -1959,11 +2047,8 @@ window.__TTS = (function(){
       m.disabled = false;
       m.title = azAvailable ? '切換 Azure 自然語音' : '未偵測到後端，請確認 http://localhost:5173 已啟動';
     }
-    const a = panel.querySelector('[data-act="autoai"]');
-    if (a) a.checked = localStorage.getItem('tts.autoai') === '1';
   }
   setTimeout(refreshVoiceList, 300);
-  speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', refreshVoiceList);
 
   function setStatus(s){
     const t = panel.querySelector('[data-act="toggle"]');
@@ -1972,8 +2057,8 @@ window.__TTS = (function(){
 
   function readWholePage(){
     const all = [];
-    const body = document.querySelector('.lesson .md-body') || document.querySelector('.md-body') || document.querySelector('main');
-    if (body) all.push(...splitText(body.innerText || ''));
+    const body = getReadableRoot();
+    if (body) all.push(...splitText(sanitizeReadableText(body)));
     if (all.length) speakChunks(all);
   }
   let _toggleTimer = null;
@@ -2001,7 +2086,7 @@ window.__TTS = (function(){
     else if (act === 'close'){ stopAll(); panel.classList.remove('open'); }
   });
   function restartFromCurrent(){
-    const playing = (audio && !audio.paused) || synth.speaking || synth.paused;
+    const playing = (audio && audio.src) || synth.speaking || synth.paused;
     if (!playing || !queue.length) return;
     stopAll(); nextChunk();
   }
@@ -2032,8 +2117,6 @@ window.__TTS = (function(){
       localStorage.setItem(LS.mode, e.target.checked ? 'azure' : 'browser');
       refreshVoiceList();
       restartFromCurrent();
-    } else if (act === 'autoai'){
-      localStorage.setItem('tts.autoai', e.target.checked ? '1' : '0');
     }
   });
 
@@ -2042,7 +2125,7 @@ window.__TTS = (function(){
   fab.onclick = () => panel.classList.toggle('open');
   document.body.appendChild(fab);
 
-  window.addEventListener('beforeunload', () => synth.cancel());
+  window.addEventListener('beforeunload', () => { synth.cancel(); clearAudio(); });
 
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', injectButtons);
