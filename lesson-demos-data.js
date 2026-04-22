@@ -97,6 +97,14 @@ export const LESSON_DEMOS = {
       badge: "操作演示",
       title: "樞紐分析：從流水帳變成可讀報表",
       subtitle: "不是重做一張新表，而是把原始資料的欄位拖進四大區域。",
+      media: {
+        kicker: "60 秒短片",
+        title: "先看一次完整操作，再往下看拆步",
+        src: "/media/p2-03-pivot-demo.gif",
+        webp: "/media/p2-03-pivot-demo.webp",
+        alt: "樞紐分析操作短片：從原始資料、插入樞紐分析表、把部門拖到列、月份拖到欄、業績拖到值，最後形成彙總報表。",
+        note: "這是一支循環播放的短示範，先建立操作節奏感；下面的互動步驟再把每個動作拆開給你跟做。"
+      },
       outcome: "結果：原始 5 筆交易，5 秒變成部門 × 月份彙總表",
       stages: [
         { text: "選資料", tone: "c1" },

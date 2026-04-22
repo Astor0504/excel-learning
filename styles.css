@@ -2587,6 +2587,38 @@ html[data-theme="dark"] .xc-demo{
 }
 .xc-demo-title{margin:0;font-size:20px;line-height:1.25;letter-spacing:.2px}
 .xc-demo-subtitle{margin:0;color:var(--muted);font-size:14px;line-height:1.7;max-width:66ch}
+.xc-demo-media{
+  margin:0 0 18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(255,255,255,.78)
+}
+html[data-theme="dark"] .xc-demo-media{background:rgba(27,30,28,.96)}
+.xc-demo-media-head{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--bg)
+}
+.xc-demo-media-badge{
+  display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;
+  background:rgba(87,112,78,.12);color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.4px
+}
+.xc-demo-media-title{font-size:14px;font-weight:700;color:var(--text)}
+.xc-demo-media-frame{
+  display:block;position:relative;padding:12px;background:linear-gradient(180deg, rgba(87,112,78,.05), transparent 30%)
+}
+.xc-demo-media-frame::after{
+  content:'循環播放';position:absolute;right:24px;bottom:24px;
+  padding:7px 12px;border-radius:999px;background:rgba(27,29,28,.76);color:#fff;
+  font-size:12px;font-weight:700;letter-spacing:.4px;backdrop-filter:blur(8px)
+}
+.xc-demo-media-frame img{
+  display:block;width:100%;height:auto;border-radius:14px;border:1px solid rgba(125,132,121,.14);
+  box-shadow:0 16px 28px rgba(40,42,39,.10)
+}
+.xc-demo-media-note{
+  padding:0 16px 15px;color:var(--muted);font-size:13px;line-height:1.65
+}
 .xc-demo-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,.95fr);gap:18px;align-items:start}
 .xc-demo-body-single{grid-template-columns:minmax(0,1.8fr) minmax(220px,.7fr)}
 .xc-demo-main{display:flex;flex-direction:column;gap:14px;min-width:0}

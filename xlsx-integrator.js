@@ -496,6 +496,27 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     return card;
   }
 
+  function buildDemoMedia(media){
+    if (!media || !media.src) return null;
+    var fig = el('figure',{class:'xc-demo-media'});
+    var headBits = [];
+    if (media.kicker) headBits.push(el('span',{class:'xc-demo-media-badge',text:media.kicker}));
+    if (media.title) headBits.push(el('div',{class:'xc-demo-media-title',text:media.title}));
+    if (headBits.length) fig.appendChild(el('figcaption',{class:'xc-demo-media-head'},headBits));
+
+    var picture = el('picture',{class:'xc-demo-media-frame'});
+    if (media.webp) picture.appendChild(el('source',{type:'image/webp',srcset:media.webp}));
+    picture.appendChild(el('img',{
+      src: media.src,
+      alt: media.alt || media.title || '操作示範短片',
+      loading: 'lazy',
+      decoding: 'async'
+    }));
+    fig.appendChild(picture);
+    if (media.note) fig.appendChild(el('div',{class:'xc-demo-media-note',text:media.note}));
+    return fig;
+  }
+
   function buildDemoPanel(panel){
     if (panel.type === 'sheet') return buildSheetPanel(panel);
     var card = el('div',{class:'xc-demo-panel'});
@@ -692,6 +713,10 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
         demo.subtitle ? el('p',{class:'xc-demo-subtitle',text:demo.subtitle}) : null
       ].filter(Boolean))
     ]));
+    if (demo.media){
+      var mediaNode = buildDemoMedia(demo.media);
+      if (mediaNode) card.appendChild(mediaNode);
+    }
     card.appendChild(body);
 
     var controls = createDemoControls((demo.steps || []).length, function(idx, api){
@@ -771,6 +796,10 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
         demo.subtitle ? el('p',{class:'xc-demo-subtitle',text:demo.subtitle}) : null
       ].filter(Boolean))
     ]));
+    if (demo.media){
+      var mediaNode = buildDemoMedia(demo.media);
+      if (mediaNode) card.appendChild(mediaNode);
+    }
     card.appendChild(body);
 
     var controls = createDemoControls((demo.steps || []).length, function(idx, api){
