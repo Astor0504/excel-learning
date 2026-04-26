@@ -1,6 +1,8 @@
 
 import { SEARCH_INDEX } from './search-index.js';
 import { QUIZ_CARDS } from './quiz-data.js';
+import { LESSON_DEMOS } from './lesson-demos-data.js';
+import { LESSON_DOWNLOADS } from './lesson-downloads-data.js';
 
 function pageKey(){
   const parts = location.pathname.split("/").filter(Boolean);
@@ -549,6 +551,64 @@ const HOME_LEARNING_MODES = [
     ],
   },
 ];
+const HOME_MODE_KEY = "home-learning-mode";
+const HOME_PHASE_CHECKPOINTS = {
+  1: {
+    title: "先把操作與基礎公式練成反射動作",
+    summary: "這一段不用把所有快捷鍵都背完，但要把最常用的選取、填滿與基本函數練穩。",
+    ready: [
+      "不用滑鼠也能完成常見選取、填滿和編輯",
+      "能自己寫 SUM / AVERAGE / IF 解掉基礎題",
+      "看到簡單報表需求時，知道要先用哪種公式起手",
+    ],
+    minimumLessons: ["P1-01", "P1-02", "P1-03"],
+    reset: "如果還常忘記公式怎麼起手，先回 P1-02 重做一題，再往下推。",
+  },
+  2: {
+    title: "能交付第一版職場報表",
+    summary: "重點不是函數背得多，而是能查資料、能彙總、能把重點自己浮出來。",
+    ready: [
+      "能用 SUMIFS / XLOOKUP 處理跨表查找和條件統計",
+      "知道什麼時候該用公式，什麼時候改用樞紐分析比較快",
+      "能用條件式格式化讓異常值和重點自動跳出來",
+    ],
+    minimumLessons: ["P2-01", "P2-02", "P2-03", "P2-04"],
+    reset: "如果公式和樞紐還常混在一起，先回 P2-03 看慢速示範，再做一次練習。",
+  },
+  3: {
+    title: "把檔案做得穩、做得能交接",
+    summary: "這一段的價值，在於讓別人填資料、接手檔案時也不會把整份報表搞亂。",
+    ready: [
+      "能用資料驗證限制輸入，不把髒資料留到事後處理",
+      "能清掉常見文字與日期問題，做出可讀圖表",
+      "會用 Table / 命名範圍和保護機制，讓檔案更可維護",
+    ],
+    minimumLessons: ["P3-01", "P3-02", "P3-04"],
+    reset: "如果表格一交給別人就容易壞，先回 P3-01 和 P3-04 補穩輸入端與資料結構。",
+  },
+  4: {
+    title: "把重複操作變成可重跑流程",
+    summary: "這一段不是追求更炫的函數，而是開始建立『下個月來也能再跑一次』的工作流。",
+    ready: [
+      "能用動態陣列快速整理清單，而不是一直複製公式",
+      "知道重複清資料要交給 Power Query，不再手動重做",
+      "開始理解多表關聯和資料模型是在解另一種問題",
+    ],
+    minimumLessons: ["P4-01", "P4-04", "P4-05"],
+    reset: "如果流程還是每月重做一次，先把 P4-04 做到可以穩定重新整理，再談更進階的模型。",
+  },
+  5: {
+    title: "把整套分析流程系統化交付",
+    summary: "最後才進到 VBA，不是為了炫技，而是把前面已經穩定的流程接成真正可交付的系統。",
+    ready: [
+      "能錄巨集、讀懂基本 VBA，知道腳本在做什麼",
+      "知道陣列、錯誤處理和事件是在幫程式變穩，不只是多寫幾行",
+      "能把讀資料、整理、輸出報表串成一個完整專案",
+    ],
+    minimumLessons: ["P5-01", "P5-02", "P5-03", "P5-04"],
+    reset: "如果一開 VBA 就覺得斷線，先確認前面的 Power Query / Data Model 流程已經夠穩，再來接自動化。",
+  },
+};
 const FOCUS_MODE_KEY = "lesson-focus-mode";
 if (document.body?.dataset.lessonSlug) {
   try {
@@ -567,10 +627,63 @@ function usesReadingLessonFlow(){
 function isLessonPage(){
   return !!document.body?.dataset.lessonSlug;
 }
+function getPrimaryLessonDemo(slug){
+  const demos = LESSON_DEMOS[slug] || [];
+  return demos[0] || null;
+}
+function getLessonDownloads(slug){
+  return LESSON_DOWNLOADS[slug] || null;
+}
+function getLessonPrimaryDownload(downloads){
+  if (!downloads) return null;
+  if ((downloads.files || []).length === 1) {
+    return {
+      ...downloads.files[0],
+      cta: "下載本課資料",
+    };
+  }
+  if (downloads.bundle) {
+    return {
+      ...downloads.bundle,
+      cta: "下載本課資料包",
+    };
+  }
+  const fallback = downloads.files?.[0];
+  return fallback ? { ...fallback, cta: "下載本課資料" } : null;
+}
+function lessonDownloadIcon(format){
+  switch ((format || "").toUpperCase()) {
+    case "CSV": return "📊";
+    case "TXT": return "📝";
+    case "ZIP": return "🗂️";
+    case "XLSX": return "📗";
+    default: return "⬇️";
+  }
+}
+function renderLessonDownloadCard(file, extraClasses = []){
+  if (!file?.href) return "";
+  const classes = ["resCard", String(file.format || "file").toLowerCase(), ...extraClasses]
+    .filter(Boolean)
+    .join(" ");
+  const downloadAttr = file.fileName ? ` download="${escHtml(file.fileName)}"` : "";
+  return `
+    <a class="${classes}" href="${DEPTH}${file.href}"${downloadAttr}>
+      <span class="icon">${lessonDownloadIcon(file.format)}</span>
+      <span class="body">
+        <span class="title">${escHtml(file.label || "下載檔案")}</span>
+        <span class="desc">${escHtml(file.description || "")}</span>
+      </span>
+      <span class="arrow">↓</span>
+    </a>
+  `;
+}
 function isFocusModeOn(){
   return document.body?.dataset.focusMode === "on";
 }
 function getLessonFocusState(){
+  const slug = document.body?.dataset.lessonSlug || "";
+  const demo = getPrimaryLessonDemo(slug);
+  const demoSection = document.querySelector('.xc-section[data-xc-type="demo"]');
   const boxes = [...document.querySelectorAll(".checklist input[type=checkbox]")];
   const done = boxes.filter(function(box){ return box.checked; }).length;
   const firstOpen = boxes.find(function(box){ return !box.checked; }) || null;
@@ -583,6 +696,8 @@ function getLessonFocusState(){
     done: done,
     firstOpen: firstOpen,
     firstText: firstText,
+    demo: demo,
+    demoSection: demoSection || document.querySelector(".lesson .md-body"),
     practiceBtn: practiceBtn,
     activeTab: activeTab,
     nextLink: nextLink,
@@ -648,7 +763,20 @@ function updateLessonFocusStrip(){
   let captionText = "一次只做一小步，不用現在就把整課想完。";
   let primaryLabel = "去下一步";
 
-  if (state.practiceBtn && state.activeTab !== "practice") {
+  if (state.demo && state.activeTab !== "practice") {
+    action = "demo";
+    if (state.demo?.kind === "media") {
+      taskText = "先看 1 次慢速操作示範";
+      captionText = "先把整體節奏看懂，再回 Excel 跟做，通常會比直接硬做更順。";
+    } else if (state.demo?.kind === "formula") {
+      taskText = "先看 1 次公式拆解動畫";
+      captionText = "先看懂公式每一段在做什麼，再自己改一個條件，會更容易真的學會。";
+    } else {
+      taskText = "先看這課的操作示範";
+      captionText = "先把流程跑過一遍，再回來做第一題，會比較不容易卡住。";
+    }
+    primaryLabel = "看示範";
+  } else if (state.practiceBtn && state.activeTab !== "practice") {
     action = "practice";
     taskText = state.firstText || "先切去練習區做第一題";
     captionText = "先做第一題就好，不需要一次把整個練習區清完。";
@@ -677,6 +805,10 @@ function runLessonFocusPrimaryAction(){
   const state = getLessonFocusState();
   const primary = document.querySelector(".lesson-focus-primary");
   const action = primary?.dataset.action || "study";
+  if (action === "demo" && state.demoSection) {
+    state.demoSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
   if (action === "practice" && state.practiceBtn) {
     state.practiceBtn.click();
     setTimeout(function(){
@@ -817,10 +949,23 @@ initChecklist();
   if (!lesson || !checklist || lesson.querySelector(".lesson-kickoff")) return;
   const isReadingLayout = usesReadingLessonFlow();
   const slug = document.body?.dataset.lessonSlug || "";
+  const demo = getPrimaryLessonDemo(slug);
+  const lessonDownloads = getLessonDownloads(slug);
+  const primaryDownload = getLessonPrimaryDownload(lessonDownloads);
   const workbookSheet = LESSON_WORKBOOK_MAP[slug] || "";
+  const downloadNote = lessonDownloads
+    ? lessonDownloads.files?.length > 1
+      ? `這課另外備好了 ${lessonDownloads.files.length} 份專屬練習資料，建議先抓資料包再開始。`
+      : "這課另外備好了 1 份專屬練習資料，可直接下載後邊做邊跟。"
+    : "這課目前沒有額外資料檔，先跟著本頁案例與任務清單做就好。";
   const workbookNote = workbookSheet
-    ? `這課有對應的練習簿工作表：${workbookSheet}`
-    : "這課目前沒有對應的練習簿工作表，先跟著本頁案例與任務清單做就好。";
+    ? `${downloadNote} 對應的整本練習簿工作表是：${workbookSheet}。`
+    : downloadNote;
+  const kickoffGuidance = demo?.kind === "media"
+    ? "建議節奏：先看 1 次慢速示範，再切去練習區跟做，最後回來把任務打勾。"
+    : demo?.kind === "formula"
+      ? "建議節奏：先看公式拆解動畫，再自己改一個條件做一次，最後回來把任務打勾。"
+      : "建議節奏：先看 TL;DR 與這課案例，再做第一題，最後回來把任務打勾。";
 
   const tasks = [...checklist.querySelectorAll("label .txt")]
     .map(el => (el.textContent || "").trim())
@@ -837,11 +982,12 @@ initChecklist();
         <h2 class="lesson-kickoff-title">先完成這 ${tasks.length} 件事</h2>
       </div>
       <div class="lesson-kickoff-actions">
-        <button type="button" class="btn primary lesson-kickoff-btn">去做練習</button>
-        ${workbookSheet ? `<a class="btn lesson-kickoff-btn secondary" href="${DEPTH}practice.xlsx" download>打開練習簿</a>` : ""}
+        <button type="button" class="btn primary lesson-kickoff-btn" data-kickoff="practice">去做練習</button>
+        ${primaryDownload ? `<a class="btn lesson-kickoff-btn secondary" href="${DEPTH}${primaryDownload.href}" download="${escHtml(primaryDownload.fileName || "")}">${escHtml(primaryDownload.cta)}</a>` : ""}
+        ${workbookSheet ? `<a class="btn lesson-kickoff-btn secondary" href="${DEPTH}practice.xlsx" download>整本練習簿</a>` : ""}
       </div>
     </div>
-    <div class="lesson-kickoff-guidance">建議節奏：先看 TL;DR 與這課案例，再做第一題，最後回來把任務打勾。</div>
+    <div class="lesson-kickoff-guidance">${escHtml(kickoffGuidance)}</div>
     <div class="lesson-kickoff-list">
       ${tasks.map((task, i) => `
         <div class="lesson-kickoff-item">
@@ -856,7 +1002,7 @@ initChecklist();
     </div>
   `;
 
-  box.querySelector(".lesson-kickoff-btn")?.addEventListener("click", () => {
+  box.querySelector('[data-kickoff="practice"]')?.addEventListener("click", () => {
     const practiceTab = document.querySelector('.lt-tab[data-tab="practice"]');
     if (practiceTab) {
       practiceTab.click();
@@ -952,6 +1098,55 @@ initChecklist();
   }, { once: true });
   setTimeout(updateLessonFocusStrip, 500);
   syncFocusModeUI();
+})();
+
+// Lesson downloads
+(function(){
+  const lesson = document.querySelector(".lesson");
+  if (!lesson || lesson.querySelector(".lesson-downloads")) return;
+  const slug = document.body?.dataset.lessonSlug || "";
+  const downloads = getLessonDownloads(slug);
+  if (!downloads?.files?.length) return;
+
+  const primaryDownload = getLessonPrimaryDownload(downloads);
+  const workbookSheet = LESSON_WORKBOOK_MAP[slug] || "";
+  const cards = [];
+  if (downloads.bundle) cards.push(renderLessonDownloadCard(downloads.bundle, ["bundle"]));
+  downloads.files.forEach(function(file){
+    cards.push(renderLessonDownloadCard(file));
+  });
+
+  const section = document.createElement("section");
+  section.className = "lesson-downloads";
+  section.innerHTML = `
+    <div class="lesson-downloads-head">
+      <div>
+        <div class="lesson-downloads-eyebrow">練習資料下載</div>
+        <h2 class="lesson-downloads-title">${escHtml(downloads.title || "本課練習資料")}</h2>
+        <p class="lesson-downloads-intro">${escHtml(downloads.intro || "這課的練習資料已經整理好，下載後就可以直接跟著做。")}</p>
+      </div>
+      <div class="lesson-downloads-actions">
+        ${primaryDownload ? `<a class="btn primary lesson-downloads-btn" href="${DEPTH}${primaryDownload.href}" download="${escHtml(primaryDownload.fileName || "")}">${escHtml(primaryDownload.cta)}</a>` : ""}
+        ${workbookSheet ? `<a class="btn lesson-downloads-btn secondary" href="${DEPTH}practice.xlsx" download>整本練習簿</a>` : ""}
+      </div>
+    </div>
+    <div class="lesson-downloads-meta">
+      <span class="lesson-downloads-pill">${downloads.files.length} 份檔案</span>
+      ${downloads.bundle ? '<span class="lesson-downloads-pill subtle">可一次打包下載</span>' : ''}
+      ${workbookSheet ? `<span class="lesson-downloads-pill subtle">工作表：${escHtml(workbookSheet)}</span>` : ""}
+    </div>
+    <div class="lesson-downloads-note">先下載這課資料，再跟著頁面案例做一次；多檔章節建議先抓資料包，流程會更順。</div>
+    <div class="resCards lesson-downloads-grid">
+      ${cards.join("")}
+    </div>
+  `;
+
+  const anchor = lesson.querySelector(".lesson-focus-strip")
+    || lesson.querySelector(".lesson-badge-rail")
+    || lesson.querySelector(".tldr")
+    || lesson.querySelector(".progress-label");
+  if (anchor) anchor.insertAdjacentElement("afterend", section);
+  else lesson.insertAdjacentElement("afterbegin", section);
 })();
 
 // Lesson compass
@@ -1223,64 +1418,199 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   const quickNav = document.createElement("div");
   quickNav.className = "hero-quicknav";
   if (helperTarget) helperTarget.insertAdjacentElement("afterend", quickNav);
+  const homeState = {
+    activeMode: "starter",
+    recommendation: null,
+  };
 
-  function updateHeroHelper(){
-    if (!helper) return;
-    const weak = idx.filter(e => {
-      const k = "weak:" + e.u.split("/").slice(-2).join("/");
-      const t = localStorage.getItem(k);
-      if (!t) return false;
-      const days = (Date.now() - parseInt(t)) / 86400000;
+  function getLessonSlugFromPath(path){
+    const match = String(path || "").match(/P\d-\d{2}/);
+    return match ? match[0] : "";
+  }
+  function getLessonSlugFromEntry(entry){
+    return getLessonSlugFromPath(entry?.u || "");
+  }
+  function getPhaseFromSlug(slug){
+    const match = String(slug || "").match(/^P(\d)-/);
+    return match ? parseInt(match[1], 10) : 0;
+  }
+  function getModeConfig(modeKey){
+    return HOME_LEARNING_MODES.find(function(group){ return group.key === modeKey; }) || HOME_LEARNING_MODES[0];
+  }
+  function readHomeMode(){
+    try {
+      const saved = localStorage.getItem(HOME_MODE_KEY) || "";
+      return HOME_LEARNING_MODES.some(function(group){ return group.key === saved; }) ? saved : "";
+    } catch (e) {
+      return "";
+    }
+  }
+  function writeHomeMode(modeKey){
+    try {
+      localStorage.setItem(HOME_MODE_KEY, modeKey);
+    } catch (e) {}
+  }
+  function readLastLesson(){
+    try {
+      return sessionStorage.getItem("last-lesson") || "";
+    } catch (e) {
+      return "";
+    }
+  }
+  function getModeEntries(modeKey){
+    const selected = getModeConfig(modeKey);
+    const allowed = new Set(selected.phases || []);
+    return LESSON_SEQUENCE
+      .map(function(slug){
+        return idx.find(function(entry){ return entry.u.endsWith(slug + ".html"); }) || null;
+      })
+      .filter(Boolean)
+      .filter(function(entry){
+        return !allowed.size || allowed.has(getPhaseFromSlug(getLessonSlugFromEntry(entry)));
+      });
+  }
+  function getOverdueWeakEntries(entries){
+    return entries.filter(function(entry){
+      const key = "weak:" + entry.u.split("/").slice(-2).join("/");
+      const stamp = localStorage.getItem(key);
+      if (!stamp) return false;
+      const days = (Date.now() - parseInt(stamp, 10)) / 86400000;
       return days >= 3;
     });
-    let pick = null;
-    let prefix = "";
-    let cta = "開始這課";
-    if (weak.length) {
-      pick = weak[0];
-      prefix = "建議先複習";
-      cta = "開始複習";
-    } else {
-      const undone = idx.filter(e => !doneSet.has(e.u));
-      if (undone.length) {
-        pick = undone[0];
-        prefix = "建議下一課";
-      }
+  }
+  function inferHomeMode(){
+    const savedMode = readHomeMode();
+    if (savedMode) return savedMode;
+
+    const lastPhase = getPhaseFromSlug(getLessonSlugFromPath(readLastLesson()));
+    if (lastPhase >= 4) return "auto";
+    if (lastPhase >= 2) return "work";
+
+    const phaseCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    idx.forEach(function(entry){
+      if (!doneSet.has(entry.u)) return;
+      const phase = getPhaseFromSlug(getLessonSlugFromEntry(entry));
+      if (phaseCount[phase] != null) phaseCount[phase] += 1;
+    });
+    const doneTotal = Object.values(phaseCount).reduce(function(sum, count){ return sum + count; }, 0);
+    if (!doneTotal) return "starter";
+    if ((phaseCount[4] + phaseCount[5]) >= Math.max(phaseCount[2] + phaseCount[3], phaseCount[1] + phaseCount[2]) && (phaseCount[4] + phaseCount[5]) > 0) {
+      return "auto";
     }
-    if (!pick) {
-      helper.innerHTML = `
-        <div class="hero-helper-copy">
-          <span class="hero-helper-label">今天先做這一件</span>
-          <strong>先做一題快速測驗或回顧筆記</strong>
-          <span>目前進度很完整，現在最值得做的是保持熟悉感，而不是再塞新內容。</span>
-        </div>
-        <button type="button" class="btn primary hero-helper-btn">開始測驗</button>
-      `;
-      helper.querySelector(".hero-helper-btn")?.addEventListener("click", function(){
-        document.getElementById("quizBox")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+    if ((phaseCount[2] + phaseCount[3]) >= (phaseCount[1] + phaseCount[2]) && (phaseCount[2] + phaseCount[3]) > 0) {
+      return "work";
+    }
+    return "starter";
+  }
+  function getRecommendation(modeKey){
+    const selected = getModeConfig(modeKey);
+    const entries = getModeEntries(modeKey);
+    const weakEntries = getOverdueWeakEntries(entries);
+    if (weakEntries.length) {
+      return {
+        type: "review",
+        entry: weakEntries[0],
+        label: "建議先補這課",
+        summary: weakEntries[0].b || "",
+        note: "你之前把這課標成不熟，現在先把它補穩，比繼續開新課更划算。",
+        cta: "開始複習",
+      };
+    }
+
+    const lastSlug = getLessonSlugFromPath(readLastLesson());
+    const lastEntry = entries.find(function(entry){ return getLessonSlugFromEntry(entry) === lastSlug; }) || null;
+    if (lastEntry && !doneSet.has(lastEntry.u)) {
+      return {
+        type: "continue",
+        entry: lastEntry,
+        label: "先接回上次進度",
+        summary: lastEntry.b || "",
+        note: "你上次停在這裡，先把同一條脈絡接起來，通常最容易重新進入狀況。",
+        cta: "繼續這課",
+      };
+    }
+
+    const nextEntry = entries.find(function(entry){ return !doneSet.has(entry.u); }) || null;
+    if (nextEntry) {
+      const slug = getLessonSlugFromEntry(nextEntry);
+      return {
+        type: "next",
+        entry: nextEntry,
+        label: selected.key === "all" ? "現在最值得做的下一課" : `${selected.label} 的下一課`,
+        summary: LESSON_GUIDE[slug]?.focus || nextEntry.b || "",
+        note: LESSON_GUIDE[slug]?.nextWhy || selected.mindset,
+        cta: "開始這課",
+      };
+    }
+
+    const fallbackWeak = getOverdueWeakEntries(getModeEntries("all"));
+    if (fallbackWeak.length) {
+      return {
+        type: "review",
+        entry: fallbackWeak[0],
+        label: "這條路線走完了，先回補弱點",
+        summary: fallbackWeak[0].b || "",
+        note: "這段課程已經完成，現在最值得做的是把之前標成不熟的地方補穩。",
+        cta: "開始複習",
+      };
+    }
+
+    return {
+      type: "review-all",
+      entry: null,
+      label: "今天做一次快速回顧",
+      summary: "這條路線目前已完成，接下來更值得做的是回顧，而不是亂開新課。",
+      note: "先做一題測驗、重播一段示範或掃一下筆記，就能把熟悉感留住。",
+      cta: "開始回顧",
+    };
+  }
+  function goToRecommendation(rec){
+    if (!rec) return;
+    if (rec.entry) {
+      location.href = DEPTH + rec.entry.u;
       return;
     }
+    document.getElementById("quizBox")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function syncTodayButton(){
+    const btn = document.getElementById("todayBtn");
+    if (!btn) return;
+    const rec = homeState.recommendation || getRecommendation(homeState.activeMode);
+    const label = rec?.type === "review"
+      ? "🔁 先補這課"
+      : rec?.type === "continue"
+        ? "▶ 繼續這課"
+        : rec?.type === "review-all"
+          ? "🧪 今天做回顧"
+          : "🎯 今天學這課";
+    btn.textContent = label;
+    btn.title = rec?.entry ? `直接前往：${rec.entry.t}` : "捲動到快速回顧";
+    btn.setAttribute("aria-label", btn.title);
+  }
+  function updateHeroHelper(){
+    if (!helper) return;
+    const rec = getRecommendation(homeState.activeMode);
+    homeState.recommendation = rec;
+    syncTodayButton();
     helper.innerHTML = `
       <div class="hero-helper-copy">
-        <span class="hero-helper-label">${escHtml(prefix)}</span>
-        <strong>${escHtml(pick.t)}</strong>
-        <span>${escHtml(pick.b || "")}</span>
+        <span class="hero-helper-label">${escHtml(rec.label)}</span>
+        <strong>${escHtml(rec.entry ? rec.entry.t : "先做一次回顧")}</strong>
+        <span>${escHtml(rec.summary)}</span>
+        <p class="hero-helper-note">${escHtml(rec.note)}</p>
       </div>
-      <button type="button" class="btn primary hero-helper-btn">${escHtml(cta)}</button>
+      <button type="button" class="btn primary hero-helper-btn">${escHtml(rec.cta)}</button>
     `;
     helper.querySelector(".hero-helper-btn")?.addEventListener("click", function(){
-      location.href = DEPTH + pick.u;
+      goToRecommendation(rec);
     });
   }
-  updateHeroHelper();
 
   (function buildQuickNav(){
     if (!quickNav) return;
-    const lastLesson = sessionStorage.getItem("last-lesson");
     const groups = HOME_LEARNING_MODES;
-    const state = { active: "all" };
     let hasHydratedMode = false;
+    homeState.activeMode = inferHomeMode();
 
     const wrap = document.createElement("div");
     wrap.className = "hero-mode-switch";
@@ -1301,6 +1631,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     continueWrap.className = "hero-continue";
     const featureWrap = document.createElement("section");
     featureWrap.className = "hero-featured-lessons";
+    const phaseGuideWrap = document.createElement("section");
+    phaseGuideWrap.className = "home-phase-guide";
+    const curriculumWrap = document.createElement("section");
+    curriculumWrap.className = "home-curriculum";
     const roadmapWrap = document.createElement("details");
     roadmapWrap.className = "hero-capability-map";
     roadmapWrap.open = false;
@@ -1358,31 +1692,149 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       if (toggle) toggle.textContent = roadmapWrap.open ? "收起完整路線" : "展開完整路線";
     });
 
+    function renderPhaseGuide(selected){
+      const phases = selected.phases.length
+        ? selected.phases.slice()
+        : HOME_CAPABILITY_MAP.stages.map(function(stage, index){ return index + 1; });
+      phaseGuideWrap.innerHTML = `
+        <div class="home-phase-guide-head">
+          <div>
+            <div class="home-phase-guide-eyebrow">Checkpoint</div>
+            <h3 class="home-phase-guide-title">這一段什麼時候算可以往下</h3>
+            <p class="home-phase-guide-intro">${escHtml(selected.label === "全部"
+              ? "先看完整地圖也沒關係，但每一段只要達到這些過關線，就可以放心往下一階段走。"
+              : `${selected.label} 不需要一次全吃完。先達到這些過關線，再往下一段走，節奏會更穩。`)}</p>
+          </div>
+          <div class="home-phase-guide-rhythm">
+            <span>1. 先看示範</span>
+            <span>2. 自己做一次</span>
+            <span>3. 打勾就停</span>
+          </div>
+        </div>
+        <div class="home-phase-guide-grid">
+          ${phases.map(function(phaseNo){
+            const item = HOME_PHASE_CHECKPOINTS[phaseNo];
+            if (!item) return "";
+            const lessonLinks = item.minimumLessons.map(function(slug){
+              const lesson = idx.find(function(entry){ return entry.u.endsWith(slug + ".html"); });
+              return lesson ? `<a href="${DEPTH + lesson.u}">${escHtml(lesson.t)}</a>` : "";
+            }).join("");
+            return `
+              <article class="home-phase-guide-card ${phaseNo === selected.anchorPhase ? "is-primary" : ""}">
+                <div class="home-phase-guide-card-top">
+                  <span class="home-phase-guide-card-phase">Phase ${phaseNo}</span>
+                  <span class="home-phase-guide-card-chip">${escHtml(item.minimumLessons.join(" · "))}</span>
+                </div>
+                <h4>${escHtml(item.title)}</h4>
+                <p>${escHtml(item.summary)}</p>
+                <ul class="home-phase-guide-list">
+                  ${item.ready.map(function(line){ return `<li>${escHtml(line)}</li>`; }).join("")}
+                </ul>
+                <div class="home-phase-guide-links">
+                  <span>最低建議先完成</span>
+                  <div>${lessonLinks}</div>
+                </div>
+                <div class="home-phase-guide-note">${escHtml(item.reset)}</div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+    function renderCurriculum(selected, visibleEntries){
+      const phases = selected.phases.length
+        ? selected.phases.slice()
+        : HOME_CAPABILITY_MAP.stages.map(function(stage, index){ return index + 1; });
+      curriculumWrap.innerHTML = `
+        <div class="home-curriculum-head">
+          <div>
+            <div class="home-curriculum-eyebrow">Curriculum</div>
+            <h3 class="home-curriculum-title">${escHtml(selected.label)} 的完整課表</h3>
+            <p class="home-curriculum-intro">先照這個順序走就好。每一階段先做完最關鍵的幾課，再往下一段推，會比來回跳著學更穩。</p>
+          </div>
+          <div class="home-curriculum-meta">${visibleEntries.length} 堂課</div>
+        </div>
+        <div class="home-curriculum-stack">
+          ${phases.map(function(phaseNo){
+            const stage = HOME_CAPABILITY_MAP.stages[phaseNo - 1];
+            const lessons = visibleEntries.filter(function(entry){
+              return getPhaseFromSlug(getLessonSlugFromEntry(entry)) === phaseNo;
+            });
+            if (!stage || !lessons.length) return "";
+            const doneCount = lessons.filter(function(entry){ return doneSet.has(entry.u); }).length;
+            return `
+              <section class="home-curriculum-phase ${phaseNo === selected.anchorPhase ? "is-primary" : ""}">
+                <div class="home-curriculum-phase-head">
+                  <div>
+                    <div class="home-curriculum-phase-kicker">Phase ${phaseNo}</div>
+                    <h4>${escHtml(stage.title)}</h4>
+                    <p>${escHtml(stage.summary)}</p>
+                  </div>
+                  <div class="home-curriculum-phase-progress">${doneCount} / ${lessons.length} 已完成</div>
+                </div>
+                <div class="home-curriculum-grid">
+                  ${lessons.map(function(entry){
+                    const slug = getLessonSlugFromEntry(entry);
+                    const seenKey = "seen:" + entry.u.split("/").slice(-2).join("/");
+                    const seen = localStorage.getItem(seenKey);
+                    const isDone = doneSet.has(entry.u);
+                    const seenLabel = !isDone && seen
+                      ? (function(){
+                          const days = Math.floor((Date.now() - parseInt(seen, 10)) / 86400000);
+                          return days <= 0 ? "今天看過" : days === 1 ? "昨天看過" : "最近看過";
+                        })()
+                      : "";
+                    return `
+                      <a class="home-curriculum-card ${isDone ? "is-done" : ""}" href="${DEPTH + entry.u}">
+                        <div class="home-curriculum-card-top">
+                          <span class="home-curriculum-card-tag">${escHtml(slug)}</span>
+                          ${isDone ? '<span class="home-curriculum-card-state is-done">已完成</span>' : seenLabel ? `<span class="home-curriculum-card-state">${escHtml(seenLabel)}</span>` : ""}
+                        </div>
+                        <strong>${escHtml(entry.t)}</strong>
+                        <p>${escHtml(entry.s || entry.b || "")}</p>
+                        <em>${escHtml(entry.b || "")}</em>
+                      </a>
+                    `;
+                  }).join("")}
+                </div>
+              </section>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+    function updateContinueWrap(){
+      const lastLesson = readLastLesson();
+      continueWrap.innerHTML = "";
+      continueWrap.hidden = true;
+      if (!lastLesson) return;
+      const match = idx.find(function(entry){ return entry.u.endsWith(lastLesson); });
+      if (!match) return;
+      if (homeState.recommendation?.entry?.u === match.u) return;
+      continueWrap.innerHTML = `
+        <button type="button" class="btn hero-continue-btn">
+          <span>▶</span>
+          <span>繼續上次看到：${escHtml(match.t)}</span>
+        </button>
+      `;
+      continueWrap.hidden = false;
+      continueWrap.querySelector("button")?.addEventListener("click", function(){
+        location.href = DEPTH + match.u;
+      });
+    }
+
     function applyMode(modeKey){
-      state.active = modeKey;
+      homeState.activeMode = modeKey;
+      writeHomeMode(modeKey);
       chips.querySelectorAll("button").forEach(function(btn){
         btn.classList.toggle("is-active", btn.dataset.mode === modeKey);
       });
       const selected = groups.find(g => g.key === modeKey) || groups[0];
       const allowed = new Set(selected.phases);
-      let visibleLessons = 0;
-      let firstVisibleSection = null;
-      document.querySelectorAll(".phase-section").forEach(function(section){
-        const phaseMatch = section.className.match(/phase-(\d)/);
-        const phaseNo = phaseMatch ? parseInt(phaseMatch[1], 10) : 0;
-        const visible = !allowed.size || allowed.has(phaseNo);
-        section.style.display = visible ? "" : "none";
-        if (visible && !firstVisibleSection) firstVisibleSection = section;
-        var next = section.nextElementSibling;
-        while (next && !next.classList.contains("phase-section") && !next.classList.contains("phase-group")) {
-          next.style.display = visible ? "" : "none";
-          if (visible && next.matches('a[data-lesson]')) visibleLessons++;
-          next = next.nextElementSibling;
-        }
-        const group = section.nextElementSibling;
-        if (group && group.classList.contains("phase-group")) {
-          group.style.display = visible ? "" : "none";
-        }
+      const visibleEntries = getModeEntries(modeKey);
+      const visibleLessons = visibleEntries.length;
+      document.querySelectorAll(".phase-section, .phase-group, main > a[data-lesson]").forEach(function(node){
+        node.style.display = "none";
       });
       const phaseText = selected.phases.length ? `Phase ${selected.phases.join("、")}` : "全部 5 個 Phase";
       meta.innerHTML = `
@@ -1425,11 +1877,13 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         </div>
       `;
       featureWrap.dataset.mode = selected.key;
-      if (firstVisibleSection) {
-        if (hasHydratedMode) {
-          var y = window.pageYOffset + firstVisibleSection.getBoundingClientRect().top - 120;
-          window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-        }
+      renderPhaseGuide(selected);
+      renderCurriculum(selected, visibleEntries);
+      updateHeroHelper();
+      updateContinueWrap();
+      if (hasHydratedMode) {
+        var y = window.pageYOffset + curriculumWrap.getBoundingClientRect().top - 120;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
       }
       hasHydratedMode = true;
     }
@@ -1454,24 +1908,13 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       chips.appendChild(btn);
     });
 
-    if (lastLesson) {
-      const match = idx.find(e => e.u.endsWith(lastLesson));
-      if (match) {
-        continueWrap.innerHTML = `
-          <button type="button" class="btn hero-continue-btn">
-            <span>▶</span>
-            <span>繼續上次看到：${escHtml(match.t)}</span>
-          </button>
-        `;
-        continueWrap.querySelector("button")?.addEventListener("click", function(){
-          location.href = DEPTH + match.u;
-        });
-      }
-    }
-
     quickNav.appendChild(wrap);
-    if (continueWrap.children.length) quickNav.appendChild(continueWrap);
-    applyMode("all");
+    quickNav.appendChild(continueWrap);
+    applyMode(homeState.activeMode);
+    setTimeout(function(){
+      hasHydratedMode = false;
+      applyMode(homeState.activeMode);
+    }, 0);
 
     (function composeHero(){
       const hero = document.querySelector(".hero");
@@ -1528,6 +1971,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       academyStack.className = "home-academy-stack";
       academyStack.appendChild(featureWrap);
       academyStack.appendChild(roadmapWrap);
+      academyStack.appendChild(phaseGuideWrap);
+      academyStack.appendChild(curriculumWrap);
       requestAnimationFrame(function(){
         const dashboard = document.querySelector(".idx-dashboard");
         if (dashboard) dashboard.insertAdjacentElement("afterend", academyStack);
@@ -1536,26 +1981,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     })();
   })();
 
-  // 今天學一課（優先選 weak、再選未完成）
   document.getElementById("todayBtn")?.addEventListener("click", () => {
-    const weak = idx.filter(e => {
-      const k = "weak:" + e.u.split("/").slice(-2).join("/");
-      const t = localStorage.getItem(k);
-      if (!t) return false;
-      const days = (Date.now() - parseInt(t)) / 86400000;
-      return days >= 3;
-    });
-    let pick;
-    if (weak.length) {
-      pick = weak[Math.floor(Math.random()*weak.length)];
-      if (!confirm(`📌 該複習了：\n\n${pick.t}\n${pick.b||""}\n\n（你 3 天前標記為「不熟」）\n\n要開始嗎？`)) return;
-    } else {
-      const undone = idx.filter(e => !doneSet.has(e.u));
-      if (!undone.length) { alert("太強了，全部學完了 🎉"); return; }
-      pick = undone[Math.floor(Math.random()*undone.length)];
-      if (!confirm(`今天推薦你學：\n\n📘 ${pick.t}\n${pick.b||""}\n\n要開始嗎？`)) return;
-    }
-    location.href = DEPTH + pick.u;
+    goToRecommendation(homeState.recommendation || getRecommendation(homeState.activeMode));
   });
 
   // 匯出

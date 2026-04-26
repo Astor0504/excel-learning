@@ -1,0 +1,6 @@
+﻿任務ID,檔案名稱,部門,狀態,優先級
+TASK-001,sales_north.xlsx,業務,待處理,高
+TASK-002,sales_central.xlsx,業務,待處理,中
+TASK-003,budget_finance.xlsx,財務,待處理,高
+TASK-004,headcount_hr.xlsx,人資,待處理,低
+TASK-005,tickets_support.xlsx,客服,待處理,中
