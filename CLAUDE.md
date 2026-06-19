@@ -18,7 +18,7 @@
 Excel 站建立了一套 lesson 結構，新增課程請沿用：
 - **公式動畫**：分步拆解（highlight → 代入 → 結果）
 - **決策樹**：用 Mermaid（`npx --yes @mermaid-js/mermaid-cli`）產 SVG，light/dark 兩版
-- **WPS callout**：凡遇到 Excel/WPS 行為差異一律加 callout（WPS 在台灣使用者多）
+- **平台 callout（兩維度都要查）**：凡遇平台差異一律加 callout，且**分開檢查兩維度**——①macOS 版 Excel 限制（本站 macOS 取向）②WPS 差異（台灣 WPS 使用者多）。常見只補了 macOS 卻漏 WPS（如 Power Query/Power Pivot 課）；新增或修課時兩維度都要確認。
 - 每課 HTML 行數 `wc -l` 控制在可維護範圍
 
 ## 建站時的部署流程
