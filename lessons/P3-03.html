@@ -37,10 +37,15 @@
 <img class="diagram-dark" src="img/chart-selection.dark.svg" alt="圖表選型決策樹" style="max-width:100%;margin:12px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
 
-<h2>4 種圖表配對什麼資料</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">圖表類型選擇指南</caption><thead><tr><th>圖表</th><th>適合</th></tr></thead><tbody><tr><td>柱狀 / 長條</td><td>比較類別大小（部門業績）</td></tr><tr><td>折線</td><td>時間趨勢（每月收入）</td></tr><tr><td>圓餅</td><td>佔比（市場份額，類別 ≤ 5）</td></tr><tr><td>散佈</td><td>兩變數關聯（廣告 vs 銷售）</td></tr></tbody></table>
-<h2>設計三原則</h2><p>① 一張圖只講一件事 ② 拿掉所有不必要的東西（網格線、3D 效果、陰影）③ 重點顏色用深色，其他用灰色——眼睛會自動看到重點。</p>
-<h2>走勢圖（Sparklines）</h2><p>插入 → 走勢圖 → 在單一儲存格內塞迷你折線圖。最適合做 KPI 表格旁邊的趨勢列。</p>
-<div class="callout"><strong>⚠️ 注意</strong>圓餅圖類別超過 5 個就難讀，改用橫條圖。3D 圓餅圖永遠不要用。</div>
+<h2>4 種圖表配對什麼資料</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">圖表類型選擇指南</caption><thead><tr><th>想回答的問題</th><th>圖表</th><th>適合資料</th></tr></thead><tbody><tr><td>誰比較大？</td><td>柱狀 / 長條</td><td>部門業績、產品銷量</td></tr><tr><td>趨勢怎麼走？</td><td>折線</td><td>每月收入、每日流量</td></tr><tr><td>占比是多少？</td><td>圓餅 / 環圈</td><td>類別少於 5 個的市場份額</td></tr><tr><td>兩件事有沒有關係？</td><td>散佈</td><td>廣告費 vs 銷售、工時 vs 產量</td></tr><tr><td>單位不同但要一起看？</td><td>組合圖</td><td>營收金額 + 成長率</td></tr></tbody></table>
+<h2>從自動圖改成專業圖</h2><p>Excel 預設圖通常只是「有圖」，還不是「有訊息」。先把標題改成結論，例如「電子部連續三月成長放緩」，再移除不必要的圖例、粗網格線、外框和 3D 效果，最後只用一個重點色標出你要觀眾看的資料點。</p>
+<h2>標題、標籤、重點色</h2><p>標題負責講結論，資料標籤只放在最後值、最高值、最低值或被討論的點，不要每個點都貼滿。顏色最多分三層：重點色、一般資料色、背景輔助色。當整張圖都很亮，等於沒有重點。</p>
+<h2>走勢圖（Sparklines）</h2><p>插入 → 走勢圖 → 在單一儲存格內塞迷你折線圖。最適合做 KPI 表格旁邊的趨勢列：左邊看本月數字，右邊一眼看近 6 個月方向。</p>
+<h2>圖表交付流程</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">從資料到圖表，不要跳過訊息設計</caption><thead><tr><th>步驟</th><th>要回答的問題</th><th>常見錯誤</th></tr></thead><tbody><tr><td>1. 先寫一句結論</td><td>這張圖要讓讀者看見什麼？</td><td>直接用「銷售趨勢」當標題，沒有觀點</td></tr><tr><td>2. 選圖表類型</td><td>比較、趨勢、占比、關係、雙軸？</td><td>用圓餅圖塞太多類別，或用折線比較無時間序的類別</td></tr><tr><td>3. 移除雜訊</td><td>哪些格線、圖例、外框其實不需要？</td><td>預設格式全部保留，畫面很滿但訊息很弱</td></tr><tr><td>4. 標重點</td><td>只標最後值、最高低點，還是某個異常點？</td><td>每個點都貼標籤，讀者反而找不到重點</td></tr><tr><td>5. 測閱讀順序</td><td>讀者 5 秒內能不能說出結論？</td><td>圖表漂亮但不知道下一步該做什麼</td></tr></tbody></table>
+<h2>交付前檢查</h2>
+<p>正式報表的圖表要能獨立閱讀：標題有結論、座標軸單位清楚、顏色有固定意義、資料來源可追溯。若圖表會每月更新，請先把來源轉成 Table，避免新增資料後圖表範圍沒有跟著變。</p>
+<div class="callout"><strong>⚠️ 注意</strong>圓餅圖類別超過 5 個就難讀，改用橫條圖。3D 圓餅圖、漸層陰影和過多資料標籤會讓判讀變慢，不是變專業。</div>
 
 
     </article>

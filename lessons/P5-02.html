@@ -29,7 +29,10 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VBA 進階：陣列、字典、錯誤處理、事件</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">進階 VBA 的精髓在「速度」——把 100 個操作壓成 1 個記憶體運算。</p><h2>陣列加速</h2><pre><code class="lang-vba">&#x27; 慢：直接讀寫儲存格（每次都跨應用程式）
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">進階 VBA 的重點不是寫更花的程式，而是讓巨集更快、更穩、更容易收尾。先把大量資料放進記憶體處理，再用 Dictionary 做彙總，最後用錯誤處理確保設定會復原。</p>
+<h2>先判斷：為什麼需要進階 VBA</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">從會跑，到可以交付</caption><thead><tr><th>問題</th><th>進階技巧</th><th>交付價值</th></tr></thead><tbody><tr><td>逐格處理很慢</td><td>陣列一次讀寫</td><td>大量資料從幾分鐘降到幾秒</td></tr><tr><td>要去重、計數、彙總</td><td>Dictionary</td><td>比反覆 COUNTIF 更有彈性</td></tr><tr><td>程式中途壞掉</td><td>On Error + CleanUp</td><td>能提示錯誤並復原畫面、事件、計算設定</td></tr><tr><td>使用者輸入後要自動補資料</td><td>Worksheet 事件</td><td>不用要求使用者再按一次巨集</td></tr></tbody></table>
+<h2>陣列加速</h2><pre><code class="lang-vba">&#x27; 慢：直接讀寫儲存格（每次都跨應用程式）
 For i = 2 To 10000
     Cells(i, 2).Value = Cells(i, 1).Value * 2
 Next i
@@ -53,14 +56,29 @@ For i = 2 To 1000
         dict.Add key, 1
     End If
 Next i</code></pre>
-<h2>錯誤處理</h2><pre><code class="lang-vba">Sub Safe()
+<h2>錯誤處理與安全收尾</h2><pre><code class="lang-vba">Sub Safe()
     On Error GoTo ErrHandler
-    &#x27; 你的程式碼
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+
+    &#x27; 你的主要流程
+
+CleanUp:
+    Application.EnableEvents = True
+    Application.ScreenUpdating = True
+    If Err.Number = 0 Then MsgBox &quot;完成&quot;
     Exit Sub
+
 ErrHandler:
     MsgBox &quot;錯誤：&quot; &amp; Err.Description
+    Resume CleanUp
 End Sub</code></pre>
-<h2>事件驅動</h2><p>工作表可以掛事件：Worksheet_Change（資料變更時觸發）、Worksheet_SelectionChange（選取變更時）。可以做「自動填入時間戳記」之類的功能。</p>
+<h2>事件驅動</h2><p>工作表可以掛事件：Worksheet_Change（資料變更時觸發）、Worksheet_SelectionChange（選取變更時）。可以做「自動填入時間戳記」之類的功能。事件程式碼要放在工作表模組，不是一般 Module；如果事件裡會改儲存格，請先關閉 <code>Application.EnableEvents</code>，避免觸發自己造成無限迴圈。</p>
+<h2>macOS 上的進階 VBA 邊界</h2>
+<p>Excel for Mac 可以做工作簿內資料處理、格式化、匯出 PDF、刷新查詢和基本檔案流程；但不要把 Windows 專屬的 COM / ActiveX / Outlook 自動化當成主路線。若需求是清理資料，先問 Power Query 能不能處理；若需求是按鈕化交付流程，再把 VBA 接進來。</p>
+<h2>交付前檢查</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">進階 VBA 不是只測成功路徑</caption><thead><tr><th>檢查項目</th><th>原因</th></tr></thead><tbody><tr><td>大量資料是否一次讀寫</td><td>避免逐格操作造成卡頓</td></tr><tr><td>錯誤時設定是否復原</td><td>ScreenUpdating、EnableEvents、Calculation 不該永久被關掉</td></tr><tr><td>事件是否避免遞迴觸發</td><td>Worksheet_Change 修改儲存格時最容易出問題</td></tr><tr><td>Mac / Windows 差異是否標清楚</td><td>避免交付後使用者照著不可用的功能操作</td></tr></tbody></table>
 
 
     </article>

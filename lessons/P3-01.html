@@ -29,12 +29,27 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">資料驗證：讓使用者只能輸入合法的值</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">不想再收到「2024/13/45」「電子部電子部電子部」這種髒資料？資料驗證就是答案。</p><h2>最常用：下拉選單</h2><p>資料 → 資料驗證 → 允許「清單」→ 來源輸入「電子,業務,行政」（用半形逗號）或選一個範圍。儲存格右側出現下拉箭頭。</p>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">資料驗證的價值，是把錯誤擋在輸入當下。與其月底再清「2024/13/45」「電子部電子部電子部」這種髒資料，不如一開始就讓使用者只能填合法值。</p>
+<h2>先決定要防什麼錯</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">資料驗證類型速查</caption><thead><tr><th>要防的錯</th><th>驗證類型</th><th>例子</th></tr></thead><tbody><tr><td>選項打錯或同義字混用</td><td>清單</td><td>部門只能選電子/業務/行政</td></tr><tr><td>數字超出合理範圍</td><td>整數 / 小數</td><td>折扣介於 0% 到 30%</td></tr><tr><td>日期不在期間內</td><td>日期</td><td>只能填本季日期</td></tr><tr><td>格式或跨欄條件</td><td>自訂公式</td><td>結束日必須晚於開始日</td></tr></tbody></table>
+<h2>最常用：下拉選單</h2><p>資料 → 資料驗證 → 允許「清單」→ 來源輸入 <code>電子,業務,行政</code>（用半形逗號），或選一個維護清單的範圍。正式表單建議用範圍來源，因為之後新增選項時不必逐格修改規則。</p>
+<h2>日期、數字與錯誤提醒</h2><p>數字與日期驗證要同時設定「輸入訊息」和「錯誤提醒」。輸入訊息告訴使用者該填什麼，錯誤提醒則說明為什麼被擋下。這兩個訊息寫清楚，表單才不會變成只會跳錯的黑盒子。</p>
+<h2>自訂公式：跨欄防呆</h2><pre><code class="lang-excel"># 結束日必須晚於開始日
+=B2&gt;=A2
+
+# 員工編號不可重複
+=COUNTIF($A:$A, A2)=1
+
+# 金額必須大於 0，且狀態不可空白
+=AND($C2&gt;0, $D2&lt;&gt;&quot;&quot;)</code></pre>
 <h2>串聯下拉（進階）</h2><pre><code class="lang-excel"># 第一個下拉選「部門」
 # 第二個下拉根據第一個顯示對應「員工」
 =INDIRECT(A2)
 # A2 是「電子」就會顯示名為「電子」的範圍</code></pre>
-<h2>其他驗證類型</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">資料驗證類型速查</caption><thead><tr><th>類型</th><th>用途</th></tr></thead><tbody><tr><td>整數 / 小數</td><td>限定數值範圍</td></tr><tr><td>日期</td><td>限定日期區間</td></tr><tr><td>文字長度</td><td>限定字數</td></tr><tr><td>自訂</td><td>用公式 =A2&gt;0</td></tr></tbody></table>
+<h2>正式表單的 5 步流程</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">不要只做下拉選單，整份表單要一起設計</caption><thead><tr><th>步驟</th><th>目的</th><th>交付檢查</th></tr></thead><tbody><tr><td>1. 先列輸入欄位</td><td>分出必填、選填、公式產生欄</td><td>公式欄不應讓使用者手填</td></tr><tr><td>2. 建維護清單</td><td>部門、區域、狀態集中管理</td><td>新增選項時不用逐格改規則</td></tr><tr><td>3. 套驗證規則</td><td>清單、日期、數字、自訂公式分工</td><td>每種規則都測合法與非法輸入</td></tr><tr><td>4. 寫提示與錯誤訊息</td><td>讓使用者知道該怎麼填</td><td>錯誤訊息要說明原因，而不是只說不允許</td></tr><tr><td>5. 圈選舊資料</td><td>找出套規則前已經存在的髒資料</td><td>資料 → 資料驗證 → 圈選無效資料</td></tr></tbody></table>
+<h2>什麼時候資料驗證不夠</h2>
+<p>資料驗證只能擋住儲存格輸入錯誤，不能取代權限控管，也不能保證貼上資料一定乾淨。若檔案會長期給多人使用，請搭配 Table、條件式格式化和工作表保護：Table 讓範圍穩，條件式格式化把異常浮出來，保護工作表避免使用者改到公式。</p>
+<div class="callout"><strong>⚠️ 注意</strong>資料驗證只管「之後輸入」的值，不會自動修正既有髒資料。套用前先清一次資料，套用後再用「圈選無效資料」檢查漏網內容。</div>
 
 
     </article>

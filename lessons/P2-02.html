@@ -2,14 +2,14 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>查找比對｜Excel 學習地圖</title>
-<meta name="description" content="VLOOKUP / XLOOKUP / INDEX+MATCH：跨表查資料的命脈函數，職場最常被要求的技能">
+<meta name="description" content="XLOOKUP / VLOOKUP / INDEX+MATCH：跨表查資料的命脈函數，職場最常被要求的技能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="查找比對｜Excel 學習地圖">
-<meta property="og:description" content="VLOOKUP / XLOOKUP / INDEX+MATCH：跨表查資料的命脈函數，職場最常被要求的技能">
+<meta property="og:description" content="XLOOKUP / VLOOKUP / INDEX+MATCH：跨表查資料的命脈函數，職場最常被要求的技能">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
-<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-02">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P2-02" data-default-tab="study">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -26,88 +26,31 @@
     <h1>查找比對</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">VLOOKUP / XLOOKUP：跨表查資料的命脈函數</p></div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">XLOOKUP / VLOOKUP / INDEX+MATCH：跨表查資料的命脈函數</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">面試最常被問的就是這個。能解釋清楚 VLOOKUP 和 XLOOKUP 的差別，就贏一半。</p><h2>VLOOKUP 公式拆解動畫</h2>
-<div class="formula-demo" id="vlookupDemo">
-  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
-  <div class="formula-bar">=VLOOKUP(<span class="fp c1" data-step="1">A2</span>, <span class="fp c2" data-step="2">員工表!A:D</span>, <span class="fp c3" data-step="3">2</span>, <span class="fp c4" data-step="4">FALSE</span>)</div>
-  <div class="explain-area" id="vlookupExplain">
-    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
-  </div>
-  <button class="play-btn" onclick="playFormula('vlookup')">▶ 播放逐步解說</button>
-</div>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">查找比對不是先背 VLOOKUP，而是先搞清楚：你拿什麼值去找？去哪一欄找？要回傳哪一欄？找不到時怎麼顯示？</p><h2>先分 4 種查找情境</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先判斷環境與資料方向，再選工具</caption><thead><tr><th>你的情境</th><th>優先用</th><th>一句提醒</th></tr></thead><tbody><tr><td>Microsoft 365 / Excel 2021 以上</td><td>XLOOKUP</td><td>查找欄和回傳欄分開寫，不用數第幾欄</td></tr><tr><td>舊版 Excel 或要相容舊檔</td><td>INDEX + MATCH</td><td>穩、可往左查，是舊版環境的專業備案</td></tr><tr><td>維護既有 VLOOKUP 公式</td><td>VLOOKUP</td><td>確認第四參數是 FALSE / 0，且查找欄在表格最左邊</td></tr><tr><td>找不到資料時不能出錯</td><td>XLOOKUP 第 4 參數 / IFERROR</td><td>不要讓 #N/A 直接出現在要交付的報表裡</td></tr></tbody></table>
+<h2>語法起手式</h2><pre><code class="lang-excel"># 新版主路線：用產品代碼查產品名稱
+=XLOOKUP(A2, 商品表!A:A, 商品表!B:B, &quot;查無此商品&quot;)
 
-<div class="excel-grid" id="vlookupGrid" style="grid-template-columns:repeat(4,1fr)">
-  <div class="cell header">A</div><div class="cell header">B</div><div class="cell header">C</div><div class="cell header">D</div>
-  <div class="cell" data-col="a">E001</div><div class="cell" data-col="b">王小明</div><div class="cell" data-col="c">業務</div><div class="cell" data-col="d">55000</div>
-  <div class="cell highlight" data-col="a">E002</div><div class="cell result" data-col="b">林美玲</div><div class="cell" data-col="c">行政</div><div class="cell" data-col="d">42000</div>
-  <div class="cell" data-col="a">E003</div><div class="cell" data-col="b">張志偉</div><div class="cell" data-col="c">工程</div><div class="cell" data-col="d">68000</div>
-</div>
-<p style="font-size:13px;color:var(--muted);margin-top:4px">黃框 = 查找值 (A2=E002)，綠框 = 回傳結果 (第 2 欄=林美玲)</p>
+# 舊版通用備案：MATCH 找位置，INDEX 取結果
+=INDEX(商品表!B:B, MATCH(A2, 商品表!A:A, 0))
 
-<script>
-(function(){
-  var steps = {
-    vlookup: [
-      {step:1,cls:'c1',label:'參數 1：查找值',text:'A2 = 要找的值（例如員工編號 E002）。VLOOKUP 會拿這個值去表格最左欄找。'},
-      {step:2,cls:'c2',label:'參數 2：查表範圍',text:'員工表!A:D = 去「員工表」的 A 到 D 欄找。查找值必須在最左欄（A 欄）。'},
-      {step:3,cls:'c3',label:'參數 3：回傳第幾欄',text:'2 = 找到後，回傳同一列的第 2 欄（B 欄 = 姓名）。這個數字要手動數！'},
-      {step:4,cls:'c4',label:'參數 4：精確比對',text:'FALSE = 精確比對。幾乎永遠填 FALSE！填 TRUE 或省略會用模糊比對，結果常常錯。'}
-    ]
-  };
-  function showStep(demoId,stepNum){
-    var demo = document.getElementById(demoId+'Demo');
-    if(!demo) return;
-    var info = steps[demoId].find(function(s){return s.step===stepNum});
-    if(!info) return;
-    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
-    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
-    if(target) target.classList.add('active');
-    var area = demo.querySelector('.explain-area');
-    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
-  }
-  window.playFormula = function(demoId){
-    var s = steps[demoId];
-    if(!s) return;
-    s.forEach(function(item,i){
-      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
-    });
-  };
-  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
-    el.addEventListener('click',function(){
-      var demo = el.closest('.formula-demo');
-      var demoId = demo.id.replace('Demo','');
-      showStep(demoId, parseInt(el.dataset.step));
-    });
-  });
-})();
-</script>
+# 維護舊檔常見：VLOOKUP 只能從最左欄往右查
+=VLOOKUP(A2, 商品表!A:E, 2, FALSE)
 
-<h2>VLOOKUP（舊版王者）</h2><pre><code class="lang-excel">=VLOOKUP(查的值, 查表範圍, 第幾欄, [是否模糊比對])
-
-# 用員工編號查姓名
-=VLOOKUP(A2, 員工表!A:D, 2, FALSE)
-
-# ⚠️ 4 個限制：
-# 1. 只能往「右邊」查，查左邊要用 INDEX+MATCH
-# 2. 第四個參數必填 FALSE（精確比對），否則會出怪結果
-# 3. 中間欄位數要手動數，加減欄位就會錯位
-# 4. 找不到回傳 #N/A，要包 IFERROR</code></pre>
-<h2>XLOOKUP（M365 新王）</h2><pre><code class="lang-excel">=XLOOKUP(查的值, 查找範圍, 回傳範圍, [找不到回傳], [比對模式], [搜尋方向])
-
-=XLOOKUP(A2, 員工表!A:A, 員工表!B:B, &quot;查無此人&quot;)
-
-# ✅ 優點：
-# - 可以往任何方向查
-# - 內建找不到的處理
-# - 不用數欄位
-# - 支援由下往上找</code></pre>
-<h2>INDEX + MATCH（萬能組合）</h2><pre><code class="lang-excel">=INDEX(回傳範圍, MATCH(查的值, 查找範圍, 0))
-=INDEX(B:B, MATCH(&quot;陳小明&quot;, A:A, 0))
-# 適合舊版 Excel、需要查左邊、雙向查表</code></pre>
-<h2>哪個該用？</h2><p>M365 / Excel 2021 → 一律用 XLOOKUP；舊版 Office → INDEX+MATCH &gt; VLOOKUP。VLOOKUP 只在維護舊檔案時才碰。</p>
+# 找不到時不要直接露出 #N/A
+=IFERROR(VLOOKUP(A2, 商品表!A:E, 2, FALSE), &quot;查無此商品&quot;)</code></pre>
+<h2>3 個最容易搞混的地方</h2>
+<h3>VLOOKUP 的第四參數不要省略</h3><p>職場查商品、員工、客戶代碼時，幾乎都要精確比對。第四參數請填 FALSE 或 0；省略時會變成模糊比對，資料沒排序時很容易回傳錯人。</p>
+<h3>VLOOKUP 的欄位號會被插欄弄壞</h3><p>=VLOOKUP(A2, A:E, 4, FALSE) 的 4 是手動數出來的。中間插入或刪除欄位後，公式可能還能算，但回傳的欄位已經錯了。</p>
+<h3>INDEX + MATCH 不是舊工具，而是備援思路</h3><p>MATCH 先找相對位置，INDEX 再依位置取值。這個拆法讓你可以往左查，也更容易理解查找公式到底在做什麼。</p>
+<h2>實戰範例：同一張商品表的 4 種任務</h2><pre><code class="lang-excel"># A欄=產品代碼，B欄=產品名稱，D欄=單價，E欄=庫存
+=XLOOKUP(&quot;P003&quot;, A:A, B:B, &quot;查無此商品&quot;)          # 查名稱
+=XLOOKUP(&quot;P003&quot;, A:A, D:D, &quot;查無此商品&quot;)          # 查單價
+=INDEX(A:A, MATCH(&quot;機械鍵盤&quot;, B:B, 0))             # 已知名稱反查代碼
+=IFERROR(VLOOKUP(&quot;P999&quot;, A:E, 2, FALSE), &quot;無此商品&quot;) # 舊檔錯誤處理</code></pre>
+<h2>哪個該用？</h2><p>M365 / Excel 2021 以上：優先用 XLOOKUP。需要維護舊版環境：熟 INDEX + MATCH。VLOOKUP 不是不能用，而是應該被放在「維護舊檔」和「相容需求」的位置。</p>
 <img class="diagram-light" src="img/lookup-decision.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
 <img class="diagram-dark" src="img/lookup-decision.dark.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
@@ -127,7 +70,7 @@
 </div>
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 VLOOKUP</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 XLOOKUP</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">寫一個 INDEX+MATCH</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 VLOOKUP 4 個限制</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用 XLOOKUP 查名稱與單價</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">知道 VLOOKUP 的 4 個限制</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 INDEX + MATCH 做反向查找</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">會處理找不到資料的 #N/A</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>

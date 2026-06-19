@@ -48,13 +48,13 @@ const LESSON_GUIDE = {
     nextWhy: "下一課會開始碰公式，快捷鍵和輸入節奏先熟，後面學函數會輕鬆很多。",
   },
   "P1-02": {
-    focus: "把 SUM、AVERAGE、COUNT 這些最常用統計函數變成反射動作。",
-    unlock: "看到一欄數字時，會自然知道要怎麼加總、取平均、算筆數和找排名。",
+    focus: "把 SUM、AVERAGE、COUNT / COUNTA 與排名函數的分工練成反射動作。",
+    unlock: "看到一欄數字時，會自然知道要怎麼加總、取平均、算筆數，也分得清楚 0、空白和第 N 名。",
     nextWhy: "有了基本函數後，下一課才能進到 IF / IFS 這種會做判斷的公式。",
   },
   "P1-03": {
-    focus: "讓 Excel 不只會算數，還會根據條件做出不同結果。",
-    unlock: "你會開始理解公式的邏輯結構，為 Phase 2 的條件統計打底。",
+    focus: "讓 Excel 根據 IF、IFS、AND / OR 與 SWITCH 做出不同結果。",
+    unlock: "你會分得清楚單一條件、多門檻、複合條件與固定值對應，為 Phase 2 的條件統計打底。",
     nextWhy: "下一課的 SUMIF / COUNTIF 本質上就是把條件判斷搬進統計公式裡。",
   },
   "P2-01": {
@@ -63,8 +63,8 @@ const LESSON_GUIDE = {
     nextWhy: "做完條件統計後，下一課會進到跨表查找，補齊職場最常見的第二塊能力。",
   },
   "P2-02": {
-    focus: "學會在不同工作表之間拉資料，解決職場最常見的查表任務。",
-    unlock: "你能處理代碼對照、名單補欄位、跨檔查價格這類高頻需求。",
+    focus: "用 XLOOKUP、VLOOKUP 與 INDEX + MATCH 把跨表資料穩定接回來。",
+    unlock: "你能處理代碼對照、名單補欄位、跨檔查價格，也知道找不到資料時該怎麼顯示。",
     nextWhy: "下一課的樞紐分析會把查回來、整理好的資料做成真正可讀的報表。",
   },
   "P2-03": {
@@ -83,8 +83,8 @@ const LESSON_GUIDE = {
     nextWhy: "資料品質穩了之後，下一課就能更有效處理文字與日期這些常見髒資料。",
   },
   "P3-02": {
-    focus: "把最常見的文字清理和日期處理手法一次補齊。",
-    unlock: "你能拆字串、補格式、算期間，處理從外部貼進來的雜亂資料。",
+    focus: "把文字與日期清理整理成流程：先清髒字元，再拆欄位，最後轉成真日期。",
+    unlock: "你能處理外部貼上資料、系統匯出編碼、Email、文字日期與不可見空白。",
     nextWhy: "資料整理乾淨後，下一課才適合做圖表，否則視覺化只會放大混亂。",
   },
   "P3-03": {
@@ -103,13 +103,13 @@ const LESSON_GUIDE = {
     nextWhy: "接下來會進到進階自動化，從保護既有流程走向減少手工流程本身。",
   },
   "P4-01": {
-    focus: "學會用動態陣列一次吐出整片結果，減少輔助欄和重複公式。",
-    unlock: "你能開始用 FILTER、SORT、UNIQUE 這些新世代函數處理大量清單。",
-    nextWhy: "下一課會進一步用 LET、LAMBDA 等把公式模組化，處理更複雜的場景。",
+    focus: "學會用動態陣列一次吐出整片結果，並理解 # 溢出範圍和空結果處理。",
+    unlock: "你能開始用 FILTER、SORT、UNIQUE 建立會自動更新的清單，而不是手動複製篩選結果。",
+    nextWhy: "動態清單穩了之後，下一課會把焦點轉到 LET、LAMBDA，把長公式整理成可維護模組。",
   },
   "P4-02": {
-    focus: "把公式從『能算』再往前推到『能封裝、能重用』。",
-    unlock: "你會知道何時該用 LET 提升可讀性，何時該用 LAMBDA 做可重複邏輯。",
+    focus: "把公式從『能算』再往前推到『可讀、可測、可重用』。",
+    unlock: "你會知道何時用 LET 提升可讀性，何時用 LAMBDA 封裝重複邏輯，也會避開 INDIRECT / OFFSET 的效能坑。",
     nextWhy: "公式能力再往上後，下一課會換一種思考方式，開始做假設分析與反推。",
   },
   "P4-03": {
@@ -138,15 +138,76 @@ const LESSON_GUIDE = {
     nextWhy: "下一課會把這些能力放進完整專案，做真正的自動化交付流程。",
   },
   "P5-03": {
-    focus: "把分散技巧組成完整專案，從讀資料到產報表都交給 VBA。",
-    unlock: "你會看到宏觀流程怎麼設計，而不是只會寫零散的小巨集。",
+    focus: "把分散技巧組成可交付專案，從刷新、檢查、輸出到錯誤復原都設計清楚。",
+    unlock: "你會看到自動化專案怎麼分成輸入、處理、輸出、驗證，而不是只會寫零散小巨集。",
     nextWhy: "最後一課會用綜合挑戰驗收整張學習地圖，看看哪些能力還需要補強。",
   },
   "P5-04": {
-    focus: "把前面 20 課的能力串起來，確認自己已經能獨立解題。",
-    unlock: "你會更清楚自己在哪一段已經穩了、哪一段還值得回頭補強。",
+    focus: "把前面 20 課的能力串起來，先選對工具，再把答案做成可交付流程。",
+    unlock: "你會更清楚公式、樞紐、Power Query、Data Model 與 VBA 分別該在什麼時候出場。",
     nextWhy: "做完後最有價值的下一步不是再往下衝，而是回頭重做弱點課與建立自己的模板。",
   },
+};
+const LESSON_FLOW_TYPES = {
+  formula: {
+    label: "公式型課",
+    steps: [
+      ["判斷問題", "先分清楚要算什麼、查什麼，或要判斷哪一種條件。"],
+      ["選工具", "再選對公式家族，避免一看到題目就硬背語法。"],
+      ["看主示範", "用動畫或範例確認範圍、參數順序與結果怎麼形成。"],
+      ["做練習", "自己改一個條件，最後用檢查點驗算答案。"],
+    ],
+  },
+  operation: {
+    label: "操作型課",
+    steps: [
+      ["定義目的", "先說清楚這個功能要解決哪個工作問題。"],
+      ["走一遍流程", "依照操作路徑完成一次，先求順序正確。"],
+      ["看示範", "用示範確認畫面狀態、命中結果與容易漏掉的位置。"],
+      ["交付檢查", "用任務與檢查表確認檔案能給別人使用。"],
+    ],
+  },
+  vba: {
+    label: "VBA / 自動化課",
+    steps: [
+      ["拆流程", "先把輸入、處理、輸出、驗證分清楚。"],
+      ["看安全線", "確認巨集啟用、備份、錯誤處理與平台差異。"],
+      ["跑前後對照", "看執行前後資料如何改變，而不是只看程式碼。"],
+      ["交付驗證", "最後確認結果、路徑、錯誤復原與使用說明。"],
+    ],
+  },
+  capstone: {
+    label: "綜合整合課",
+    steps: [
+      ["先選工具", "公式、樞紐、Power Query、Data Model、VBA 先判斷分工。"],
+      ["拆成流程", "把題目拆成輸入、整理、分析、輸出。"],
+      ["整合交付", "用最少但穩定的工具組合完成成果。"],
+      ["回補弱點", "做完後回頭找卡住的課，而不是只追求下一個功能。"],
+    ],
+  },
+};
+const LESSON_FLOW_BY_SLUG = {
+  "P1-01": "operation",
+  "P1-02": "formula",
+  "P1-03": "formula",
+  "P2-01": "formula",
+  "P2-02": "formula",
+  "P2-03": "operation",
+  "P2-04": "operation",
+  "P3-01": "operation",
+  "P3-02": "formula",
+  "P3-03": "operation",
+  "P3-04": "operation",
+  "P3-05": "operation",
+  "P4-01": "formula",
+  "P4-02": "formula",
+  "P4-03": "operation",
+  "P4-04": "operation",
+  "P4-05": "operation",
+  "P5-01": "vba",
+  "P5-02": "vba",
+  "P5-03": "vba",
+  "P5-04": "capstone",
 };
 const LESSON_PRO_NOTES = {
   "P1-01": {
@@ -162,7 +223,8 @@ const LESSON_PRO_NOTES = {
     title: "先把基礎函數練穩，再往複雜走",
     eyebrow: "Professional Default",
     items: [
-      "SUM / AVERAGE / COUNT / COUNTA 看起來簡單，但很多錯誤報表都是因為混用 COUNT 和 COUNTA、或誤解 AVERAGE 對空白與 0 的處理而出現的。",
+      "SUM / AVERAGE / COUNT / COUNTA 看起來簡單，但很多錯誤報表都是因為混用 COUNT 和 COUNTA、或誤解 AVERAGE 對空白、文字與 0 的處理而出現的。",
+      "MAX / MIN 解決的是『最值』，LARGE / SMALL 解決的是『名次』。能分清這兩組，之後做排行榜、前後段分析才不會繞遠路。",
       "這課的函數在 Excel for Mac 與 Windows 版行為完全相同，不需要注意平台差異。",
       "這課是後面所有進階課的地基：先把這幾個練到不用想，SUMIFS / XLOOKUP 才會學得順。",
     ],
@@ -172,6 +234,7 @@ const LESSON_PRO_NOTES = {
     eyebrow: "Professional Default",
     items: [
       "IFS 比巢狀 IF 好讀，且不容易出現括號配對錯誤。有 IFS 可以用的環境，沒有理由繼續寫 IF(A, X, IF(B, Y, ...))。",
+      "SWITCH 適合固定值對應，例如部門或狀態轉換；如果條件是大於、小於、區間門檻，仍然優先用 IFS。",
       "IF 適合處理欄位層級的條件邏輯。如果你需要『依條件加總或計數』，那是 SUMIFS / COUNTIFS 的場景，不要用 IF 再配 SUM 硬撐。",
       "這課函數的語法在 macOS Excel 和 Windows 版相同，IFS 在 Excel for Mac 2019 以後可用。",
     ],
@@ -191,6 +254,7 @@ const LESSON_PRO_NOTES = {
     items: [
       "如果是 Microsoft 365 或 Excel 2021 以上，預設優先用 XLOOKUP；它不用手算欄位，也能向左查找。",
       "如果你在維護舊公司檔案或 2016 / 2019 環境，請把 INDEX + MATCH 視為真正的通用備案，不要只會 VLOOKUP。",
+      "VLOOKUP 仍然要看得懂，因為舊檔很多；但維護時一定要檢查查找欄、欄位號與第四參數。",
       "職場上真正專業的差別不是背函數名，而是先判斷同事的版本、檔案相容性和後續維護成本。",
     ],
   },
@@ -226,7 +290,7 @@ const LESSON_PRO_NOTES = {
     eyebrow: "Professional Default",
     items: [
       "文字與日期函數看起來零碎，但它們處理的是最常見的外部貼上資料、系統匯出資料與格式混亂問題。",
-      "正式工作流中，先把欄位定義清楚，再清理文字與日期，會比邊清邊猜更穩。",
+      "正式工作流中，先處理不可見空白與髒字元，再拆欄位、轉日期，會比邊清邊猜更穩。",
       "當清理步驟開始重複出現時，就是往 Power Query 過渡的訊號。",
     ],
   },
@@ -263,7 +327,7 @@ const LESSON_PRO_NOTES = {
     items: [
       "動態陣列適合拿來輸出分析結果與中間結果，但溢出公式本身不應該寫在 Table 裡。",
       "比較穩的做法是：原始資料放 Table，動態陣列公式寫在表格外，用結構化參照去吃資料。",
-      "如果你要交付給舊版 Excel 使用者，請提前規劃降級方案，否則動態函數會變成相容性風險。",
+      "FILTER 找不到資料時請寫第 3 參數；輸出區若被擋住，#SPILL! 通常不是公式錯，而是結果沒地方展開。",
     ],
   },
   "P4-02": {
@@ -272,7 +336,7 @@ const LESSON_PRO_NOTES = {
     items: [
       "LET 和 LAMBDA 的價值，不是把公式寫得更炫，而是把重複邏輯封裝得更清楚。",
       "當一條公式長到同事看不懂時，先想可讀性與拆解，而不是再往裡面硬塞一層巢狀。",
-      "如果需求會被反覆複製到很多欄位，才真正值得把邏輯做成可重用的公式模組。",
+      "INDIRECT 和 OFFSET 可以解決動態參照，但它們會增加重算成本；大型交付檔要先想是否能用 Table、XLOOKUP、FILTER 或 Power Query 替代。",
     ],
   },
   "P4-03": {
@@ -324,9 +388,9 @@ const LESSON_PRO_NOTES = {
     title: "能選對工具，才算真的學完了",
     eyebrow: "Professional Default",
     items: [
-      "綜合挑戰的重點不是把題目做完，而是每題開始前先判斷：這是公式題、樞紐題、Power Query 題，還是 VBA 題？",
+      "綜合挑戰的重點不是把題目做完，而是每題開始前先判斷：這是公式題、樞紐題、Power Query 題、Data Model 題，還是 VBA 題？",
       "能選對工具再動手，比堆功能完成題目更接近真正的職場能力。",
-      "這課所有挑戰題在 macOS Excel 都可以完整執行，不依賴任何 Windows-only 功能。",
+      "這課的主線不依賴 Windows-only 功能；遇到 Data Model / Power BI 這類 Mac 有邊界的能力，重點是能說清楚協作或平台選擇。",
     ],
   },
   "P5-03": {
@@ -334,7 +398,7 @@ const LESSON_PRO_NOTES = {
     eyebrow: "Professional Default",
     items: [
       "實戰專案最重要的不是功能越多越好，而是輸入、處理、輸出三段責任要清楚。",
-      "真正專業的自動化專案會先想檔名規則、錯誤處理、執行前檢查與結果驗證，而不是只想主流程。",
+      "真正專業的自動化專案會先想檔名規則、錯誤處理、設定復原、執行前檢查與結果驗證，而不是只想主流程。",
       "當流程會反覆跑在每月報表或批次檔案上時，文件化和可重複執行比一時寫得快更重要。",
     ],
   },
@@ -451,6 +515,38 @@ const HOME_CAPABILITY_MAP = {
     "新版 Excel 能用 XLOOKUP 就不要把 VLOOKUP 當唯一答案。",
     "重複清資料流程先想 Power Query，不要只靠手動欄位硬撐。",
     "多表關聯與量值分析要開始用 Data Model / Power Pivot 思維。",
+  ],
+  tools: [
+    {
+      name: "公式",
+      use: "單列邏輯、條件統計、查找補欄、少量可讀計算",
+      avoid: "每月都要重複清很多來源，或規則已經長到無法維護",
+      lessons: "P1-02 · P2-01 · P2-02",
+    },
+    {
+      name: "樞紐分析表",
+      use: "快速彙總、切片、排名、部門或月份交叉分析",
+      avoid: "來源資料還沒整理乾淨，或需要複雜資料清理步驟",
+      lessons: "P2-03 · P3-03",
+    },
+    {
+      name: "Power Query",
+      use: "重複清資料、多檔合併、欄位整形、每月可重新整理流程",
+      avoid: "只是一兩格一次性公式，或需要即時計算每列輸入",
+      lessons: "P4-04",
+    },
+    {
+      name: "Data Model",
+      use: "多表關聯、共用量值、跨部門指標治理與 BI 型分析",
+      avoid: "只是一張小表，或 Mac 版功能不足以支撐完整模型交付",
+      lessons: "P4-05",
+    },
+    {
+      name: "VBA",
+      use: "刷新、檢查、輸出 PDF、批次處理與工作簿操作自動化",
+      avoid: "資料清理本身能用 Power Query 穩定重跑，或只是為了炫技",
+      lessons: "P5-01 · P5-03 · P5-04",
+    },
   ],
   stages: [
     {
@@ -610,6 +706,8 @@ const HOME_PHASE_CHECKPOINTS = {
   },
 };
 const FOCUS_MODE_KEY = "lesson-focus-mode";
+const LESSON_REFLECTION_KEY_PREFIX = "lesson-reflection:";
+const HOME_COMMITMENT_KEY = "home-learning-commitment";
 if (document.body?.dataset.lessonSlug) {
   try {
     document.body.dataset.focusMode = localStorage.getItem(FOCUS_MODE_KEY) === "1" ? "on" : "off";
@@ -629,7 +727,7 @@ function isLessonPage(){
 }
 function getPrimaryLessonDemo(slug){
   const demos = LESSON_DEMOS[slug] || [];
-  return demos[0] || null;
+  return demos.find(demo => demo?.role === "primary" || demo?.primary === true) || demos[0] || null;
 }
 function getLessonDownloads(slug){
   return LESSON_DOWNLOADS[slug] || null;
@@ -659,6 +757,9 @@ function lessonDownloadIcon(format){
     case "XLSX": return "📗";
     default: return "⬇️";
   }
+}
+function getLessonReflectionKey(){
+  return LESSON_REFLECTION_KEY_PREFIX + PK;
 }
 function renderLessonDownloadCard(file, extraClasses = []){
   if (!file?.href) return "";
@@ -711,14 +812,14 @@ function syncFocusModeUI(){
     navBtn.setAttribute("aria-pressed", on ? "true" : "false");
     const icon = navBtn.querySelector(".tool-btn-icon");
     const label = navBtn.querySelector(".tool-btn-label");
-    if (icon) icon.textContent = on ? "🎯" : "🧠";
-    if (label) label.textContent = on ? "專注中" : "專注";
-    navBtn.title = on ? "結束專注模式" : "開啟專注模式";
+    if (icon) icon.textContent = on ? "✓" : "1";
+    if (label) label.textContent = on ? "單步中" : "單步";
+    navBtn.title = on ? "結束單步模式" : "開啟單步模式";
     navBtn.setAttribute("aria-label", navBtn.title);
   }
   const stripToggle = document.querySelector(".lesson-focus-toggle");
   if (stripToggle) {
-    stripToggle.textContent = on ? "結束專注模式" : "開啟專注模式";
+    stripToggle.textContent = on ? "結束單步模式" : "開啟單步模式";
     stripToggle.classList.toggle("is-active", on);
     stripToggle.setAttribute("aria-pressed", on ? "true" : "false");
   }
@@ -769,8 +870,8 @@ function updateLessonFocusStrip(){
       taskText = "先看 1 次慢速操作示範";
       captionText = "先把整體節奏看懂，再回 Excel 跟做，通常會比直接硬做更順。";
     } else if (state.demo?.kind === "formula") {
-      taskText = "先看 1 次公式拆解動畫";
-      captionText = "先看懂公式每一段在做什麼，再自己改一個條件，會更容易真的學會。";
+      taskText = "先看這課的公式拆解示範";
+      captionText = "先看懂公式每一段在做什麼，再自己改一個條件或對照一次資料內容，會更容易真的學會。";
     } else {
       taskText = "先看這課的操作示範";
       captionText = "先把流程跑過一遍，再回來做第一題，會比較不容易卡住。";
@@ -877,7 +978,7 @@ themeBtn?.addEventListener("click", () => {
 });
 syncTheme();
 
-// Focus mode toggle
+// Single-step mode toggle
 (function(){
   if (!document.querySelector(".lesson")) return;
   const tools = document.querySelector(".nav .tools");
@@ -886,7 +987,7 @@ syncTheme();
   btn.type = "button";
   btn.id = "focusModeBtn";
   btn.className = "btn tool-btn";
-  btn.innerHTML = '<span class="tool-btn-icon">🧠</span><span class="tool-btn-label">專注</span>';
+  btn.innerHTML = '<span class="tool-btn-icon">1</span><span class="tool-btn-label">單步</span>';
   btn.addEventListener("click", function(){
     setFocusMode(!isFocusModeOn());
   });
@@ -962,15 +1063,15 @@ initChecklist();
     ? `${downloadNote} 對應的整本練習簿工作表是：${workbookSheet}。`
     : downloadNote;
   const kickoffGuidance = demo?.kind === "media"
-    ? "建議節奏：先看 1 次慢速示範，再切去練習區跟做，最後回來把任務打勾。"
+    ? "建議節奏：先看 1 次慢速示範，再切去練習區跟做，最後寫一句整理並把任務打勾。"
     : demo?.kind === "formula"
-      ? "建議節奏：先看公式拆解動畫，再自己改一個條件做一次，最後回來把任務打勾。"
-      : "建議節奏：先看 TL;DR 與這課案例，再做第一題，最後回來把任務打勾。";
+      ? "建議節奏：先看這課的公式拆解示範，再自己改一個條件或對照一次資料內容，最後寫一句整理並把任務打勾。"
+      : "建議節奏：先看 TL;DR 與這課案例，再做第一題，最後寫一句整理並把任務打勾。";
 
   const tasks = [...checklist.querySelectorAll("label .txt")]
     .map(el => (el.textContent || "").trim())
     .filter(Boolean)
-    .slice(0, 3);
+    .slice(0, 4);
   if (!tasks.length) return;
 
   const box = document.createElement("section");
@@ -978,8 +1079,8 @@ initChecklist();
   box.innerHTML = `
     <div class="lesson-kickoff-head">
       <div>
-        <div class="lesson-kickoff-eyebrow">開始前先看這裡</div>
-        <h2 class="lesson-kickoff-title">先完成這 ${tasks.length} 件事</h2>
+        <div class="lesson-kickoff-eyebrow">講解後接著做</div>
+        <h2 class="lesson-kickoff-title">完成這 ${tasks.length} 件事</h2>
       </div>
       <div class="lesson-kickoff-actions">
         <button type="button" class="btn primary lesson-kickoff-btn" data-kickoff="practice">去做練習</button>
@@ -1045,11 +1146,13 @@ initChecklist();
     `;
   }).join("");
 
-  const anchor = lesson.querySelector(".tldr") || lesson.querySelector(".progress-label");
+  const anchor = lesson.querySelector(".lesson-variant-switch")
+    || lesson.querySelector(".tldr")
+    || lesson.querySelector(".progress-label");
   if (anchor) anchor.insertAdjacentElement("afterend", rail);
 })();
 
-// Lesson focus strip
+// Lesson single-step strip
 (function(){
   const lesson = document.querySelector(".lesson");
   if (!lesson || lesson.querySelector(".lesson-focus-strip")) return;
@@ -1059,10 +1162,16 @@ initChecklist();
   strip.innerHTML = `
     <div class="lesson-focus-head">
       <div>
-        <div class="lesson-focus-eyebrow">Focus Friendly</div>
-        <h2 class="lesson-focus-title">現在先做 1 件事</h2>
+        <div class="lesson-focus-eyebrow">你的學習節奏</div>
+        <h2 class="lesson-focus-title">現在只做這一步</h2>
       </div>
-      <div class="lesson-focus-state">專注模式 <strong>未開啟</strong></div>
+      <div class="lesson-focus-state">單步模式 <strong>未開啟</strong></div>
+    </div>
+    <div class="lesson-focus-rhythm" aria-label="本課建議學習流程">
+      <span>1. 看全局</span>
+      <span>2. 抓原理</span>
+      <span>3. 做一題</span>
+      <span>4. 寫一句</span>
     </div>
     <div class="lesson-focus-next">
       <span class="lesson-focus-step">01</span>
@@ -1074,13 +1183,33 @@ initChecklist();
     </div>
     <div class="lesson-focus-actions">
       <button type="button" class="btn primary lesson-focus-primary" data-action="study">去下一步</button>
-      <button type="button" class="btn lesson-focus-toggle" aria-pressed="false">開啟專注模式</button>
+      <button type="button" class="btn lesson-focus-toggle" aria-pressed="false">開啟單步模式</button>
     </div>
+    <label class="lesson-focus-reflection">
+      <span>最後 30 秒：用自己的話寫一句</span>
+      <textarea data-lesson-reflection rows="2" placeholder="例：這課是在教我先判斷問題類型，再選對工具。"></textarea>
+    </label>
   `;
   strip.querySelector(".lesson-focus-primary")?.addEventListener("click", runLessonFocusPrimaryAction);
   strip.querySelector(".lesson-focus-toggle")?.addEventListener("click", function(){
     setFocusMode(!isFocusModeOn());
   });
+  const reflection = strip.querySelector("[data-lesson-reflection]");
+  if (reflection) {
+    const key = getLessonReflectionKey();
+    try {
+      reflection.value = localStorage.getItem(key) || "";
+    } catch (e) {}
+    let reflectionTimer;
+    reflection.addEventListener("input", function(){
+      clearTimeout(reflectionTimer);
+      reflectionTimer = setTimeout(function(){
+        try {
+          localStorage.setItem(key, reflection.value);
+        } catch (e) {}
+      }, 250);
+    });
+  }
 
   const anchor = lesson.querySelector(".lesson-badge-rail")
     || lesson.querySelector(".tldr")
@@ -1170,6 +1299,24 @@ initChecklist();
   const phaseMatch = phaseLabel.match(/Phase\s+\d+/);
   const phaseName = phaseMatch ? phaseMatch[0] : "";
   const guide = LESSON_GUIDE[slug];
+  const flow = LESSON_FLOW_TYPES[LESSON_FLOW_BY_SLUG[slug] || "operation"];
+  const flowHtml = flow ? `
+    <div class="lesson-compass-path" aria-label="本課建議學習路徑">
+      <div class="lesson-compass-path-head">
+        <span class="lesson-compass-label">本課怎麼讀</span>
+        <strong>${escHtml(flow.label)}</strong>
+      </div>
+      <div class="lesson-compass-path-steps">
+        ${flow.steps.map((step, idx) => `
+          <div class="lesson-compass-path-step">
+            <span>${String(idx + 1).padStart(2, "0")}</span>
+            <strong>${escHtml(step[0])}</strong>
+            <p>${escHtml(step[1])}</p>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
   const box = document.createElement("section");
   box.className = "lesson-compass";
 
@@ -1219,6 +1366,7 @@ initChecklist();
         <p>${escHtml(guide.unlock)}</p>
       </div>
     </div>
+    ${flowHtml}
     <div class="lesson-compass-rail">
       ${previousHtml}
       ${nextHtml}
@@ -1226,7 +1374,7 @@ initChecklist();
   `;
 
   const anchor = isReadingLayout
-    ? (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
+    ? (lesson.querySelector(".lesson-downloads") || lesson.querySelector(".lesson-focus-strip") || lesson.querySelector(".lesson-badge-rail") || lesson.querySelector(".tldr"))
     : (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".tldr"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
@@ -1258,7 +1406,7 @@ initChecklist();
   `;
 
   const anchor = isReadingLayout
-    ? (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
+    ? (lesson.querySelector(".lesson-kickoff") || lesson.querySelector(".md-body"))
     : (lesson.querySelector(".lesson-compass") || lesson.querySelector(".lesson-kickoff"));
   if (anchor) anchor.insertAdjacentElement("afterend", box);
 })();
@@ -1307,7 +1455,7 @@ playBtn?.addEventListener("click", () => {
   if (running) {
     timer = setInterval(() => {
       remain--;
-      if (remain <= 0) { remain=25*60; running=false; playBtn.textContent="▶"; clearInterval(timer); alert("專注完成！休息一下吧 ☕"); }
+      if (remain <= 0) { remain=25*60; running=false; playBtn.textContent="▶"; clearInterval(timer); alert("這一輪完成！休息一下吧 ☕"); }
       renderTime();
     }, 1000);
   } else clearInterval(timer);
@@ -1629,6 +1777,8 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 
     const continueWrap = document.createElement("div");
     continueWrap.className = "hero-continue";
+    const personalLoopWrap = document.createElement("section");
+    personalLoopWrap.className = "home-personal-loop";
     const featureWrap = document.createElement("section");
     featureWrap.className = "hero-featured-lessons";
     const phaseGuideWrap = document.createElement("section");
@@ -1655,6 +1805,25 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
             return `<div class="hero-capability-default"><span>◆</span><span>${escHtml(item)}</span></div>`;
           }).join("")}
         </div>
+        <section class="home-tool-map" aria-label="工具選擇地圖">
+          <div class="home-tool-map-head">
+            <span>Tool Decision Map</span>
+            <strong>先選對工具，再開始做</strong>
+            <p>同一個問題可能可以用公式、樞紐、Power Query 或 VBA 解，但交付穩定度差很多。這張表是全站共同的判斷準則。</p>
+          </div>
+          <div class="home-tool-map-grid">
+            ${HOME_CAPABILITY_MAP.tools.map(function(tool){
+              return `
+                <article class="home-tool-map-card">
+                  <h3>${escHtml(tool.name)}</h3>
+                  <p><strong>適合：</strong>${escHtml(tool.use)}</p>
+                  <p><strong>先別用：</strong>${escHtml(tool.avoid)}</p>
+                  <em>${escHtml(tool.lessons)}</em>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
         <div class="hero-capability-timeline">
           ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
             return `
@@ -1706,9 +1875,9 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
               : `${selected.label} 不需要一次全吃完。先達到這些過關線，再往下一段走，節奏會更穩。`)}</p>
           </div>
           <div class="home-phase-guide-rhythm">
-            <span>1. 先看示範</span>
-            <span>2. 自己做一次</span>
-            <span>3. 打勾就停</span>
+            <span>1. 先看全局</span>
+            <span>2. 做一小題</span>
+            <span>3. 寫一句整理</span>
           </div>
         </div>
         <div class="home-phase-guide-grid">
@@ -1822,6 +1991,57 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         location.href = DEPTH + match.u;
       });
     }
+    function renderPersonalLoop(selected){
+      const modeName = selected?.label || "目前路線";
+      let savedCommitment = "";
+      try {
+        savedCommitment = localStorage.getItem(HOME_COMMITMENT_KEY) || "";
+      } catch (e) {}
+      personalLoopWrap.innerHTML = `
+        <div class="home-personal-loop-head">
+          <div>
+            <div class="home-personal-loop-eyebrow">你的學習節奏</div>
+            <h3 class="home-personal-loop-title">先看懂脈絡，再做一個小回合</h3>
+            <p class="home-personal-loop-intro">我把首頁調成「全局 → 原理 → 小練習 → 一句整理」。你不用一次吃完整個網站，先讓每一輪都有清楚的開始和收束。</p>
+          </div>
+          <button type="button" class="btn primary home-personal-loop-start">今天只做一課</button>
+        </div>
+        <div class="home-personal-loop-steps">
+          <div class="home-personal-loop-step">
+            <span>01</span>
+            <strong>先看全局</strong>
+            <p>先確認這課在 ${escHtml(modeName)} 裡的位置，不急著背所有細節。</p>
+          </div>
+          <div class="home-personal-loop-step">
+            <span>02</span>
+            <strong>抓住原理</strong>
+            <p>先問「這個工具解決什麼問題」，再記公式或按鈕位置。</p>
+          </div>
+          <div class="home-personal-loop-step">
+            <span>03</span>
+            <strong>做一小題</strong>
+            <p>只跟做一個最小範例，先建立成功感，再決定要不要加量。</p>
+          </div>
+          <div class="home-personal-loop-step">
+            <span>04</span>
+            <strong>寫一句整理</strong>
+            <p>最後用自己的話寫一句，讓知識從「看過」變成「能說」。</p>
+          </div>
+        </div>
+        <label class="home-personal-commitment">
+          <span>本輪小承諾</span>
+          <input type="text" value="${escHtml(savedCommitment)}" placeholder="例：今天只完成 P1-02 的第一題，寫一句整理就停">
+        </label>
+      `;
+      personalLoopWrap.querySelector(".home-personal-loop-start")?.addEventListener("click", function(){
+        goToRecommendation(homeState.recommendation || getRecommendation(homeState.activeMode));
+      });
+      personalLoopWrap.querySelector(".home-personal-commitment input")?.addEventListener("input", function(ev){
+        try {
+          localStorage.setItem(HOME_COMMITMENT_KEY, ev.currentTarget.value);
+        } catch (e) {}
+      });
+    }
 
     function applyMode(modeKey){
       homeState.activeMode = modeKey;
@@ -1877,6 +2097,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         </div>
       `;
       featureWrap.dataset.mode = selected.key;
+      renderPersonalLoop(selected);
       renderPhaseGuide(selected);
       renderCurriculum(selected, visibleEntries);
       updateHeroHelper();
@@ -1969,6 +2190,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
 
       const academyStack = document.createElement("section");
       academyStack.className = "home-academy-stack";
+      academyStack.appendChild(personalLoopWrap);
       academyStack.appendChild(featureWrap);
       academyStack.appendChild(roadmapWrap);
       academyStack.appendChild(phaseGuideWrap);

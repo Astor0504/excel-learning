@@ -2,10 +2,10 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>條件統計｜Excel 學習地圖</title>
-<meta name="description" content="SUMIF / COUNTIF / AVERAGEIF 系列：在條件下才加總/計算的「會挑食」函數">
+<meta name="description" content="條件統計：先判斷算什麼與條件幾個，再選 COUNTIF / SUMIF / AVERAGEIF 或 IFS 版本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="條件統計｜Excel 學習地圖">
-<meta property="og:description" content="SUMIF / COUNTIF / AVERAGEIF 系列：在條件下才加總/計算的「會挑食」函數">
+<meta property="og:description" content="條件統計：先判斷算什麼與條件幾個，再選 COUNTIF / SUMIF / AVERAGEIF 或 IFS 版本">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
@@ -26,21 +26,53 @@
     <h1>條件統計</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">SUMIF 系列：在條件下才加總/計算的「會挑食」函數</p></div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">條件統計先問兩件事：要算筆數、加總、還是平均？條件是一個還是多個？答案會直接決定 COUNTIF/SUMIF/AVERAGEIF 或 COUNTIFS/SUMIFS/AVERAGEIFS。</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">業績報表的核心函數。看懂這 6 個，老闆問你「電子部 3 月業績」可以 30 秒答出來。</p><h2>6 大條件統計函數</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">6 大條件統計函數速查</caption><thead><tr><th>函數</th><th>用途</th></tr></thead><tbody><tr><td>COUNTIF</td><td>符合條件的「個數」</td></tr><tr><td>COUNTIFS</td><td>多條件版</td></tr><tr><td>SUMIF</td><td>符合條件的「加總」</td></tr><tr><td>SUMIFS</td><td>多條件版</td></tr><tr><td>AVERAGEIF</td><td>符合條件的「平均」</td></tr><tr><td>AVERAGEIFS</td><td>多條件版</td></tr></tbody></table>
-<h2>語法差異（關鍵）</h2><pre><code class="lang-excel"># 單條件：條件範圍在前
-=SUMIF(條件範圍, 條件, 加總範圍)
-=SUMIF(A:A, &quot;電子&quot;, C:C)
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">條件統計不是六個函數分開背，而是一條固定判斷路徑：先看要算筆數、合計還是平均；再看條件是一個還是多個；最後才寫語法與驗算命中列。</p>
+<h2>本課解法路徑</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">遇到條件統計題，照這 4 步走</caption><thead><tr><th>步驟</th><th>你要回答</th><th>結果</th></tr></thead><tbody><tr><td>1. 算什麼</td><td>幾筆、合計、還是平均？</td><td>COUNT / SUM / AVERAGE 家族</td></tr><tr><td>2. 條件幾個</td><td>一個條件，還是多個條件同時成立？</td><td>IF 或 IFS 版本</td></tr><tr><td>3. 範圍順序</td><td>先寫條件範圍，還是先寫計算範圍？</td><td>避免 SUMIF / SUMIFS 順序寫反</td></tr><tr><td>4. 驗算命中列</td><td>哪些列真的被算進去？</td><td>確認結果可以交付</td></tr></tbody></table>
+<h2>第一步：先選公式家族</h2><table><thead><tr><th>主管問法</th><th>單一條件</th><th>多個條件</th><th>你在算什麼</th></tr></thead><tbody><tr><td>北區有幾筆訂單？</td><td>COUNTIF</td><td>COUNTIFS</td><td>符合條件的筆數</td></tr><tr><td>電子類金額合計？</td><td>SUMIF</td><td>SUMIFS</td><td>符合條件的數字合計</td></tr><tr><td>北區電子平均金額？</td><td>AVERAGEIF</td><td>AVERAGEIFS</td><td>符合條件的數字平均</td></tr></tbody></table>
+<p>這張表是本課的核心。先不要急著背括號裡的參數，先把問題翻成「算筆數 / 算合計 / 算平均」和「單條件 / 多條件」。選對公式後，語法只剩下照順序填範圍。</p>
+<h2>第二步：單條件先抓條件欄</h2><pre><code class="lang-excel"># 數筆數：北區有幾筆訂單？
+=COUNTIF(C:C, &quot;北區&quot;)
 
-# 多條件：加總範圍在前！順序不同！
+# 加總：電子類別的金額合計？
+=SUMIF(D:D, &quot;電子&quot;, E:E)
+
+# 平均：業務部平均績效？
+=AVERAGEIF(B:B, &quot;業務&quot;, D:D)</code></pre>
+<p>單條件的思路是先指定「去哪一欄檢查條件」。COUNTIF 數命中的格數；SUMIF / AVERAGEIF 會再去同列的數字欄做加總或平均。</p>
+<h2>第三步：多條件是一組一組篩</h2><pre><code class="lang-excel"># 多條件計數：北區且金額 >= 15000 的訂單數
+=COUNTIFS(C:C, &quot;北區&quot;, E:E, &quot;&gt;=15000&quot;)
+
+# 多條件加總：電子且已付款的金額合計
+=SUMIFS(E:E, D:D, &quot;電子&quot;, F:F, &quot;已付&quot;)
+
+# 多條件平均：北區電子類的平均金額
+=AVERAGEIFS(E:E, C:C, &quot;北區&quot;, D:D, &quot;電子&quot;)</code></pre>
+<p>所有 <code>IFS</code> 版本都是 AND 關係：每個條件都要同時成立。每一組條件都要寫成「條件範圍、條件值」，而且所有範圍列數必須一致。</p>
+<h2>第四步：專門記住範圍順序</h2><pre><code class="lang-excel"># SUMIF：條件範圍在前，加總範圍在後
+=SUMIF(條件範圍, 條件, 加總範圍)
+
+# SUMIFS：加總範圍放第一個，後面才是一組一組條件
 =SUMIFS(加總範圍, 條件範圍1, 條件1, 條件範圍2, 條件2, ...)
-=SUMIFS(C:C, A:A, &quot;電子&quot;, B:B, &quot;&gt;2024-01-01&quot;)</code></pre>
-<h2>萬用字元</h2><pre><code class="lang-excel">=COUNTIF(A:A, &quot;陳*&quot;)        # 開頭是「陳」
-=COUNTIF(A:A, &quot;*股份*&quot;)      # 包含「股份」
-=SUMIF(A:A, &quot;&lt;&gt;已取消&quot;, B:B) # 不等於已取消</code></pre>
-<div class="callout"><strong>⚠️ 注意</strong>SUMIF 跟 SUMIFS 的參數順序不一樣！前者「條件範圍在前、加總範圍在後」，後者「加總範圍在最前面」——記反了結果會錯。</div>
+
+# AVERAGEIFS 也一樣：平均範圍放第一個
+=AVERAGEIFS(平均範圍, 條件範圍1, 條件1, 條件範圍2, 條件2, ...)</code></pre>
+<div class="callout"><strong>注意</strong>本課最常見錯誤就是把 <code>SUMIF</code> 和 <code>SUMIFS</code> 的順序混在一起。單條件 SUMIF 是「先條件、後加總」；多條件 SUMIFS 是「先加總、後條件」。</div>
+<h2>條件寫法：不只等於</h2><pre><code class="lang-excel">=COUNTIF(B:B, &quot;王*&quot;)          # 開頭是「王」
+=COUNTIF(D:D, &quot;*電子*&quot;)        # 包含「電子」
+=COUNTIF(F:F, &quot;&lt;&gt;已付&quot;)       # 不等於已付
+=COUNTIF(E:E, &quot;&gt;=15000&quot;)       # 大於等於 15000
+=SUMIFS(E:E, C:C, &quot;北區&quot;, E:E, &quot;&gt;=15000&quot;)</code></pre>
+<p><code>*</code> 代表任意長度文字，<code>?</code> 代表單一字元。比較運算子如 <code>&gt;=</code>、<code>&lt;&gt;</code> 通常要放在引號裡；如果門檻放在 H2，寫成 <code>&quot;&gt;=&quot;&amp;H2</code>。</p>
+<h2>交付報表前檢查</h2><ul>
+<li>先手動篩選一次資料，確認公式命中的列和你預期一致。</li>
+<li>條件欄和計算欄的列數是否一致；不要一欄抓到 100 列、另一欄抓到 99 列。</li>
+<li>文字條件有沒有多餘空白、全形半形或狀態名稱不一致。</li>
+<li>日期條件是否是真正日期，而不是看起來像日期的文字。</li>
+<li>多條件預設是 AND；如果需求是 OR，通常要把多個 <code>COUNTIFS</code> 或 <code>SUMIFS</code> 相加。</li>
+</ul>
 
 <div class="wps-callout">
 <span class="wps-label">WPS Office</span>
@@ -53,7 +85,7 @@
 </div>
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 SUMIF</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 SUMIFS（雙條件）</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用萬用字元 *</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道兩者參數順序差異</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用 COUNTIF / COUNTIFS 各寫一題計數</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 SUMIF / SUMIFS 各寫一題加總</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 AVERAGEIF / AVERAGEIFS 各寫一題平均</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">能說出 SUMIF 與 SUMIFS 的參數順序差異</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>

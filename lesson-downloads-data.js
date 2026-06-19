@@ -1,11 +1,11 @@
 export const LESSON_DOWNLOADS = {
   "P1-02": {
     "title": "基礎函式練習資料",
-    "intro": "這份資料適合直接練 SUM、AVERAGE、COUNT、MAX、MIN、LARGE、SMALL。先用同一張表把最常用統計函數練熟，後面所有報表課都會順很多。",
+    "intro": "這份資料適合直接練 SUM、AVERAGE、COUNT、COUNTA、MAX、MIN、MEDIAN、LARGE、SMALL。先用同一張表把最常用統計與排名函數練熟，後面所有報表課都會順很多。",
     "files": [
       {
         "label": "基礎函式資料",
-        "description": "6 個月份的員工業績表，適合練加總、平均、計數、最大值、最小值與第 N 大。",
+        "description": "6 個月份的員工業績表，適合練加總、平均、計數、中位數、最大值、最小值與第 N 大 / 小。",
         "href": "practice-data/p1-02-basic-functions.csv",
         "format": "CSV",
         "fileName": "p1-02-basic-functions.csv"
@@ -14,11 +14,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P1-03": {
     "title": "條件判斷練習資料",
-    "intro": "這份資料用來練 IF / IFS / SWITCH 的判斷邏輯。很適合拿來做績效等級、出勤提醒和薪資判斷。",
+    "intro": "這份資料用來練 IF、IFS、AND / OR 與 SWITCH 的判斷邏輯。很適合拿來做績效等級、出勤提醒、部門代碼對應和薪資判斷。",
     "files": [
       {
         "label": "條件判斷資料",
-        "description": "員工、部門、月薪、績效與出勤資料，可直接練條件邏輯公式。",
+        "description": "員工、部門、月薪、績效與出勤資料，可直接練條件判斷、複合條件與固定值對應。",
         "href": "practice-data/p1-03-if-logic.csv",
         "format": "CSV",
         "fileName": "p1-03-if-logic.csv"
@@ -40,11 +40,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P2-02": {
     "title": "查找比對練習資料",
-    "intro": "這份資料最適合搭配另一張對照表練 VLOOKUP、XLOOKUP、INDEX+MATCH。先把跨表查找的手感建立起來。",
+    "intro": "這份資料最適合練 XLOOKUP、VLOOKUP、INDEX+MATCH 與找不到資料的錯誤處理。先把「查找值、查找欄、回傳欄」的手感建立起來。",
     "files": [
       {
         "label": "產品主檔資料",
-        "description": "產品代碼、名稱、類別、單價與庫存，可拿來做查表與補欄位。",
+        "description": "產品代碼、名稱、類別、單價與庫存，可拿來練跨表查找、反向查找與 #N/A 處理。",
         "href": "practice-data/p2-02-product-catalog.csv",
         "format": "CSV",
         "fileName": "p2-02-product-catalog.csv"
@@ -53,11 +53,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P3-02": {
     "title": "文字與日期清理練習資料",
-    "intro": "這份資料刻意保留常見的文字與日期欄位，適合練 LEFT、RIGHT、TEXT、DATE、EOMONTH 與清理格式。",
+    "intro": "這份資料刻意保留常見的髒文字、訂單編碼、Email 與文字日期，適合練 TRIM/CLEAN/SUBSTITUTE、LEFT/MID/FIND、DATE 與 EOMONTH。",
     "files": [
       {
         "label": "文字日期資料",
-        "description": "員工基本資料，適合練日期轉換、文字拆解與格式清理。",
+        "description": "員工基本資料，適合練不可見空白清理、訂單號拆解、Email 擷取、日期轉換與格式輸出。",
         "href": "practice-data/p3-02-text-date-cleanup.csv",
         "format": "CSV",
         "fileName": "p3-02-text-date-cleanup.csv"
@@ -66,11 +66,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P4-01": {
     "title": "動態陣列練習資料",
-    "intro": "這張產品表可以直接拿來練 FILTER、SORT、UNIQUE、SEQUENCE。先用它感受一個公式吐出整片結果的差別。",
+    "intro": "這張產品表可以直接拿來練 FILTER、SORT、UNIQUE、SEQUENCE 與 D2# 溢出範圍。重點是感受一個公式吐出整片結果，並會處理空結果與 #SPILL!。",
     "files": [
       {
         "label": "動態陣列資料",
-        "description": "產品、類別、單價、銷量與評分，適合練篩選、排序與唯一值。",
+        "description": "產品、類別、單價、銷量與評分，適合練多條件 FILTER、動態排序、唯一清單與溢出引用。",
         "href": "practice-data/p4-01-dynamic-array-catalog.csv",
         "format": "CSV",
         "fileName": "p4-01-dynamic-array-catalog.csv"
@@ -79,11 +79,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P4-02": {
     "title": "進階函式練習資料",
-    "intro": "這份資料適合練 LET、LAMBDA、BYROW 等進階公式。可以直接拿來做年度業績彙總與條件判斷。",
+    "intro": "這份資料適合練 LET、LAMBDA、AGGREGATE、SWITCH 與 INDIRECT / OFFSET 的風險判斷。先把長公式重構成可讀段落，再決定哪些邏輯值得封裝。",
     "files": [
       {
         "label": "進階函式資料",
-        "description": "員工年度業績資料，適合練 LET / LAMBDA / BYROW / REDUCE。",
+        "description": "員工年度業績資料，適合練 LET 重構、LAMBDA 封裝、AGGREGATE 忽略錯誤與 SWITCH 分支判斷。",
         "href": "practice-data/p4-02-advanced-functions.csv",
         "format": "CSV",
         "fileName": "p4-02-advanced-functions.csv"
@@ -332,11 +332,11 @@ export const LESSON_DOWNLOADS = {
   },
   "P5-03": {
     "title": "VBA 實戰專案資料",
-    "intro": "這裡我直接準備一組比較像專案的資料。最適合練把讀資料、算結果、輸出報表串成完整流程。",
+    "intro": "這裡準備一組比較像真實專案的資料，適合練輸入 → 處理 → 輸出 → 驗證的完整月報流程，而不是只跑單一巨集。",
     "files": [
       {
         "label": "Orders",
-        "description": "訂單來源資料，可做月報彙總與批次輸出。",
+        "description": "訂單來源資料，可做月報彙總、Power Query 重新整理、PDF 批次輸出與交付紀錄。",
         "href": "practice-data/p5-03-orders.csv",
         "format": "CSV",
         "fileName": "p5-03-orders.csv"

@@ -567,8 +567,114 @@ export const XLSX_CONTENT = {
    }
   },
   "P1-02": {
+   "knowledge": {
+    "title": "📚 基礎函式不是背語法，是先分清楚問題類型",
+    "subtitle": "難度：🟢 Lv.1  |  先分清楚總和 / 平均 / 筆數 / 名次  |  這課穩了，後面所有函式都會順很多",
+    "sections": [
+     {
+      "title": "📌 先問自己在找什麼答案",
+      "items": [
+       [
+        "總和",
+        "SUM",
+        "把範圍內的數字全部加起來",
+        "看到合計、小計、總業績時先想到它"
+       ],
+       [
+        "平均",
+        "AVERAGE",
+        "空白與文字忽略，但 0 會算進去",
+        "平均值怪怪的時，先檢查資料裡是不是有 0"
+       ],
+       [
+        "筆數",
+        "COUNT / COUNTA",
+        "COUNT 數數字；COUNTA 數所有非空白",
+        "報表最常錯在這裡，不是公式難，是問題問錯"
+       ],
+       [
+        "名次",
+        "MAX / MIN / LARGE / SMALL",
+        "MAX / MIN 看最值；LARGE / SMALL 看第 N 名",
+        "主管問前 3 名時，不要只會用 MAX"
+       ],
+       [
+        "典型水準",
+        "MEDIAN",
+        "排序後取中間值，不容易被極端值帶歪",
+        "薪資、房價、獎金常比 AVERAGE 更值得一起看"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 3 個最容易出錯的差別",
+      "items": [
+       [
+        "COUNT vs COUNTA",
+        "COUNT(B:B) 只數數字",
+        "COUNTA(A:A) 只要不是空白就會算進去，包含文字、日期、0",
+        "要算『有幾位員工有填資料』時，通常該用 COUNTA"
+       ],
+       [
+        "AVERAGE 對 0 / 空白 / 文字",
+        "0 = 會算進平均",
+        "空白 / 文字 = 忽略",
+        "所以 0 不是空值，真的會把平均拉低"
+       ],
+       [
+        "MAX / MIN vs LARGE / SMALL",
+        "MAX / MIN = 冠軍與最後一名",
+        "LARGE / SMALL = 第 2 名、第 3 名…",
+        "問名次就不要只用 MAX / MIN"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 這課真正要練熟的思路",
+      "items": [
+       [
+        "先問問題，再寫公式",
+        "你要的是總和、平均、筆數，還是名次？",
+        "問題問對了，公式通常就只剩 2~3 個候選"
+       ],
+       [
+        "先看資料內容，再信任結果",
+        "平均值不合理時，先找 0、空白、文字",
+        "筆數不合理時，先看你用的是 COUNT 還是 COUNTA"
+       ],
+       [
+        "同時看最值與名次",
+        "MAX 告訴你冠軍是多少",
+        "LARGE 則能告訴你第 2 名、第 3 名差多少"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     {
+      "num": 1,
+      "difficulty": "🟢 暖身",
+      "desc": "在本課資料表先各寫一次 =COUNT(B6:B10) 與 =COUNTA(A6:A10)，說出兩者為什麼答案不同"
+     },
+     {
+      "num": 2,
+      "difficulty": "🟢 暖身",
+      "desc": "在旁邊空白欄手動做一組資料：120000、0、空白、待補。寫 =AVERAGE(...) 算一次，再把 0 刪成空白重算一次"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵 標準",
+      "desc": "先用 =MAX(B6:B10) 找最高值，再改成 =LARGE(B6:B10,2) 找第 2 名，感受『最值』和『名次』差別"
+     },
+     {
+      "num": 4,
+      "difficulty": "🟡 變化",
+      "desc": "把 1 月業績用 =AVERAGE(B6:B10) 與 =MEDIAN(B6:B10) 各算一次，觀察兩個結果差多少，想想哪個更像『典型水準』"
+     }
+    ]
+   },
    "pro": {
-    "title": "📊 基礎函式  ─  SUM / AVERAGE / COUNT / MAX / MIN",
+    "title": "📊 基礎函式  ─  統計、筆數、排名基本功",
     "subtitle": "難度：🟢 Lv.1  |  微任務數：8 題  |  建議時間：每題 2~3 分鐘",
     "dataHeader": [
      "姓名",
@@ -669,19 +775,19 @@ export const XLSX_CONTENT = {
      },
      {
       "numLabel": "🟡6",
-      "desc": "計算王小明 6 個月總業績",
-      "time": "2m",
-      "hint": "=SUM(B6:G6)",
-      "answer": "=SUM(B6:G6)",
-      "explain": "SUM 也可以橫向加總"
-     },
-     {
-      "numLabel": "🔴7",
-      "desc": "用 COUNT 計算 B 欄有幾個數字",
+      "desc": "用 COUNT 計算 1 月業績欄有幾個數字",
       "time": "2m",
       "hint": "=COUNT(B6:B10)",
       "answer": "=COUNT(B6:B10)",
-      "explain": "COUNT 只數數字，COUNTA 數所有非空白"
+      "explain": "COUNT 只數數字；如果欄位裡混進文字或空白，它不會算進去"
+     },
+     {
+      "numLabel": "🔴7",
+      "desc": "用 LARGE 找出 1 月第 2 高的業績",
+      "time": "2m",
+      "hint": "=LARGE(B6:B10,2)",
+      "answer": "=LARGE(B6:B10,2)",
+      "explain": "第 N 大要用 LARGE；MAX 只會給你第 1 名"
      },
      {
       "numLabel": "🔴8",
@@ -696,7 +802,7 @@ export const XLSX_CONTENT = {
    "meta": {
     "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
     "stage": "第 2 階段",
-    "topics": "SUM / AVERAGE / COUNT / MAX / MIN",
+    "topics": "SUM / AVERAGE / COUNT / COUNTA / MAX / MIN / MEDIAN / LARGE / SMALL",
     "difficulty": "🟢 Lv.1",
     "taskCount": "8 題",
     "time": "15 分鐘",
@@ -800,9 +906,9 @@ export const XLSX_CONTENT = {
      {
       "num": 6,
       "difficulty": "🟡",
-      "desc": "計算王小明 6 個月總業績",
-      "hint": "SUM 也可以橫向",
-      "answer": "=SUM(B6:G6)"
+      "desc": "用 COUNT 計算 1 月欄位裡有幾個數字",
+      "hint": "COUNT 只數數字",
+      "answer": "=COUNT(B6:B10)"
      },
      {
       "num": 7,
@@ -822,8 +928,105 @@ export const XLSX_CONTENT = {
    }
   },
   "P1-03": {
+   "knowledge": {
+    "title": "📚 條件判斷不是硬塞 IF，是先分清楚判斷型態",
+    "subtitle": "難度：🟢 Lv.1  |  先分清楚單一條件 / 多門檻 / 複合條件 / 固定值對應",
+    "sections": [
+     {
+      "title": "📌 先問這是哪一種判斷",
+      "items": [
+       [
+        "單一條件",
+        "IF",
+        "例如績效>=80 顯示優良，否則待改善",
+        "最適合只有兩種結果的欄位判斷"
+       ],
+       [
+        "多個門檻",
+        "IFS",
+        "例如 >=90 是 A、>=75 是 B、其他是 C",
+        "門檻要由高到低寫，最後用 TRUE 當兜底"
+       ],
+       [
+        "複合條件",
+        "AND / OR",
+        "AND 是全部成立；OR 是任一成立",
+        "通常包在 IF 裡，用來判斷模範員工、優惠資格、風險提醒"
+       ],
+       [
+        "固定值對應",
+        "SWITCH",
+        "例如部門名稱轉英文代碼、狀態代碼轉文字",
+        "不是範圍門檻，而是一個值對一個結果"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 3 個常見錯誤",
+      "items": [
+       [
+        "IFS 順序寫反",
+        "先寫 >=70 再寫 >=90，90 分會先被判成 C",
+        "多門檻永遠先放最嚴格的條件"
+       ],
+       [
+        "AND / OR 放錯位置",
+        "AND(D6>=80,E6>=22) 只會回傳 TRUE/FALSE",
+        "若要顯示文字結果，要外面再包 IF"
+       ],
+       [
+        "SWITCH 拿來判斷大小",
+        "SWITCH 適合等於某個固定值",
+        "若條件是 >=、<=、介於某區間，改用 IFS"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 這課真正要練熟的思路",
+      "items": [
+       [
+        "先描述規則，再寫公式",
+        "把規則念成一句話：如果績效大於等於 80，就顯示優良",
+        "能說清楚，公式通常就能寫清楚"
+       ],
+       [
+        "把兜底結果補上",
+        "IFS 最後常放 TRUE；SWITCH 最後常放其他",
+        "沒有兜底，資料一變就容易出錯或顯示空白"
+       ],
+       [
+        "讓每列自己判斷",
+        "P1-03 是欄位層級判斷，不是彙總報表",
+        "要依條件加總或計數，下一課再交給 SUMIFS / COUNTIFS"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     {
+      "num": 1,
+      "difficulty": "🟢 暖身",
+      "desc": "先用 IF 判斷一位員工績效是否優良，再把門檻改成 75 觀察結果"
+     },
+     {
+      "num": 2,
+      "difficulty": "🟢 暖身",
+      "desc": "用 IFS 寫 A / B / C 等第，並確認 TRUE 放在最後"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵 標準",
+      "desc": "用 AND 判斷出勤與績效是否同時達標，再包進 IF 顯示「模範」"
+     },
+     {
+      "num": 4,
+      "difficulty": "🔵 標準",
+      "desc": "用 SWITCH 把部門轉成英文代碼，例如業務=Sales、財務=Finance"
+     }
+    ]
+   },
    "pro": {
-    "title": "📐 條件判斷  ─  IF / IFS / AND / OR / 巢狀 IF",
+    "title": "📐 條件判斷  ─  IF / IFS / AND / OR / SWITCH",
     "subtitle": "難度：🟢 Lv.1  |  微任務數：8 題  |  建議時間：每題 2~3 分鐘",
     "dataHeader": [
      "姓名",
@@ -949,18 +1152,18 @@ export const XLSX_CONTENT = {
      },
      {
       "numLabel": "🔴8",
-      "desc": "判斷績效是否「偶數」（用 MOD）",
+      "desc": "用 SWITCH 把部門轉成英文代碼",
       "time": "2m",
-      "hint": "=IF(MOD(D6,2)=0,\"偶數\",\"奇數\")",
-      "answer": "=IF(MOD(D6,2)=0,\"偶數\",\"奇數\")",
-      "explain": "MOD(數字,2) 回傳除以2的餘數"
+      "hint": "=SWITCH(B6,\"業務\",\"Sales\",\"財務\",\"Finance\",\"資訊\",\"IT\",\"人事\",\"HR\",\"其他\")",
+      "answer": "=SWITCH(B6,\"業務\",\"Sales\",\"財務\",\"Finance\",\"資訊\",\"IT\",\"人事\",\"HR\",\"其他\")",
+      "explain": "SWITCH 適合固定值對應，比一串 IF 更好讀"
      }
     ]
    },
    "meta": {
     "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
     "stage": "第 3 階段",
-    "topics": "IF / IFS / 巢狀 IF / AND / OR",
+    "topics": "IF / IFS / AND / OR / SWITCH",
     "difficulty": "🟢 Lv.1",
     "taskCount": "8 題",
     "time": "15 分鐘",
@@ -1078,9 +1281,9 @@ export const XLSX_CONTENT = {
      {
       "num": 8,
       "difficulty": "🔴",
-      "desc": "績效是偶數→\"偶數\"，否則→\"奇數\"",
-      "hint": "MOD(數字,2) 餘數",
-      "answer": "=IF(MOD(D6,2)=0,\"偶數\",\"奇數\")"
+      "desc": "用 SWITCH 把部門轉成英文代碼",
+      "hint": "SWITCH(值, 比對1,結果1, ..., 預設)",
+      "answer": "=SWITCH(B6,\"業務\",\"Sales\",\"財務\",\"Finance\",\"資訊\",\"IT\",\"人事\",\"HR\",\"其他\")"
      }
     ]
    }
@@ -1266,9 +1469,57 @@ export const XLSX_CONTENT = {
     "time": "20 分鐘",
     "xp": "150 XP"
    },
+   "knowledge": {
+    "title": "📚 條件統計選公式與驗算心法",
+    "subtitle": "把題目翻成四件事：算什麼、條件幾個、範圍順序、哪些列被算進去。",
+    "sections": [
+     {
+      "title": "選公式前先問",
+      "items": [
+       [
+        "算什麼",
+        "幾筆用 COUNT；合計用 SUM；平均用 AVERAGE。先決定家族，再看條件數。"
+       ],
+       [
+        "條件幾個",
+        "一個條件用 IF 版本；兩個以上條件用 IFS 版本。IFS 多條件預設都是 AND。"
+       ],
+       [
+        "順序怎麼寫",
+        "COUNTIFS 是條件範圍成對；SUMIFS / AVERAGEIFS 先放要計算的範圍，再放條件。"
+       ]
+      ]
+     },
+     {
+      "title": "正式報表檢查點",
+      "items": [
+       [
+        "先驗算命中列",
+        "交付前用篩選或肉眼抽查 2~3 筆，確認被算進去的列就是你要的列。"
+       ],
+       [
+        "範圍大小一致",
+        "SUMIFS / COUNTIFS / AVERAGEIFS 裡每個條件範圍都要同樣列數，計算範圍也要對齊。"
+       ],
+       [
+        "文字條件乾淨",
+        "多餘空白、全形半形、狀態名稱差異，常常比公式本身更容易造成錯誤。"
+       ],
+       [
+        "日期用真正日期",
+        "跨 Excel / WPS 時，日期條件建議用 DATE() 或引用日期儲存格，避免文字日期判斷不一致。"
+       ],
+       [
+        "OR 要另外處理",
+        "多條件預設 AND。如果需求是 OR，通常要把多個 COUNTIFS 或 SUMIFS 相加。"
+       ]
+      ]
+     }
+    ]
+   },
    "inter": {
-    "title": "📈 條件統計 — COUNTIF / SUMIF / AVERAGEIF",
-    "subtitle": "在黃色邊框儲存格輸入公式 → 答對變綠 ✅ | 答錯變紅 ❌ | F欄提示選取可見",
+    "title": "📈 條件統計練習 — 從單條件到多條件",
+    "subtitle": "先做 COUNTIF / SUMIF / AVERAGEIF，再進到 COUNTIFS / AVERAGEIFS；每題都先判斷算什麼與條件幾個。",
     "dataHeader": [
      "員工",
      "部門",
@@ -1395,8 +1646,111 @@ export const XLSX_CONTENT = {
    }
   },
   "P2-02": {
+   "knowledge": {
+    "title": "📚 查找比對的重點不是背函數，是把資料接回來",
+    "subtitle": "難度：🔵 Lv.2  |  先分清楚查找值、查找欄、回傳欄與找不到時的處理",
+    "sections": [
+     {
+      "title": "📌 先問自己這 4 件事",
+      "items": [
+       [
+        "你拿什麼去找？",
+        "查找值",
+        "例如訂單表裡的產品代碼 P003",
+        "查找值要乾淨一致，最怕多空白或格式不一樣"
+       ],
+       [
+        "去哪一欄找？",
+        "查找範圍",
+        "例如商品表的產品代碼欄",
+        "XLOOKUP 和 INDEX+MATCH 都會把這一欄獨立寫出來"
+       ],
+       [
+        "要回傳哪一欄？",
+        "回傳範圍",
+        "例如商品名稱、單價、庫存",
+        "XLOOKUP 直接指定回傳欄；VLOOKUP 要手動數第幾欄"
+       ],
+       [
+        "找不到怎麼辦？",
+        "找不到時的顯示",
+        "例如查無此商品",
+        "不要讓 #N/A 直接出現在交付報表"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 3 個最常見的查找錯誤",
+      "items": [
+       [
+        "VLOOKUP 省略第四參數",
+        "省略時可能變成模糊比對",
+        "職場代碼查找幾乎都要 FALSE 或 0",
+        "這是很多錯誤報表的來源"
+       ],
+       [
+        "把 VLOOKUP 當唯一答案",
+        "VLOOKUP 只能從最左欄往右查",
+        "已知名稱要反查代碼時，改用 XLOOKUP 或 INDEX+MATCH",
+        "不要為了公式硬改資料欄位順序"
+       ],
+       [
+        "不處理找不到資料",
+        "#N/A 可能代表代碼不存在、格式不一致或資料還沒補",
+        "新版用 XLOOKUP 第 4 參數，舊檔用 IFERROR",
+        "正式報表要給人看得懂的訊息"
+       ]
+      ]
+     },
+     {
+      "title": "🎯 專業現場怎麼選",
+      "items": [
+       [
+        "新版環境",
+        "優先 XLOOKUP",
+        "公式可讀、可往左查、內建找不到處理",
+        "這是 Microsoft 365 / Excel 2021 以上的主路線"
+       ],
+       [
+        "舊版相容",
+        "熟 INDEX + MATCH",
+        "比 VLOOKUP 彈性高，也能處理反向查找",
+        "維護 2016 / 2019 或混合環境時很重要"
+       ],
+       [
+        "既有舊檔",
+        "看懂並能修 VLOOKUP",
+        "確認查找欄、欄位號與第四參數",
+        "會維護舊公式，比只會寫新公式更實用"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     {
+      "num": 1,
+      "difficulty": "🟢 暖身",
+      "desc": "先用 XLOOKUP 查 P003 的產品名稱，再把回傳欄改成單價欄"
+     },
+     {
+      "num": 2,
+      "difficulty": "🔵 標準",
+      "desc": "把同一題改成 VLOOKUP，指出第 4 個參數為什麼要填 0 或 FALSE"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵 標準",
+      "desc": "已知「機械鍵盤」時，用 INDEX + MATCH 反查產品代碼"
+     },
+     {
+      "num": 4,
+      "difficulty": "🟡 變化",
+      "desc": "查 P999 時不要出現 #N/A，改顯示「無此商品」"
+     }
+    ]
+   },
    "pro": {
-    "title": "🔍 查找比對  ─  VLOOKUP / XLOOKUP / INDEX+MATCH",
+    "title": "🔍 查找比對  ─  XLOOKUP / VLOOKUP / INDEX+MATCH",
     "subtitle": "難度：🔵 Lv.2  |  微任務數：10 題  |  建議時間：每題 2~3 分鐘",
     "dataHeader": [
      "產品代碼",
@@ -1466,75 +1820,75 @@ export const XLSX_CONTENT = {
     "tasks": [
      {
       "numLabel": "🟢1",
-      "desc": "用 VLOOKUP 查 P003 的產品名稱",
+      "desc": "用 XLOOKUP 查 P003 的產品名稱",
       "time": "2m",
-      "hint": "=VLOOKUP(\"P003\",A6:E11,2,0)",
-      "answer": "=VLOOKUP(\"P003\",A6:E11,2,0)",
-      "explain": "VLOOKUP(查找值,表格,第幾欄,0=精確)"
+      "hint": "=XLOOKUP(\"P003\",A6:A11,B6:B11,\"查無此商品\")",
+      "answer": "=XLOOKUP(\"P003\",A6:A11,B6:B11,\"查無此商品\")",
+      "explain": "XLOOKUP(查找值,查找欄,回傳欄,找不到時)"
      },
      {
       "numLabel": "🟢2",
-      "desc": "用 VLOOKUP 查 P005 的單價",
+      "desc": "用 XLOOKUP 查 P005 的單價",
       "time": "2m",
-      "hint": "=VLOOKUP(\"P005\",A6:E11,4,0)",
-      "answer": "=VLOOKUP(\"P005\",A6:E11,4,0)",
-      "explain": "第 4 欄 = 單價欄位"
+      "hint": "=XLOOKUP(\"P005\",A6:A11,D6:D11,\"查無此商品\")",
+      "answer": "=XLOOKUP(\"P005\",A6:A11,D6:D11,\"查無此商品\")",
+      "explain": "回傳欄改成 D 欄即可，不用重新數欄位"
      },
      {
       "numLabel": "🔵3",
+      "desc": "用 VLOOKUP 查 P003 的產品名稱（舊檔寫法）",
+      "time": "3m",
+      "hint": "=VLOOKUP(\"P003\",A6:E11,2,0)",
+      "answer": "=VLOOKUP(\"P003\",A6:E11,2,0)",
+      "explain": "VLOOKUP 的查找欄必須在表格範圍最左邊，最後一個參數填 0 精確比對"
+     },
+     {
+      "numLabel": "🔵4",
+      "desc": "用 VLOOKUP 查 P005 的單價，並說出第 4 欄代表什麼",
+      "time": "2m",
+      "hint": "=VLOOKUP(\"P005\",A6:E11,4,0)",
+      "answer": "=VLOOKUP(\"P005\",A6:E11,4,0)",
+      "explain": "第 4 欄是單價欄；這也是 VLOOKUP 容易因插欄而壞掉的地方"
+     },
+     {
+      "numLabel": "🔵5",
       "desc": "用 INDEX+MATCH 查 P003 名稱",
       "time": "3m",
       "hint": "=INDEX(B6:B11,MATCH(\"P003\",A6:A11,0))",
       "answer": "=INDEX(B6:B11,MATCH(\"P003\",A6:A11,0))",
-      "explain": "MATCH 找位置，INDEX 取值，比 VLOOKUP 更靈活"
+      "explain": "MATCH 找位置，INDEX 取同位置的結果"
      },
      {
-      "numLabel": "🔵4",
-      "desc": "用 INDEX+MATCH 查 P001 庫存",
-      "time": "2m",
-      "hint": "=INDEX(E6:E11,MATCH(\"P001\",A6:A11,0))",
-      "answer": "=INDEX(E6:E11,MATCH(\"P001\",A6:A11,0))",
-      "explain": "換成 E 欄即可查庫存"
-     },
-     {
-      "numLabel": "🔵5",
+      "numLabel": "🟡6",
       "desc": "反向查找：已知名稱「機械鍵盤」查代碼",
       "time": "3m",
       "hint": "=INDEX(A6:A11,MATCH(\"機械鍵盤\",B6:B11,0))",
       "answer": "=INDEX(A6:A11,MATCH(\"機械鍵盤\",B6:B11,0))",
-      "explain": "VLOOKUP 只能往右查，INDEX+MATCH 可以往左"
-     },
-     {
-      "numLabel": "🟡6",
-      "desc": "XLOOKUP 查 P003 名稱（365 版）",
-      "time": "2m",
-      "hint": "=XLOOKUP(\"P003\",A6:A11,B6:B11)",
-      "answer": "=XLOOKUP(\"P003\",A6:A11,B6:B11)",
-      "explain": "XLOOKUP 最簡潔，但僅 365 版支援"
+      "explain": "回傳欄 A 在查找欄 B 左邊，VLOOKUP 做不到，INDEX+MATCH 可以"
      },
      {
       "numLabel": "🟡7",
-      "desc": "如果查不到代碼 P999，顯示「無此商品」",
+      "desc": "用 XLOOKUP 查不到 P999 時顯示「無此商品」",
       "time": "2m",
-      "hint": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")",
-      "answer": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")",
-      "explain": "IFERROR 包住可能出錯的公式"
+      "hint": "=XLOOKUP(\"P999\",A6:A11,B6:B11,\"無此商品\")",
+      "answer": "=XLOOKUP(\"P999\",A6:A11,B6:B11,\"無此商品\")",
+      "explain": "XLOOKUP 第 4 參數就是找不到時要顯示的內容"
      },
      {
       "numLabel": "🟡8",
+      "desc": "舊檔 VLOOKUP 查不到 P999 時顯示「無此商品」",
+      "time": "2m",
+      "hint": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")",
+      "answer": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")",
+      "explain": "IFERROR 適合包住舊檔裡可能出錯的查找公式"
+     },
+     {
+      "numLabel": "🔴9",
       "desc": "用 MATCH 找出「27吋螢幕」在第幾列",
       "time": "2m",
       "hint": "=MATCH(\"27吋螢幕\",B6:B11,0)",
       "answer": "=MATCH(\"27吋螢幕\",B6:B11,0)",
       "explain": "MATCH 回傳的是「相對位置」而非列號"
-     },
-     {
-      "numLabel": "🔴9",
-      "desc": "查 P002 的名稱+單價（一次兩欄）",
-      "time": "3m",
-      "hint": "=VLOOKUP(\"P002\",A6:E11,{2,4},0)",
-      "answer": "=VLOOKUP(\"P002\",A6:E11,{2,4},0)",
-      "explain": "陣列常數 {2,4} 可一次取多欄（需 ⌘+⇧+Return（舊版需要，365 自動））"
      },
      {
       "numLabel": "🔴10",
@@ -1549,7 +1903,7 @@ export const XLSX_CONTENT = {
    "meta": {
     "phase": "💼 Phase 2：工作即戰力    第 3~4 週  |  目標：老闆交辦的任務都能搞定",
     "stage": "第 5 階段",
-    "topics": "VLOOKUP / XLOOKUP / INDEX+MATCH",
+    "topics": "XLOOKUP / VLOOKUP / INDEX+MATCH / IFERROR",
     "difficulty": "🔵 Lv.2",
     "taskCount": "10 題",
     "time": "25 分鐘",
@@ -1627,30 +1981,30 @@ export const XLSX_CONTENT = {
      {
       "num": 1,
       "difficulty": "🟢",
+      "desc": "XLOOKUP 查 P003 的產品名稱",
+      "hint": "XLOOKUP(查找值,查找欄,回傳欄)",
+      "answer": "=XLOOKUP(\"P003\",A6:A11,B6:B11)"
+     },
+     {
+      "num": 2,
+      "difficulty": "🟢",
+      "desc": "XLOOKUP 查 P005 的單價",
+      "hint": "回傳欄改成單價欄",
+      "answer": "=XLOOKUP(\"P005\",A6:A11,D6:D11)"
+     },
+     {
+      "num": 3,
+      "difficulty": "🔵",
       "desc": "VLOOKUP 查 P003 的產品名稱",
       "hint": "VLOOKUP(查找值,表格,第幾欄,0)",
       "answer": "=VLOOKUP(\"P003\",A6:E11,2,0)"
      },
      {
-      "num": 2,
-      "difficulty": "🟢",
-      "desc": "VLOOKUP 查 P005 的單價",
-      "hint": "第 4 欄=單價",
-      "answer": "=VLOOKUP(\"P005\",A6:E11,4,0)"
-     },
-     {
-      "num": 3,
+      "num": 4,
       "difficulty": "🔵",
       "desc": "INDEX+MATCH 查 P003 名稱",
       "hint": "MATCH 找位置，INDEX 取值",
       "answer": "=INDEX(B6:B11,MATCH(\"P003\",A6:A11,0))"
-     },
-     {
-      "num": 4,
-      "difficulty": "🔵",
-      "desc": "XLOOKUP 查 P003 名稱（365 版）",
-      "hint": "XLOOKUP(查,查找欄,回傳欄)",
-      "answer": "=XLOOKUP(\"P003\",A6:A11,B6:B11)"
      },
      {
       "num": 5,
@@ -1662,9 +2016,9 @@ export const XLSX_CONTENT = {
      {
       "num": 6,
       "difficulty": "🟡",
-      "desc": "查不到 P999 時顯示「無此商品」",
-      "hint": "IFERROR 包住公式",
-      "answer": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")"
+      "desc": "XLOOKUP 查不到 P999 時顯示「無此商品」",
+      "hint": "XLOOKUP 第 4 參數=找不到時",
+      "answer": "=XLOOKUP(\"P999\",A6:A11,B6:B11,\"無此商品\")"
      },
      {
       "num": 7,
@@ -1676,9 +2030,9 @@ export const XLSX_CONTENT = {
      {
       "num": 8,
       "difficulty": "🔴",
-      "desc": "XLOOKUP 查 P001，找不到回傳「N/A」",
-      "hint": "XLOOKUP 第 4 參數=找不到時",
-      "answer": "=XLOOKUP(\"P001\",A6:A11,B6:B11,\"N/A\")"
+      "desc": "舊檔 VLOOKUP 查不到 P999 時顯示「無此商品」",
+      "hint": "IFERROR 包住公式",
+      "answer": "=IFERROR(VLOOKUP(\"P999\",A6:E11,2,0),\"無此商品\")"
      }
     ]
    }
@@ -1988,6 +2342,26 @@ export const XLSX_CONTENT = {
         "把條件格式套到其他範圍"
        ]
       ]
+     },
+     {
+      "title": "✅ 交付檢查",
+      "items": [
+       [
+        "先測命中列",
+        "新增一筆應該被標示的資料，確認格式會自動套用",
+        "不要只看既有資料剛好有沒有亮"
+       ],
+       [
+        "再測排除列",
+        "新增一筆不該被標示的資料，確認規則不會誤傷",
+        "尤其是自訂公式規則"
+       ],
+       [
+        "寫下規則意義",
+        "在報表旁註明紅色、黃色、圖示各代表什麼商業訊號",
+        "讓接手者知道顏色不是裝飾"
+       ]
+      ]
      }
     ],
     "handsTasks": [
@@ -2148,6 +2522,26 @@ export const XLSX_CONTENT = {
         "自動標出不符合規則的現有資料"
        ]
       ]
+     },
+     {
+      "title": "✅ 正式表單檢查",
+      "items": [
+       [
+        "欄位角色",
+        "先分出必填、選填、公式產生欄",
+        "公式欄不應該讓使用者直接輸入"
+       ],
+       [
+        "維護清單",
+        "部門、區域、狀態集中放在清單區或表格",
+        "新增選項時不必逐格修改規則"
+       ],
+       [
+        "搭配保護",
+        "長期給多人填的表單，要搭配工作表保護與條件式格式化",
+        "資料驗證只擋輸入錯，不等於權限控管"
+       ]
+      ]
      }
     ],
     "handsTasks": [
@@ -2204,6 +2598,78 @@ export const XLSX_CONTENT = {
    }
   },
   "P3-02": {
+   "knowledge": {
+    "title": "📝 文字與日期清理",
+    "subtitle": "先清髒字元，再拆欄位，最後轉成可計算日期",
+    "sections": [
+     {
+      "title": "📌 清資料順序",
+      "items": [
+       [
+        "清空白",
+        "SUBSTITUTE(A2,CHAR(160),\"\") → CLEAN → TRIM",
+        "先處理非斷行空白和不可見字元"
+       ],
+       [
+        "拆欄位",
+        "LEFT / MID / RIGHT 搭配 FIND",
+        "適合訂單號、Email、地址、電話"
+       ],
+       [
+        "轉日期",
+        "DATE / DATEVALUE 讓文字變成真日期",
+        "真日期才能排序、計算天數、做月份群組"
+       ]
+      ]
+     },
+     {
+      "title": "🧰 常用公式",
+      "items": [
+       [
+        "穩定清空白",
+        "=TRIM(CLEAN(SUBSTITUTE(A2,CHAR(160),\"\")))",
+        "處理外部系統貼上資料"
+       ],
+       [
+        "Email 取帳號",
+        "=LEFT(A2,FIND(\"@\",A2)-1)",
+        "FIND 先找位置，再交給 LEFT / MID"
+       ],
+       [
+        "訂單號轉日期",
+        "=DATE(MID(A2,2,4),MID(A2,6,2),MID(A2,8,2))",
+        "比只用 TEXT 更適合後續計算"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 常見誤區",
+      "items": [
+       [
+        "TEXT 會回傳文字",
+        "適合輸出顯示，不適合當日期來源",
+        "後續要計算時請保留真日期欄"
+       ],
+       [
+        "DATEDIF 是隱藏函數",
+        "不會自動提示，但可以使用",
+        "Y / M / D 分別代表完整年、月、天"
+       ],
+       [
+        "MID 從 1 開始",
+        "不是程式語言常見的 0-based index",
+        "拆固定編碼時最容易差一碼"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     "清掉姓名欄多餘空白",
+     "從 Email 拆出帳號與網域",
+     "從訂單號轉出真日期",
+     "用 DATEDIF / EOMONTH 算期間"
+    ]
+   },
    "pro": {
     "title": "📝 文字日期  ─  TEXT / MID / TRIM / DATEDIF / WORKDAY",
     "subtitle": "難度：🟡 Lv.3  |  微任務數：10 題  |  建議時間：每題 2~3 分鐘",
@@ -2293,11 +2759,11 @@ export const XLSX_CONTENT = {
     "tasks": [
      {
       "numLabel": "🟢1",
-      "desc": "去除姓名的多餘空格",
+      "desc": "用清理三連去除姓名的多餘空白與不可見字元",
       "time": "1m",
-      "hint": "=TRIM(A6)",
-      "answer": "=TRIM(A6)",
-      "explain": "TRIM 移除前後空格及連續空格"
+      "hint": "=TRIM(CLEAN(SUBSTITUTE(A6,CHAR(160),\"\")))",
+      "answer": "=TRIM(CLEAN(SUBSTITUTE(A6,CHAR(160),\"\")))",
+      "explain": "先處理 CHAR(160)，再清不可見字元，最後 TRIM"
      },
      {
       "numLabel": "🟢2",
@@ -2309,6 +2775,14 @@ export const XLSX_CONTENT = {
      },
      {
       "numLabel": "🔵3",
+      "desc": "把訂單號轉成真正日期",
+      "time": "3m",
+      "hint": "=DATE(MID(A7,2,4),MID(A7,6,2),MID(A7,8,2))",
+      "answer": "=DATE(MID(A7,2,4),MID(A7,6,2),MID(A7,8,2))",
+      "explain": "DATE 會把年月日組成可計算的真日期"
+     },
+     {
+      "numLabel": "🔵4",
       "desc": "取出 Email 的帳號（@之前）",
       "time": "3m",
       "hint": "=LEFT(A8,FIND(\"@\",A8)-1)",
@@ -2316,7 +2790,7 @@ export const XLSX_CONTENT = {
       "explain": "FIND 找 @ 的位置，LEFT 取左邊的字"
      },
      {
-      "numLabel": "🔵4",
+      "numLabel": "🔵5",
       "desc": "取出地址的縣市（前3個字）",
       "time": "1m",
       "hint": "=LEFT(A9,3)",
@@ -2324,15 +2798,15 @@ export const XLSX_CONTENT = {
       "explain": "LEFT(字串,幾個字)"
      },
      {
-      "numLabel": "🔵5",
+      "numLabel": "🟡6",
       "desc": "金額加千分位格式化",
       "time": "2m",
       "hint": "=TEXT(A10,\"#,##0.00\")",
       "answer": "=TEXT(A10,\"#,##0.00\")",
-      "explain": "TEXT 把數字變成指定格式的文字"
+      "explain": "TEXT 把數字變成指定格式的文字，後續計算請保留原數字欄"
      },
      {
-      "numLabel": "🟡6",
+      "numLabel": "🟡7",
       "desc": "計算起始到結束相差幾天",
       "time": "2m",
       "hint": "=DATEDIF(A11,A12,\"D\")",
@@ -2340,7 +2814,7 @@ export const XLSX_CONTENT = {
       "explain": "DATEDIF 第三參數：\"D\"天,\"M\"月,\"Y\"年"
      },
      {
-      "numLabel": "🟡7",
+      "numLabel": "🟡8",
       "desc": "計算相差幾個月",
       "time": "1m",
       "hint": "=DATEDIF(A11,A12,\"M\")",
@@ -2348,7 +2822,7 @@ export const XLSX_CONTENT = {
       "explain": "改成 M 就是月份差"
      },
      {
-      "numLabel": "🟡8",
+      "numLabel": "🔴9",
       "desc": "專案啟動日後 30 個工作天是哪天",
       "time": "2m",
       "hint": "=WORKDAY(A13,30)",
@@ -2356,27 +2830,19 @@ export const XLSX_CONTENT = {
       "explain": "WORKDAY 自動跳過週末"
      },
      {
-      "numLabel": "🔴9",
+      "numLabel": "🔴10",
       "desc": "取得專案啟動日的月底日期",
       "time": "2m",
       "hint": "=EOMONTH(A13,0)",
       "answer": "=EOMONTH(A13,0)",
       "explain": "EOMONTH(日期,0)=當月底，1=下月底"
-     },
-     {
-      "numLabel": "🔴10",
-      "desc": "合併姓名+部門為「王小明-業務」格式",
-      "time": "2m",
-      "hint": "=TRIM(A6)&\"-業務\"",
-      "answer": "=TRIM(A6)&\"-業務\"",
-      "explain": "& 串接文字，先 TRIM 去空格再串"
      }
     ]
    },
    "meta": {
     "phase": "📐 Phase 3：專業打磨    第 5~6 週  |  目標：做出讓人覺得「很專業」的報表",
     "stage": "第 9 階段",
-    "topics": "TEXT / MID / TRIM / DATEDIF / WORKDAY",
+    "topics": "TRIM / CLEAN / MID / DATE / TEXT / DATEDIF",
     "difficulty": "🟡 Lv.3",
     "taskCount": "10 題",
     "time": "20 分鐘",
@@ -2618,6 +3084,26 @@ export const XLSX_CONTENT = {
         "分析 → 樞紐圖表"
        ]
       ]
+     },
+     {
+      "title": "✅ 圖表交付檢查",
+      "items": [
+       [
+        "先有結論",
+        "圖表標題要能說出觀察，不只是欄位名稱",
+        "例如把「月營收」改成「營收連續三月成長放緩」"
+       ],
+       [
+        "控制標籤",
+        "只標最後值、最高低點或討論中的資料點",
+        "每個點都貼數字會讓圖更難讀"
+       ],
+       [
+        "來源可更新",
+        "正式月報的圖表來源優先轉成 Table",
+        "新增資料後範圍才不會漏掉"
+       ]
+      ]
      }
     ],
     "handsTasks": [
@@ -2793,6 +3279,10 @@ export const XLSX_CONTENT = {
        [
         "命名",
         "建立表格後在「表格設計」改名為有意義的名稱"
+       ],
+       [
+        "交付檢查",
+        "新增一列測試資料，確認公式、樞紐與圖表都會吃到新列"
        ]
       ]
      }
@@ -2964,6 +3454,10 @@ export const XLSX_CONTENT = {
        [
         "VBA 可繞過",
         "VBA 可以解除工作表保護，真正安全需要開啟密碼"
+       ],
+       [
+        "使用者測試",
+        "保護後要用填表者視角測輸入、貼上、篩選與列印，不要只測密碼"
        ]
       ]
      }
@@ -3022,6 +3516,78 @@ export const XLSX_CONTENT = {
    }
   },
   "P4-01": {
+   "knowledge": {
+    "title": "📊 動態陣列",
+    "subtitle": "一個公式吐出整片結果，來源變動時自動更新",
+    "sections": [
+     {
+      "title": "📌 三個核心觀念",
+      "items": [
+       [
+        "Spill 溢出",
+        "公式只輸入在左上角，結果會自動展開到多格",
+        "輸出區被擋住時會出現 #SPILL!"
+       ],
+       [
+        "D2#",
+        "# 代表從 D2 開始的整個溢出範圍",
+        "常用來接圖表、下拉選單或後續公式"
+       ],
+       [
+        "條件陣列",
+        "FILTER 的條件會產生 TRUE/FALSE 清單",
+        "多條件 AND 用 *，OR 常用 +"
+       ]
+      ]
+     },
+     {
+      "title": "🧰 常用組合",
+      "items": [
+       [
+        "FILTER",
+        "篩出符合條件的整列資料",
+        "=FILTER(A:E,B:B=\"業務\",\"查無資料\")"
+       ],
+       [
+        "SORT + FILTER",
+        "先篩選，再排序",
+        "=SORT(FILTER(A:E,B:B=\"業務\"),3,-1)"
+       ],
+       [
+        "SORT + UNIQUE",
+        "建立會自動更新的不重複清單",
+        "=SORT(UNIQUE(B:B))"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 交付提醒",
+      "items": [
+       [
+        "#CALC!",
+        "FILTER 找不到資料又沒寫第 3 參數時容易出現",
+        "正式報表請填「查無資料」"
+       ],
+       [
+        "版本相容",
+        "FILTER / SORT / UNIQUE 需要 Microsoft 365 或 Excel 2021+",
+        "舊版使用者要準備替代方案"
+       ],
+       [
+        "Table 邊界",
+        "原始資料適合放 Table；溢出公式建議放在 Table 外",
+        "避免表格擴張和溢出範圍互相干擾"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     "用 FILTER 篩出業務部資料",
+     "用 FILTER 做兩個條件",
+     "用 SORT + UNIQUE 建立部門清單",
+     "用 D2# 引用溢出範圍"
+    ]
+   },
    "pro": {
     "title": "📊 陣列動態  ─  FILTER / SORT / UNIQUE / SEQUENCE（365）",
     "subtitle": "難度：🟡 Lv.3  |  微任務數：8 題  |  建議時間：每題 2~3 分鐘",
@@ -3110,19 +3676,19 @@ export const XLSX_CONTENT = {
     ],
     "tasks": [
      {
-      "numLabel": "🟢1",
-      "desc": "篩選出業務部的員工（動態陣列）",
+     "numLabel": "🟢1",
+      "desc": "用 FILTER 篩選出業務部的員工，找不到時顯示「查無資料」",
       "time": "3m",
-      "hint": "=FILTER(A6:E13,B6:B13=\"業務\")",
-      "answer": "=FILTER(A6:E13,B6:B13=\"業務\")",
-      "explain": "FILTER 自動展開結果，不需輔助欄"
+      "hint": "=FILTER(A6:E13,B6:B13=\"業務\",\"查無資料\")",
+      "answer": "=FILTER(A6:E13,B6:B13=\"業務\",\"查無資料\")",
+      "explain": "FILTER 自動展開結果，第 3 參數可避免空結果變成 #CALC!"
      },
      {
       "numLabel": "🟢2",
-      "desc": "篩選月薪>=60000 的員工",
+      "desc": "用 FILTER 篩選月薪 >= 60000 的員工",
       "time": "2m",
-      "hint": "=FILTER(A6:E13,C6:C13>=60000)",
-      "answer": "=FILTER(A6:E13,C6:C13>=60000)",
+      "hint": "=FILTER(A6:E13,C6:C13>=60000,\"查無資料\")",
+      "answer": "=FILTER(A6:E13,C6:C13>=60000,\"查無資料\")",
       "explain": "條件可以是任何比較運算"
      },
      {
@@ -3135,11 +3701,11 @@ export const XLSX_CONTENT = {
      },
      {
       "numLabel": "🔵4",
-      "desc": "取出所有不重複的部門名稱",
+      "desc": "用 SORT + UNIQUE 取出並排序所有不重複部門",
       "time": "2m",
-      "hint": "=UNIQUE(B6:B13)",
-      "answer": "=UNIQUE(B6:B13)",
-      "explain": "UNIQUE 自動去重，適合做下拉選單"
+      "hint": "=SORT(UNIQUE(B6:B13))",
+      "answer": "=SORT(UNIQUE(B6:B13))",
+      "explain": "UNIQUE 先去重，SORT 再排序，適合做動態下拉來源"
      },
      {
       "numLabel": "🟡5",
@@ -3151,19 +3717,19 @@ export const XLSX_CONTENT = {
      },
      {
       "numLabel": "🟡6",
-      "desc": "篩選業務部且績效>=90",
+      "desc": "篩選業務部且績效 >= 90",
       "time": "3m",
-      "hint": "=FILTER(A6:E13,(B6:B13=\"業務\")*(E6:E13>=90))",
-      "answer": "=FILTER(A6:E13,(B6:B13=\"業務\")*(E6:E13>=90))",
+      "hint": "=FILTER(A6:E13,(B6:B13=\"業務\")*(E6:E13>=90),\"查無資料\")",
+      "answer": "=FILTER(A6:E13,(B6:B13=\"業務\")*(E6:E13>=90),\"查無資料\")",
       "explain": "多條件用 * 相乘（AND 效果）"
      },
      {
       "numLabel": "🔴7",
-      "desc": "計算每個部門有幾人（用 UNIQUE+COUNTIF）",
+      "desc": "假設 H6 是部門溢出清單，用 # 計算共有幾個部門",
       "time": "3m",
-      "hint": "先 =UNIQUE(B6:B13)，再 =COUNTIF(B6:B13,結果儲存格)",
-      "answer": "先 =UNIQUE(B6:B13)，再 =COUNTIF(B6:B13,結果儲存格)",
-      "explain": "組合技：先取不重複，再對每個值計數"
+      "hint": "=COUNTA(H6#)",
+      "answer": "=COUNTA(H6#)",
+      "explain": "H6# 代表從 H6 開始的整個溢出範圍"
      },
      {
       "numLabel": "🔴8",
@@ -3178,7 +3744,7 @@ export const XLSX_CONTENT = {
    "meta": {
     "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
     "stage": "第13階段",
-    "topics": "FILTER / SORT / UNIQUE / SEQUENCE",
+    "topics": "FILTER / SORT / UNIQUE / SEQUENCE / Spill",
     "difficulty": "🟡 Lv.3",
     "taskCount": "8 題",
     "time": "20 分鐘",
@@ -3254,67 +3820,139 @@ export const XLSX_CONTENT = {
     ],
     "tasks": [
      {
-      "num": 1,
-      "difficulty": "🟢",
-      "desc": "計算所有產品的營收總和（單價×銷量 的總和）",
-      "hint": "SUMPRODUCT(單價欄,銷量欄)",
-      "answer": "=SUMPRODUCT(C6:C13,D6:D13)"
+     "num": 1,
+     "difficulty": "🟢",
+      "desc": "用 FILTER 篩出周邊類產品",
+      "hint": "=FILTER(A6:E13,B6:B13=\"周邊\",\"查無資料\")",
+      "answer": "=FILTER(A6:E13,B6:B13=\"周邊\",\"查無資料\")"
      },
      {
       "num": 2,
       "difficulty": "🟢",
-      "desc": "列出不重複的類別清單（第一個）",
-      "hint": "UNIQUE(範圍) 動態溢出",
-      "answer": "=UNIQUE(B6:B13)"
+      "desc": "用 SORT 依單價由高到低排序",
+      "hint": "=SORT(資料範圍,第3欄,-1)",
+      "answer": "=SORT(A6:E13,3,-1)"
      },
      {
       "num": 3,
       "difficulty": "🔵",
-      "desc": "計算周邊類產品的平均評分",
-      "hint": "AVERAGEIF(類別欄,\"周邊\",評分欄)",
-      "answer": "=AVERAGEIF(B6:B13,\"周邊\",E6:E13)"
+      "desc": "列出不重複的類別清單",
+      "hint": "=UNIQUE(類別欄)",
+      "answer": "=UNIQUE(B6:B13)"
      },
      {
       "num": 4,
       "difficulty": "🔵",
-      "desc": "找出銷量最高的產品名稱",
-      "hint": "INDEX+MATCH+MAX 三層組合",
-      "answer": "=INDEX(A6:A13,MATCH(MAX(D6:D13),D6:D13,0))"
+      "desc": "把不重複類別清單排序",
+      "hint": "=SORT(UNIQUE(類別欄))",
+      "answer": "=SORT(UNIQUE(B6:B13))"
      },
      {
       "num": 5,
       "difficulty": "🟡",
-      "desc": "計算單價超過 1000 的產品數量",
-      "hint": "COUNTIF(範圍,\">1000\")",
-      "answer": "=COUNTIF(C6:C13,\">\"&1000)"
+      "desc": "篩選單價超過 1000 的產品",
+      "hint": "=FILTER(A6:E13,C6:C13>1000,\"查無資料\")",
+      "answer": "=FILTER(A6:E13,C6:C13>1000,\"查無資料\")"
      },
      {
       "num": 6,
       "difficulty": "🟡",
-      "desc": "用 SUMPRODUCT 計算周邊類的總銷量",
-      "hint": "SUMPRODUCT((條件)*數值欄)",
-      "answer": "=SUMPRODUCT((B6:B13=\"周邊\")*D6:D13)"
+      "desc": "篩選周邊類且評分 >= 4.5 的產品",
+      "hint": "多條件 AND 用 *",
+      "answer": "=FILTER(A6:E13,(B6:B13=\"周邊\")*(E6:E13>=4.5),\"查無資料\")"
      },
      {
       "num": 7,
       "difficulty": "🔴",
-      "desc": "計算評分最高的產品單價",
-      "hint": "INDEX(單價欄,MATCH(MAX(評分),評分欄,0))",
-      "answer": "=INDEX(C6:C13,MATCH(MAX(E6:E13),E6:E13,0))"
+      "desc": "假設 H6 是類別溢出清單，用 # 計算類別數",
+      "hint": "H6# 代表 H6 開始的整個溢出結果",
+      "answer": "=COUNTA(H6#)"
      },
      {
       "num": 8,
       "difficulty": "🔴",
-      "desc": "計算所有產品的加權平均評分（以銷量為權重）",
-      "hint": "SUMPRODUCT(銷量,評分)/SUM(銷量)",
-      "answer": "=SUMPRODUCT(D6:D13,E6:E13)/SUM(D6:D13)"
+      "desc": "依銷量排序後取前 3 名產品",
+      "hint": "=TAKE(SORT(A6:E13,4,-1),3)",
+      "answer": "=TAKE(SORT(A6:E13,4,-1),3)"
      }
     ]
    }
   },
   "P4-02": {
+   "knowledge": {
+    "title": "🧮 進階函式",
+    "subtitle": "把長公式變得可讀、可測、可重用",
+    "sections": [
+     {
+      "title": "📌 先判斷要解決什麼問題",
+      "items": [
+       [
+        "公式太長",
+        "用 LET 替中間結果命名",
+        "讓 total、bonus、result 各自有角色"
+       ],
+       [
+        "邏輯重複",
+        "用 LAMBDA 封裝成自訂函式",
+        "先測通，再放進名稱管理員"
+       ],
+       [
+        "錯誤或隱藏列干擾統計",
+        "用 AGGREGATE 選擇忽略方式",
+        "比一般 SUM / AVERAGE 更能處理髒資料"
+       ]
+      ]
+     },
+     {
+      "title": "🧰 常用語法",
+      "items": [
+       [
+        "LET",
+        "=LET(total,SUM(B2:E2),bonus,IF(total>=500000,total*5%,0),total+bonus)",
+        "最後一段是回傳值"
+       ],
+       [
+        "LAMBDA",
+        "=LAMBDA(amount,rate,amount*(1+rate))(120000,5%)",
+        "括號後面的值是立即測試輸入"
+       ],
+       [
+        "SWITCH",
+        "=SWITCH(A2,\"A\",\"優先\",\"B\",\"一般\",\"其他\")",
+        "比多層 IF 更像對照表"
+       ]
+      ]
+     },
+     {
+      "title": "⚠️ 高風險提醒",
+      "items": [
+       [
+        "INDIRECT / OFFSET",
+        "可以做動態參照，但屬於 volatile 函數",
+        "大型檔案容易拖慢重算"
+       ],
+       [
+        "版本相容",
+        "LET / LAMBDA 需要較新的 Excel",
+        "交付前先確認收件者環境"
+       ],
+       [
+        "封裝前先測試",
+        "LAMBDA 請先用立即執行版本驗證",
+        "不要把錯誤公式藏進名稱管理員"
+       ]
+      ]
+     }
+    ],
+    "handsTasks": [
+     "用 LET 命名全年業績與獎金",
+     "用 LAMBDA 測試可重用公式",
+     "用 AGGREGATE 忽略錯誤值統計",
+     "辨認 INDIRECT / OFFSET 的效能風險"
+    ]
+   },
    "pro": {
-    "title": "🧮 進階函式  ─  INDIRECT / OFFSET / LET / AGGREGATE / LAMBDA",
+    "title": "🧮 進階函式  ─  LET / LAMBDA / AGGREGATE / SWITCH / INDIRECT",
     "subtitle": "難度：🟠 Lv.4  |  微任務數：8 題  |  建議時間：每題 2~3 分鐘",
     "dataHeader": [
      "季度",
@@ -3356,75 +3994,75 @@ export const XLSX_CONTENT = {
     ],
     "tasks": [
      {
-      "numLabel": "🟢1",
-      "desc": "用 INDIRECT 動態引用：輸入「B6」的文字取出對應值",
+     "numLabel": "🟢1",
+      "desc": "用 LET 計算 2025 全年業績，命名 total",
       "time": "3m",
-      "hint": "=INDIRECT(\"B6\")",
-      "answer": "=INDIRECT(\"B6\")",
-      "explain": "INDIRECT 把文字轉成儲存格參照"
+      "hint": "=LET(total,SUM(B7:E7),total)",
+      "answer": "=LET(total,SUM(B7:E7),total)",
+      "explain": "LET 的最後一段是回傳值"
      },
      {
       "numLabel": "🟢2",
-      "desc": "用 OFFSET 取得 A6 往右2格往下1格的值",
+      "desc": "用 LET 計算 2025 全年業績，達標 600000 加 5% 獎金",
       "time": "3m",
-      "hint": "=OFFSET(A6,1,2)",
-      "answer": "=OFFSET(A6,1,2)",
-      "explain": "OFFSET(基準,下移,右移) 動態偏移"
+      "hint": "=LET(total,SUM(B7:E7),bonus,IF(total>=600000,total*5%,0),total+bonus)",
+      "answer": "=LET(total,SUM(B7:E7),bonus,IF(total>=600000,total*5%,0),total+bonus)",
+      "explain": "把 total 與 bonus 分開命名，公式更容易讀"
      },
      {
       "numLabel": "🔵3",
-      "desc": "用 OFFSET+COUNTA 自動擴展的 SUM 範圍",
+      "desc": "用 LAMBDA 立即測試：金額 120000 加 5%",
       "time": "3m",
-      "hint": "=SUM(OFFSET(B6,0,0,COUNTA(A6:A20),1))",
-      "answer": "=SUM(OFFSET(B6,0,0,COUNTA(A6:A20),1))",
-      "explain": "用 COUNTA 計算列數，讓範圍自動增長"
+      "hint": "=LAMBDA(amount,rate,amount*(1+rate))(120000,5%)",
+      "answer": "=LAMBDA(amount,rate,amount*(1+rate))(120000,5%)",
+      "explain": "先用立即執行測通，再放到名稱管理員"
      },
      {
       "numLabel": "🔵4",
-      "desc": "用 LET 命名變數簡化公式",
-      "time": "3m",
-      "hint": "=LET(avg,AVERAGE(B6:B8),max,MAX(B6:B8),max-avg)",
-      "answer": "=LET(avg,AVERAGE(B6:B8),max,MAX(B6:B8),max-avg)",
-      "explain": "LET 給中間結果取名，公式更易讀"
-     },
-     {
-      "numLabel": "🟡5",
       "desc": "用 AGGREGATE 忽略錯誤值求平均",
       "time": "3m",
       "hint": "=AGGREGATE(1,6,B6:E8)",
       "answer": "=AGGREGATE(1,6,B6:E8)",
-      "explain": "AGGREGATE(函式碼,選項,範圍) 超強統計函式"
+      "explain": "AGGREGATE(1,6,範圍) 代表忽略錯誤求平均"
+     },
+     {
+      "numLabel": "🟡5",
+      "desc": "用 SWITCH 把季度代碼轉成名稱",
+      "time": "3m",
+      "hint": "=SWITCH(\"Q2\",\"Q1\",\"第一季\",\"Q2\",\"第二季\",\"Q3\",\"第三季\",\"Q4\",\"第四季\",\"未知\")",
+      "answer": "=SWITCH(\"Q2\",\"Q1\",\"第一季\",\"Q2\",\"第二季\",\"Q3\",\"第三季\",\"Q4\",\"第四季\",\"未知\")",
+      "explain": "SWITCH 比多層 IF 更像清楚的對照表"
      },
      {
       "numLabel": "🟡6",
-      "desc": "用 CHOOSE 根據數字選月份名稱",
+      "desc": "用 INDIRECT 把文字 B7 轉成儲存格參照",
       "time": "2m",
-      "hint": "=CHOOSE(2,\"一月\",\"二月\",\"三月\")",
-      "answer": "=CHOOSE(2,\"一月\",\"二月\",\"三月\")",
-      "explain": "CHOOSE(索引,值1,值2,...) 按編號選"
+      "hint": "=INDIRECT(\"B7\")",
+      "answer": "=INDIRECT(\"B7\")",
+      "explain": "INDIRECT 可用，但大型檔案要留意重算效能"
      },
      {
       "numLabel": "🔴7",
-      "desc": "用 SWITCH 把部門代碼轉名稱（1=業務,2=財務,3=資訊）",
+      "desc": "用 OFFSET 取得 2025 年度從 Q1 開始的 4 欄總和",
       "time": "2m",
-      "hint": "=SWITCH(1,1,\"業務\",2,\"財務\",3,\"資訊\",\"未知\")",
-      "answer": "=SWITCH(1,1,\"業務\",2,\"財務\",3,\"資訊\",\"未知\")",
-      "explain": "SWITCH 比巢狀 IF 乾淨很多"
+      "hint": "=SUM(OFFSET(B7,0,0,1,4))",
+      "answer": "=SUM(OFFSET(B7,0,0,1,4))",
+      "explain": "OFFSET 能動態位移與指定範圍大小，但也屬於 volatile 函數"
      },
      {
       "numLabel": "🔴8",
-      "desc": "用 LAMBDA 建立自訂函式：華氏轉攝氏",
+      "desc": "用 LET + SWITCH 將總額分成高 / 中 / 低",
       "time": "3m",
-      "hint": "=LAMBDA(f,(f-32)*5/9)(100)",
-      "answer": "=LAMBDA(f,(f-32)*5/9)(100)",
-      "explain": "LAMBDA 建立可重用的自訂函式（365）"
+      "hint": "=LET(total,SUM(B7:E7),SWITCH(TRUE,total>=600000,\"高\",total>=500000,\"中\",\"低\"))",
+      "answer": "=LET(total,SUM(B7:E7),SWITCH(TRUE,total>=600000,\"高\",total>=500000,\"中\",\"低\"))",
+      "explain": "LET 先命名 total，SWITCH(TRUE,...) 再做門檻判斷"
      }
     ]
    },
    "meta": {
     "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
     "stage": "第14階段",
-    "topics": "INDIRECT / OFFSET / LET / AGGREGATE",
+    "topics": "LET / LAMBDA / AGGREGATE / SWITCH / INDIRECT",
     "difficulty": "🟠 Lv.4",
     "taskCount": "8 題",
     "time": "25 分鐘",
@@ -3500,60 +4138,60 @@ export const XLSX_CONTENT = {
     ],
     "tasks": [
      {
-      "num": 1,
-      "difficulty": "🟢",
-      "desc": "計算王小明的全年業績總和",
-      "hint": "SUM 橫向加總",
-      "answer": "=SUM(D6:G6)"
+     "num": 1,
+     "difficulty": "🟢",
+      "desc": "用 LET 命名王小明全年業績 total",
+      "hint": "=LET(total,SUM(D6:G6),total)",
+      "answer": "=LET(total,SUM(D6:G6),total)"
      },
      {
       "num": 2,
       "difficulty": "🟢",
-      "desc": "找出所有業務員中 Q1 業績最高者的名字",
-      "hint": "INDEX+MATCH+MAX+IF 陣列公式",
-      "answer": "=INDEX(A6:A11,MATCH(MAX(IF(B6:B11=\"業務\",D6:D11)),IF(B6:B11=\"業務\",D6:D11),0))"
+      "desc": "用 LET 計算全年業績，達標 500000 加 5% 獎金",
+      "hint": "total + bonus",
+      "answer": "=LET(total,SUM(D6:G6),bonus,IF(total>=500000,total*5%,0),total+bonus)"
      },
      {
       "num": 3,
       "difficulty": "🔵",
-      "desc": "計算業務部全年業績平均（含Q1~Q4）",
-      "hint": "4個AVERAGEIFS相加或用SUMPRODUCT",
-      "answer": "=AVERAGEIFS(D6:D11,B6:B11,\"業務\")+AVERAGEIFS(E6:E11,B6:B11,\"業務\")+AVERAGEIFS(F6:F11,B6:B11,\"業務\")+AVERAGEIFS(G6:G11,B6:B11,\"業務\")"
+      "desc": "用 SWITCH 把王小明的部門轉成英文標籤",
+      "hint": "SWITCH(B6,\"業務\",\"Sales\",...)",
+      "answer": "=SWITCH(B6,\"業務\",\"Sales\",\"財務\",\"Finance\",\"資訊\",\"IT\",\"其他\")"
      },
      {
       "num": 4,
       "difficulty": "🔵",
-      "desc": "用 RANK 計算王小明 Q1 業績在所有人中的排名",
-      "hint": "RANK(值,範圍)",
-      "answer": "=RANK(D6,D6:D11)"
+      "desc": "用 AGGREGATE 忽略錯誤求月薪平均",
+      "hint": "=AGGREGATE(1,6,C6:C11)",
+      "answer": "=AGGREGATE(1,6,C6:C11)"
      },
      {
       "num": 5,
       "difficulty": "🟡",
-      "desc": "計算有業績（Q1>0）的人數",
-      "hint": "COUNTIF(範圍,\">0\")",
-      "answer": "=COUNTIF(D6:D11,\">\"&0)"
+      "desc": "用 LAMBDA 立即測試：全年業績是否達標",
+      "hint": "=LAMBDA(x,IF(x>=500000,\"達標\",\"追蹤\"))(SUM(D6:G6))",
+      "answer": "=LAMBDA(x,IF(x>=500000,\"達標\",\"追蹤\"))(SUM(D6:G6))"
      },
      {
       "num": 6,
       "difficulty": "🟡",
-      "desc": "計算業務部平均月薪與全公司平均月薪的差額",
-      "hint": "AVERAGEIF - AVERAGE",
-      "answer": "=AVERAGEIF(B6:B11,\"業務\",C6:C11)-AVERAGE(C6:C11)"
+      "desc": "用 INDIRECT 把文字 D6 轉成 Q1 業績值",
+      "hint": "=INDIRECT(\"D6\")",
+      "answer": "=INDIRECT(\"D6\")"
      },
      {
       "num": 7,
       "difficulty": "🔴",
-      "desc": "用 IF+MAX 找出王小明最佳季度業績",
-      "hint": "MAX 橫向取最大值",
-      "answer": "=MAX(D6:G6)"
+      "desc": "用 OFFSET 加總王小明 Q1~Q4",
+      "hint": "=SUM(OFFSET(D6,0,0,1,4))",
+      "answer": "=SUM(OFFSET(D6,0,0,1,4))"
      },
      {
       "num": 8,
       "difficulty": "🔴",
-      "desc": "計算全公司薪資的標準差",
-      "hint": "STDEV(範圍) 樣本標準差",
-      "answer": "=STDEV(C6:C11)"
+      "desc": "用 LET + SWITCH 將全年業績分成高 / 中 / 低",
+      "hint": "SWITCH(TRUE, 條件1, 結果1, 條件2, 結果2, 預設)",
+      "answer": "=LET(total,SUM(D6:G6),SWITCH(TRUE,total>=500000,\"高\",total>=300000,\"中\",\"低\"))"
      }
     ]
    }
@@ -3671,6 +4309,10 @@ export const XLSX_CONTENT = {
         "專業做法",
         "先問清楚自己是要反推答案、比較情境，還是找最佳解",
         "工具選對了，假設分析才會快"
+       ],
+       [
+        "交付檢查",
+        "把輸入假設、限制條件與最後輸出放在同一區，讓別人能追溯答案來源"
        ]
       ]
      }
@@ -4304,8 +4946,17 @@ export const XLSX_CONTENT = {
    "vba": {
     "title": "🔧 VBA 進階  ─  陣列 / 字典 / 錯誤處理 / 事件",
     "subtitle": "難度：🟠 Lv.4  |  這些技巧讓你從「會用」升級到「很強」",
-    "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm，需用 InputBox 或 MsgBox 替代。",
-    "quickOps": [],
+    "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm、ActiveX 與多數 Windows COM 自動化；本課主線放在工作簿內資料處理、事件、錯誤處理與可交付流程。",
+    "quickOps": [
+     {
+      "op": "先想 Power Query",
+      "how": "如果需求是重複清資料、多檔合併，優先用 Power Query；VBA 負責刷新、檢查與輸出。"
+     },
+     {
+      "op": "先寫 CleanUp",
+      "how": "任何會關閉畫面更新、事件或自動計算的巨集，都要有統一復原區。"
+     }
+    ],
     "microTasks": [
      {
       "title": "微任務 1：陣列批次處理（效能大提升）",
@@ -4355,20 +5006,27 @@ export const XLSX_CONTENT = {
       "tip": "💡 Dictionary 比 COUNTIF 更靈活，適合大量資料去重計數"
      },
      {
-      "title": "微任務 3：錯誤處理 On Error",
+      "title": "微任務 3：錯誤處理 + CleanUp 安全收尾",
       "time": "⏱ 2 分鐘",
       "code": [
-       "Sub ErrorHandling()",
+       "Sub SafeRun()",
        "On Error GoTo ErrHandler",
-       "Dim result As Double",
-       "result = 10 / 0  ' 這會出錯",
+       "Application.ScreenUpdating = False",
+       "Application.EnableEvents = False",
+       "' 你的主要流程",
+       "",
+       "CleanUp:",
+       "Application.EnableEvents = True",
+       "Application.ScreenUpdating = True",
+       "If Err.Number = 0 Then MsgBox \"完成\"",
        "Exit Sub",
+       "",
        "ErrHandler:",
        "MsgBox \"發生錯誤: \" & Err.Description",
-       "' 或 On Error Resume Next（忽略錯誤繼續）",
+       "Resume CleanUp",
        "End Sub"
       ],
-      "tip": "💡 On Error GoTo 標籤 = 跳到錯誤處理區。專業程式必備"
+      "tip": "💡 專業 VBA 不是不出錯，而是出錯時也能把 Excel 設定復原"
      },
      {
       "title": "微任務 4：With 語句 + 格式化",
@@ -4395,11 +5053,13 @@ export const XLSX_CONTENT = {
        "Private Sub Worksheet_Change(ByVal Target As Range)",
        "' 當 A 欄被修改時，自動在 B 欄記錄時間",
        "If Target.Column = 1 Then",
+       "Application.EnableEvents = False",
        "Target.Offset(0, 1).Value = Now()",
+       "Application.EnableEvents = True",
        "End If",
        "End Sub"
       ],
-      "tip": "💡 事件程式碼放在工作表模組（右鍵工作表→檢視程式碼）"
+      "tip": "💡 事件程式碼放在工作表模組；事件裡改格子時要暫停 EnableEvents，避免自己觸發自己"
      },
      {
       "title": "微任務 6：Select Case（比 If 更乾淨）",
@@ -4419,22 +5079,24 @@ export const XLSX_CONTENT = {
       "tip": "💡 Select Case 比多層 If/ElseIf 更易讀"
      },
      {
-      "title": "微任務 7：FileSystemObject 檔案操作",
+      "title": "微任務 7：Mac 友善檔案清單",
       "time": "⏱ 3 分鐘",
       "code": [
        "Sub ListFiles()",
-       "Dim fso As Object, folder As Object, file As Object",
-       "Set fso = CreateObject(\"Scripting.FileSystemObject\")",
-       "Set folder = fso.GetFolder(\"C:\\Users\\你的帳號\\Desktop\")",
+       "Dim folderPath As String",
+       "folderPath = ThisWorkbook.Path & Application.PathSeparator",
+       "Dim fileName As String",
+       "fileName = Dir(folderPath & \"*.csv\")",
        "Dim r As Long: r = 1",
-       "For Each file In folder.Files",
-       "Cells(r, 1).Value = file.Name",
-       "Cells(r, 2).Value = file.Size",
+       "Do While fileName <> \"\"",
+       "Cells(r, 1).Value = fileName",
+       "Cells(r, 2).Value = folderPath & fileName",
        "r = r + 1",
-       "Next file",
+       "fileName = Dir()",
+       "Loop",
        "End Sub"
       ],
-      "tip": "💡 FSO 可以讀寫檔案系統，自動化必備技能"
+      "tip": "💡 用 ThisWorkbook.Path + Dir 可以避開 Windows 路徑範例，Mac/Windows 都更容易理解"
      },
      {
       "title": "微任務 8：定時執行巨集",
@@ -4450,8 +5112,7 @@ export const XLSX_CONTENT = {
        "End Sub",
        "Sub StopTimer()",
        "Application.OnTime Now + TimeValue(\"00:01:00\"), \"MyTask\", , False",
-       "End Sub",
-       "🎯 動手練習（做完打 ✓，難度漸進！）"
+       "End Sub"
       ],
       "tip": "💡 Application.OnTime 可以排程定時執行。StopTimer 停止"
      }
@@ -4511,7 +5172,7 @@ export const XLSX_CONTENT = {
   },
   "P5-03": {
    "vba": {
-    "title": "🏗️ VBA 實戰  ─  輸入流程 / 自動報表 / 實務範本",
+    "title": "🏗️ VBA 實戰  ─  RefreshAll / PDF 匯出 / 錯誤處理 / 交付流程",
     "subtitle": "難度：🔴 Lv.5  |  做完這裡，你就能教別人了",
     "warning": "⚠️ macOS 注意：不要照搬 Windows 的 Alt+F11 心智模型；請用「工具→巨集→Visual Basic 編輯器」或 ⌥+F11 開啟。Mac 不支援 UserForm，也不要把 Windows 的 Outlook COM 自動化當成主路線；請優先用 InputBox、工作表表單、PDF 匯出與檔案流程。",
     "quickOps": [],
@@ -4741,7 +5402,7 @@ export const XLSX_CONTENT = {
    "meta": {
     "phase": "🔧 Phase 5：VBA 自動化大師    第 11~14 週  |  目標：能寫程式自動化，能教別人",
     "stage": "第19階段",
-    "topics": "自動報表 / 串接 / 實務範本",
+    "topics": "RefreshAll / PDF 匯出 / 錯誤處理 / 交付流程",
     "difficulty": "🔴 Lv.5",
     "taskCount": "8 題",
     "time": "40 分鐘",
@@ -4750,8 +5411,8 @@ export const XLSX_CONTENT = {
   },
   "P5-04": {
    "pro": {
-    "title": "🏆 綜合挑戰  ─  融合所有技能的員工薪資分析",
-    "subtitle": "難度：🔴 Lv.5  |  微任務數：5 題  |  建議時間：每題 2~3 分鐘",
+    "title": "🏆 綜合挑戰  ─  先選工具，再整合交付",
+    "subtitle": "難度：🔴 Lv.5  |  微任務數：5 題  |  每題先判斷工具，再寫公式或流程",
     "dataHeader": [
      "員工編號",
      "姓名",
@@ -4838,50 +5499,50 @@ export const XLSX_CONTENT = {
     "tasks": [
      {
       "numLabel": "🟢1",
-      "desc": "計算每人年資（到 2026/3/31）",
+      "desc": "公式題：計算每人年資（到 2026/3/31）",
       "time": "2m",
       "hint": "=DATEDIF(D6,DATE(2026,3,31),\"Y\")",
       "answer": "=DATEDIF(D6,DATE(2026,3,31),\"Y\")",
-      "explain": "DATEDIF + DATE 組合"
+      "explain": "先判斷這是每列日期計算，所以用公式而不是樞紐或 VBA"
      },
      {
       "numLabel": "🔵2",
-      "desc": "薪資等級：>=70K高級/>=50K中級/其他初級",
+      "desc": "公式題：薪資等級 >=70K 高級 / >=50K 中級 / 其他初級",
       "time": "3m",
       "hint": "=IFS(E6>=70000,\"高級\",E6>=50000,\"中級\",TRUE,\"初級\")",
       "answer": "=IFS(E6>=70000,\"高級\",E6>=50000,\"中級\",TRUE,\"初級\")",
-      "explain": "IFS 多層判斷"
+      "explain": "這是多門檻判斷，用 IFS 比巢狀 IF 更清楚"
      },
      {
       "numLabel": "🟡3",
-      "desc": "年終獎金：績效>=90→×3/>=75→×2/其他→×1",
+      "desc": "公式題：年終獎金，績效 >=90 → ×3 / >=75 → ×2 / 其他 → ×1",
       "time": "3m",
       "hint": "=IFS(F6>=90,E6*3,F6>=75,E6*2,TRUE,E6)",
       "answer": "=IFS(F6>=90,E6*3,F6>=75,E6*2,TRUE,E6)",
-      "explain": "IFS 結合計算"
+      "explain": "仍是每列商業規則，用公式欄保留可追溯邏輯"
      },
      {
       "numLabel": "🟡4",
-      "desc": "SUMIFS：業務部年終總額",
+      "desc": "條件統計題：用 SUMIFS 算業務部年終總額",
       "time": "3m",
       "hint": "先完成獎金欄，再 =SUMIFS(獎金欄,部門欄,\"業務\")",
       "answer": "=SUMIFS(I6:I13,C6:C13,\"業務\")",
-      "explain": "假設獎金在 I 欄"
+      "explain": "只問某部門合計，不需要先做樞紐；若要多部門交叉分析才改用樞紐"
      },
      {
       "numLabel": "🔴5",
-      "desc": "INDEX+MATCH：查 E005 的姓名",
+      "desc": "查找題：用 INDEX+MATCH 查 E005 的姓名",
       "time": "2m",
       "hint": "=INDEX(B6:B13,MATCH(\"E005\",A6:A13,0))",
       "answer": "=INDEX(B6:B13,MATCH(\"E005\",A6:A13,0))",
-      "explain": "反向查找"
+      "explain": "查找值與回傳欄分開思考；新版環境也可改用 XLOOKUP"
      }
     ]
    },
    "meta": {
     "phase": "🔧 Phase 5：VBA 自動化大師    第 11~14 週  |  目標：能寫程式自動化，能教別人",
     "stage": "第20階段",
-    "topics": "融合所有技能的實戰任務",
+    "topics": "工具選擇 / 公式 / 條件統計 / 查找 / 綜合交付",
     "difficulty": "🔴 Lv.5",
     "taskCount": "5 題",
     "time": "30 分鐘",
@@ -4899,19 +5560,19 @@ export const XLSX_CONTENT = {
    "time": "20 分鐘",
    "xp": "150 XP"
   },
-  "📊 基礎函式": {
-   "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
-   "stage": "第 2 階段",
-   "topics": "SUM / AVERAGE / COUNT / MAX / MIN",
-   "difficulty": "🟢 Lv.1",
-   "taskCount": "8 題",
-   "time": "15 分鐘",
+	  "📊 基礎函式": {
+	   "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
+	   "stage": "第 2 階段",
+	   "topics": "SUM / AVERAGE / COUNT / COUNTA / MAX / MIN / MEDIAN / LARGE / SMALL",
+	   "difficulty": "🟢 Lv.1",
+	   "taskCount": "8 題",
+	   "time": "15 分鐘",
    "xp": "100 XP"
   },
   "📐 條件判斷": {
    "phase": "🏃 Phase 1：操作效率基礎    第 1~2 週  |  目標：養成鍵盤操作習慣，複習基本功",
    "stage": "第 3 階段",
-   "topics": "IF / IFS / 巢狀 IF / AND / OR",
+   "topics": "IF / IFS / AND / OR / SWITCH",
    "difficulty": "🟢 Lv.1",
    "taskCount": "8 題",
    "time": "15 分鐘",
@@ -4929,7 +5590,7 @@ export const XLSX_CONTENT = {
   "🔍 查找比對": {
    "phase": "💼 Phase 2：工作即戰力    第 3~4 週  |  目標：老闆交辦的任務都能搞定",
    "stage": "第 5 階段",
-   "topics": "VLOOKUP / XLOOKUP / INDEX+MATCH",
+   "topics": "XLOOKUP / VLOOKUP / INDEX+MATCH / IFERROR",
    "difficulty": "🔵 Lv.2",
    "taskCount": "10 題",
    "time": "25 分鐘",
@@ -4965,7 +5626,7 @@ export const XLSX_CONTENT = {
   "📝 文字日期": {
    "phase": "📐 Phase 3：專業打磨    第 5~6 週  |  目標：做出讓人覺得「很專業」的報表",
    "stage": "第 9 階段",
-   "topics": "TEXT / MID / TRIM / DATEDIF / WORKDAY",
+   "topics": "TRIM / CLEAN / MID / DATE / TEXT / DATEDIF",
    "difficulty": "🟡 Lv.3",
    "taskCount": "10 題",
    "time": "20 分鐘",
@@ -5001,7 +5662,7 @@ export const XLSX_CONTENT = {
   "📊 陣列動態": {
    "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
    "stage": "第13階段",
-   "topics": "FILTER / SORT / UNIQUE / SEQUENCE",
+   "topics": "FILTER / SORT / UNIQUE / SEQUENCE / Spill",
    "difficulty": "🟡 Lv.3",
    "taskCount": "8 題",
    "time": "20 分鐘",
@@ -5010,7 +5671,7 @@ export const XLSX_CONTENT = {
   "🧮 進階函式": {
    "phase": "⚡ Phase 4：進階自動化    第 7~10 週  |  目標：處理大量資料、自動化流程",
    "stage": "第14階段",
-   "topics": "INDIRECT / OFFSET / LET / AGGREGATE",
+   "topics": "LET / LAMBDA / AGGREGATE / SWITCH / INDIRECT",
    "difficulty": "🟠 Lv.4",
    "taskCount": "8 題",
    "time": "25 分鐘",
@@ -5055,7 +5716,7 @@ export const XLSX_CONTENT = {
   "🏗️ VBA實戰": {
    "phase": "🔧 Phase 5：VBA 自動化大師    第 11~14 週  |  目標：能寫程式自動化，能教別人",
    "stage": "第19階段",
-   "topics": "自動報表 / 串接 / 實務範本",
+   "topics": "RefreshAll / PDF 匯出 / 錯誤處理 / 交付流程",
    "difficulty": "🔴 Lv.5",
    "taskCount": "8 題",
    "time": "40 分鐘",
@@ -5106,7 +5767,7 @@ export const XLSX_CONTENT = {
  "strategies": [
   {
    "title": "⏱ 番茄鐘節奏",
-   "desc": "15 分鐘專注 → 5 分鐘休息 → 再做 15 分鐘。一天最多 2~3 個番茄鐘就夠了"
+   "desc": "15 分鐘學習 → 5 分鐘休息 → 再做 15 分鐘。一天最多 2~3 個番茄鐘就夠了"
   },
   {
    "title": "🎯 每天只做一件事",

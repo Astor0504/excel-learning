@@ -9,7 +9,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
-<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P4-01">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P4-01" data-default-tab="study">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -26,104 +26,36 @@
     <h1>陣列與動態函式</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">動態陣列函數：M365 的革命，一個公式回傳整個範圍</p></div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">動態陣列：一個公式吐出整片結果，搭配 # 溢出範圍建立會自動更新的清單</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 近 30 年最大的功能升級。會了之後再也回不去傳統公式了。</p><h2>6 個必學動態函數</h2><pre><code class="lang-excel">=FILTER(A2:C100, B2:B100=&quot;電子&quot;)
-# → 篩選出電子部所有列（不用樞紐）
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">動態陣列不是多背幾個新函數，而是換一種做清單的方式：一個公式放在左上角，結果自動向外展開；來源資料變動，整片結果一起更新。</p><h2>先掌握 3 個觀念</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">動態陣列的心智模型</caption><thead><tr><th>觀念</th><th>你要記住</th><th>常見用途</th></tr></thead><tbody><tr><td>Spill 溢出</td><td>公式只輸入一次，結果會自動展開到多格</td><td>動態名單、篩選結果、排行表</td></tr><tr><td>D2#</td><td># 代表從 D2 開始的整個溢出範圍</td><td>把動態結果餵給圖表、驗證清單或其他公式</td></tr><tr><td>條件陣列</td><td>FILTER 的條件其實是一串 TRUE/FALSE</td><td>多條件篩選、清單自動更新</td></tr></tbody></table>
+<h2>核心語法</h2><pre><code class="lang-excel"># 篩選符合條件的整列；第 3 參數是找不到時的顯示文字
+=FILTER(A2:E100, B2:B100=&quot;業務&quot;, &quot;查無資料&quot;)
 
-=SORT(A2:C100, 3, -1)
-# → 依第 3 欄降序排序
+# 多條件 AND：兩個條件都要成立，用 * 相乘
+=FILTER(A2:E100, (B2:B100=&quot;業務&quot;)*(E2:E100&gt;=90), &quot;查無資料&quot;)
 
-=UNIQUE(A2:A100)
-# → 取出不重複值
+# 先篩選，再依第 3 欄由大到小排序
+=SORT(FILTER(A2:E100, B2:B100=&quot;業務&quot;), 3, -1)
 
-=SEQUENCE(10)
-# → 生成 1~10 的序號
+# 產生不重複清單，再排序
+=SORT(UNIQUE(B2:B100))
 
-=SEQUENCE(12, 1, 1, 1)
-# → 12 個月
-
-=SORT(UNIQUE(FILTER(A2:A100, B2:B100&gt;1000)))
-# → 業績破千的人去重後排序，一行搞定！</code></pre>
-<h2>FILTER 公式拆解</h2>
-<div class="formula-demo" id="filterDemo">
-  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
-  <div class="formula-bar">=FILTER(<span class="fp c1" data-step="1">A2:C100</span>, <span class="fp c2" data-step="2">B2:B100="電子"</span>, <span class="fp c3" data-step="3">""</span>)</div>
-  <div class="explain-area" id="filterExplain">
-    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
-  </div>
-  <button class="play-btn" onclick="playFormula('filter')">▶ 播放</button>
-</div>
-<script>
-(function(){
-  var steps = {
-    filter: [
-      {step:1,cls:'c1',label:'參數 1：資料範圍',text:'A2:C100 = 要篩選的來源陣列，包含部門、月份、業績三欄。整個區域都會一起被篩選。'},
-      {step:2,cls:'c2',label:'參數 2：篩選條件',text:'B2:B100="電子" = 每列判斷 B 欄是否等於「電子」，回傳 TRUE/FALSE 陣列。只有 TRUE 的列才會出現在結果。'},
-      {step:3,cls:'c3',label:'參數 3：找不到時',text:'"" = 若沒有符合的資料，回傳空字串而非錯誤。可填 "查無資料" 等提示文字。省略此參數會在空結果時顯示 #CALC! 錯誤。'}
-    ]
-  };
-  function showStep(demoId,stepNum){
-    var demo=document.getElementById(demoId+'Demo');
-    if(!demo)return;
-    var info=steps[demoId].find(function(s){return s.step===stepNum});
-    if(!info)return;
-    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
-    var target=demo.querySelector('.fp[data-step="'+stepNum+'"]');
-    if(target)target.classList.add('active');
-    var area=demo.querySelector('.explain-area');
-    area.innerHTML='<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
-  }
-  if(!window.playFormula){
-    window.playFormula=function(demoId){
-      var s=steps[demoId];if(!s)return;
-      s.forEach(function(item,i){setTimeout(function(){showStep(demoId,item.step)},i*2000)});
-    };
-    document.querySelectorAll('.formula-demo .fp').forEach(function(el){
-      el.addEventListener('click',function(){
-        var demo=el.closest('.formula-demo');
-        var demoId=demo.id.replace('Demo','');
-        showStep(demoId,parseInt(el.dataset.step));
-      });
-    });
-  } else {
-    steps.filter&&(window._formulaSteps=window._formulaSteps||{});
-    window._formulaSteps=Object.assign(window._formulaSteps||{},{filter:steps.filter});
-  }
-})();
-</script>
-
-<h2>溢出範圍 #</h2>
-<p>動態函數的結果會「溢出」到下方儲存格。寫 D2# 表示「從 D2 開始的整個溢出範圍」。</p>
-<p style="color:var(--muted);font-size:14px;margin:8px 0">你只在 D2 輸入一個公式，Excel 自動填滿 D3~D5：</p>
-<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:12px 0">
-  <div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">輸入前（只有名單）</div>
-    <div class="excel-grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="cell header">A</div><div class="cell header">D</div>
-      <div class="cell">小明</div><div class="cell" style="color:var(--muted);font-style:italic">（空白）</div>
-      <div class="cell">小華</div><div class="cell"></div>
-      <div class="cell">小明</div><div class="cell"></div>
-      <div class="cell">小李</div><div class="cell"></div>
-    </div>
-  </div>
-  <div style="font-size:24px;color:var(--accent)">→</div>
-  <div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">D2 輸入 =UNIQUE(A2:A5) 後</div>
-    <div class="excel-grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="cell header">A</div><div class="cell header">D（溢出）</div>
-      <div class="cell">小明</div><div class="cell highlight">小明　← 你輸入這格</div>
-      <div class="cell">小華</div><div class="cell result">小華　← 自動溢出</div>
-      <div class="cell">小明</div><div class="cell result">小李　← 自動溢出</div>
-      <div class="cell">小李</div><div class="cell"></div>
-    </div>
-  </div>
-</div>
-<h2>SUMPRODUCT（老牌動態）</h2><pre><code class="lang-excel"># 沒有動態陣列也能玩
-=SUMPRODUCT((A:A=&quot;電子&quot;)*(B:B&gt;1000)*C:C)
-# → 電子部且金額&gt;1000 的加總</code></pre>
-<div class="callout"><strong>⚠️ 注意</strong>FILTER/SORT/UNIQUE 只在 Microsoft 365 / Excel 2021 以後才有。給舊版用會 #NAME?。</div>
+# 引用從 D2 開始的整個動態結果
+=COUNTA(D2#)</code></pre>
+<h2>實戰流程：從原始表到自動清單</h2><p>職場最常見的做法不是把每個函數分開炫技，而是用一條公式把「篩選 → 排序 → 輸出」串起來。例如主管要看業務部績效 90 分以上的人，你可以用 FILTER 先挑列，再用 SORT 依績效排序。</p><pre><code class="lang-excel">=SORT(
+  FILTER(A2:E100, (B2:B100=&quot;業務&quot;)*(E2:E100&gt;=90), &quot;查無資料&quot;),
+  5,
+  -1
+)</code></pre>
+<h2>最常見的 3 個錯誤</h2>
+<h3>#SPILL!：結果要展開，但旁邊被擋住</h3><p>動態陣列會往下或往右溢出。若輸出範圍裡有任何內容，Excel 會顯示 #SPILL!。先清空輸出區，再讓公式自己展開。</p>
+<h3>#CALC!：FILTER 找不到資料</h3><p>FILTER 沒有符合結果、又沒寫第 3 參數時，會顯示 #CALC!。交付報表請加上「查無資料」這類可讀訊息。</p>
+<h3>#NAME?：版本不支援</h3><p>FILTER、SORT、UNIQUE 主要支援 Microsoft 365 / Excel 2021 以後版本。給舊版使用者前，請先確認環境或準備 Power Query、樞紐分析等替代方案。</p>
+<h2>SUMPRODUCT 還需要學嗎？</h2><p>需要。SUMPRODUCT 是舊版 Excel 也能使用的「條件陣列」思路，適合做條件加總或加權平均；但如果你要輸出整片明細清單，動態陣列會更直覺。</p><pre><code class="lang-excel"># 舊版也可用：電子部且金額 &gt; 1000 的加總
+=SUMPRODUCT((A:A=&quot;電子&quot;)*(B:B&gt;1000)*C:C)</code></pre>
+<div class="callout"><strong>⚠️ 交付提醒</strong>原始資料建議放在 Table，動態陣列公式寫在表格外；不要把會溢出的公式塞進 Table 內部，否則很容易和表格自動擴張互相打架。</div>
 <h2>⌨️ 本課常用快捷鍵</h2>
 <div class="mac-kb" data-shortcuts='[{"keys": "cmd,shift,enter", "label": "⌘ ⇧ ↩ · 確認陣列公式"}, {"keys": "cmd,shift,l", "label": "⌘ ⇧ L · 篩選 (FILTER)"}, {"keys": "cmd,t", "label": "⌘ T · 絕對參照"}, {"keys": "cmd,enter", "label": "⌘ ↩ · 動態陣列填入"}]'></div>
 <script src="../keyboard.js"></script>
@@ -140,7 +72,7 @@
 </div>
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 FILTER</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">寫一個 UNIQUE</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 SORT 排序</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道溢出範圍 # 是什麼</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用 FILTER 篩出符合條件的列</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">會組合 FILTER + SORT / UNIQUE</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 D2# 溢出範圍怎麼引用</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">能處理 #SPILL! / 空結果 / 版本相容</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>

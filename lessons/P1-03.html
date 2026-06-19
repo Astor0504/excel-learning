@@ -2,14 +2,14 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>條件判斷｜Excel 學習地圖</title>
-<meta name="description" content="IF / IFS / SWITCH：Excel 的條件邏輯，學會這課才能寫複雜判斷">
+<meta name="description" content="IF / IFS / AND / OR / SWITCH：Excel 的條件邏輯，學會這課才能寫複雜判斷">
 <meta property="og:type" content="article">
 <meta property="og:title" content="條件判斷｜Excel 學習地圖">
-<meta property="og:description" content="IF / IFS / SWITCH：Excel 的條件邏輯，學會這課才能寫複雜判斷">
+<meta property="og:description" content="IF / IFS / AND / OR / SWITCH：Excel 的條件邏輯，學會這課才能寫複雜判斷">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
-<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-03">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-03" data-default-tab="study">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -29,77 +29,33 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">IF 是 Excel 的「if 陳述式」，會了它才能寫條件邏輯</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">從這課開始 Excel 變成「會思考」的工具。IF 加上 AND/OR 幾乎可以表達所有判斷。</p><h2>語法</h2><pre><code class="lang-excel">=IF(條件, 條件成立的值, 條件不成立的值)
-
-# 範例：成績及格判斷
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">從這課開始，Excel 不只是算數字，而是會根據條件給出不同結果。先分清楚你要判斷的是一件事、多個門檻、多個條件，還是固定值對應。</p><h2>先分 4 種判斷</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先問判斷型態，再選函數</caption><thead><tr><th>你想判斷什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>一個條件成立或不成立</td><td>IF</td><td>最基本的「如果...否則...」</td></tr><tr><td>同一欄有多個門檻</td><td>IFS</td><td>由左到右檢查，一命中就停止</td></tr><tr><td>多個條件要一起看</td><td>AND / OR</td><td>AND 是全部成立；OR 是任一成立</td></tr><tr><td>固定值對應固定結果</td><td>SWITCH</td><td>部門代碼、狀態代碼、月份代碼這類很適合</td></tr></tbody></table>
+<h2>語法起手式</h2><pre><code class="lang-excel"># 單一條件：成績及格判斷
 =IF(B2&gt;=60, &quot;及格&quot;, &quot;不及格&quot;)
 
-# 多重條件：用 IFS（比巢狀 IF 好讀）
+# 多個門檻：績效等第
 =IFS(B2&gt;=90, &quot;A&quot;, B2&gt;=80, &quot;B&quot;, B2&gt;=70, &quot;C&quot;, TRUE, &quot;F&quot;)
 
-# 複合條件：AND / OR
+# 複合條件：AND / OR 通常包在 IF 裡
 =IF(AND(B2&gt;=60, C2&gt;=60), &quot;兩科都過&quot;, &quot;補考&quot;)
-=IF(OR(D2=&quot;VIP&quot;, E2&gt;10000), &quot;享折扣&quot;, &quot;原價&quot;)</code></pre>
-<h2>IF 決策流程動畫</h2>
-<div class="formula-demo" id="ifDemo">
-  <div class="formula-title">點「播放」看分數如何變成等第（走訪順序：由左到右）</div>
-  <div class="formula-bar">=IFS(<span class="fp c1" data-step="1">B2&gt;=90,"A"</span>, <span class="fp c2" data-step="2">B2&gt;=80,"B"</span>, <span class="fp c3" data-step="3">B2&gt;=70,"C"</span>, <span class="fp c4" data-step="4">TRUE,"F"</span>)</div>
-  <div class="explain-area" id="ifExplain">
-    <div style="color:var(--muted);font-size:14px">點擊任何條件，或按下方「播放」按鈕看 85 分的判斷流程</div>
-  </div>
-  <button class="play-btn" onclick="playFormula('if')">▶ 播放 85 分的判斷流程</button>
-</div>
+=IF(OR(D2=&quot;VIP&quot;, E2&gt;10000), &quot;享折扣&quot;, &quot;原價&quot;)
 
-<div class="excel-grid" id="ifGrid" style="grid-template-columns:repeat(2,1fr);max-width:320px">
-  <div class="cell header">分數</div><div class="cell header">等第</div>
-  <div class="cell highlight">85</div><div class="cell result" id="ifResult">B</div>
-</div>
-<p style="font-size:13px;color:var(--muted);margin-top:4px">IFS 會「由左到右」檢查條件，一找到 TRUE 就回傳，不繼續看後面。</p>
-
-<script>
-(function(){
-  var steps = {
-    if: [
-      {step:1,cls:'c1',label:'條件 1：≥ 90 嗎？',text:'85 &gt;= 90 → FALSE。往下一個條件。'},
-      {step:2,cls:'c2',label:'條件 2：≥ 80 嗎？',text:'85 &gt;= 80 → TRUE！回傳 "B"，後面的條件不會再看。'},
-      {step:3,cls:'c3',label:'條件 3：≥ 70 嗎？',text:'（跳過：前面已經命中）IFS 不像 IF，一命中就結束。'},
-      {step:4,cls:'c4',label:'兜底：TRUE',text:'最後一條 TRUE 等於 else，前面都沒中才會進來。常填「F」或「其他」。'}
-    ]
-  };
-  function showStep(demoId,stepNum){
-    var demo = document.getElementById(demoId+'Demo');
-    if(!demo) return;
-    var info = steps[demoId].find(function(s){return s.step===stepNum});
-    if(!info) return;
-    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
-    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
-    if(target) target.classList.add('active');
-    var area = demo.querySelector('.explain-area');
-    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
-  }
-  window.playFormula = function(demoId){
-    var s = steps[demoId];
-    if(!s) return;
-    s.forEach(function(item,i){
-      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
-    });
-  };
-  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
-    el.addEventListener('click',function(){
-      var demo = el.closest('.formula-demo');
-      var demoId = demo.id.replace('Demo','');
-      showStep(demoId, parseInt(el.dataset.step));
-    });
-  });
-})();
-</script>
-
-<h2>巢狀 IF vs IFS</h2><p>舊寫法 =IF(A&gt;90,&quot;A&quot;,IF(A&gt;80,&quot;B&quot;,IF(A&gt;70,&quot;C&quot;,&quot;F&quot;))) → 括號地獄。新版直接用 IFS 一行搞定，最後一個 TRUE 當 else。</p>
-<h2>小技巧</h2><p>MOD(A2, 2)=0 可以判斷偶數。配合 IF 可以做「奇數列上色」之類的判斷。</p>
+# 固定值對應：用 SWITCH 取代一串等於判斷
+=SWITCH(B2, &quot;業務&quot;, &quot;Sales&quot;, &quot;財務&quot;, &quot;Finance&quot;, &quot;資訊&quot;, &quot;IT&quot;, &quot;其他&quot;)</code></pre>
+<h2>3 個最容易搞混的地方</h2>
+<h3>IF 不是拿來做整張報表彙總</h3><p>IF 適合判斷每一列該顯示什麼結果。若你想問「業務部總業績是多少」，那是下一課的 SUMIFS / COUNTIFS 場景。</p>
+<h3>IFS 會由左到右，一命中就停止</h3><p>門檻要由高到低寫。若你先寫 B2&gt;=70，再寫 B2&gt;=90，90 分也會先被判成 C，後面的 A 永遠輪不到。</p>
+<h3>SWITCH 適合值對應，不適合範圍門檻</h3><p>如果是「部門=業務 → Sales」這種固定對照，用 SWITCH 很乾淨；如果是「分數大於 90」這種範圍判斷，用 IFS 比較自然。</p>
+<h2>實戰範例：同一張員工表練熟的判斷</h2><pre><code class="lang-excel"># D欄=績效分數，E欄=出勤天數，B欄=部門
+=IF(D2&gt;=80, &quot;優良&quot;, &quot;待改善&quot;)
+=IFS(D2&gt;=90, &quot;A&quot;, D2&gt;=75, &quot;B&quot;, TRUE, &quot;C&quot;)
+=IF(AND(E2&gt;=22, D2&gt;=80), &quot;模範&quot;, &quot;一般&quot;)
+=IF(OR(B2=&quot;業務&quot;, D2&gt;=90), &quot;重點關注&quot;, &quot;一般&quot;)
+=SWITCH(B2, &quot;業務&quot;, &quot;Sales&quot;, &quot;財務&quot;, &quot;Finance&quot;, &quot;資訊&quot;, &quot;IT&quot;, &quot;其他&quot;)</code></pre>
 
 <div class="wps-callout">
 <span class="wps-label">WPS Office</span>
-<strong>IF / IFS / AND / OR 相容性</strong>
+<strong>IF / IFS / AND / OR / SWITCH 相容性</strong>
 <ul style="margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.8">
 <li>IF、IFS、AND、OR 語法與 Excel 完全相同，可直接複製使用</li>
 <li>IFS 在 WPS 2019 以後支援；舊版請改用巢狀 IF</li>
@@ -108,7 +64,7 @@
 </div>
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 IF 判斷及格</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 IFS 寫等第</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 AND 寫雙條件 IF</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 IFS 的 TRUE 是什麼</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 IF 判斷及格</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 IFS 寫等第，並知道 TRUE 是兜底</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">用 AND / OR 寫複合條件</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">用 SWITCH 做固定值對應</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>

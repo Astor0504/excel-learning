@@ -14,7 +14,8 @@
     lesson.setAttribute('data-tabs-initialized', '1');
 
     var slug = document.body.getAttribute('data-lesson-slug') || 'default';
-    var KEY = 'lesson-tab-' + slug;
+    var variant = document.body.getAttribute('data-lesson-variant') || '';
+    var KEY = 'lesson-tab-' + slug + (variant ? ':' + variant : '');
     try { sessionStorage.setItem('last-lesson', slug); } catch(e){}
 
     // 1. 蒐集 tab 內容
@@ -30,7 +31,6 @@
       if (n.classList && n.classList.contains('xc-section')) return;
       studyNodes.push(n);
     });
-    var variant = document.body.getAttribute('data-lesson-variant') || '';
     var prefersStudy = variant !== 'command' && (
       studyNodes.length >= 3 ||
       studyNodes.some(function(n){

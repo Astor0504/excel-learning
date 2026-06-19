@@ -2,14 +2,14 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>基礎函式｜Excel 學習地圖</title>
-<meta name="description" content="7 個最常用的統計函數（SUM/AVERAGE/COUNT/MAX/MIN/LARGE/SMALL），幾乎所有報表都從這裡開始">
+<meta name="description" content="SUM、AVERAGE、COUNT/COUNTA、MEDIAN、LARGE/SMALL：先分清總和、平均、筆數與名次，所有報表都從這裡開始">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基礎函式｜Excel 學習地圖">
-<meta property="og:description" content="7 個最常用的統計函數（SUM/AVERAGE/COUNT/MAX/MIN/LARGE/SMALL），幾乎所有報表都從這裡開始">
+<meta property="og:description" content="SUM、AVERAGE、COUNT/COUNTA、MEDIAN、LARGE/SMALL：先分清總和、平均、筆數與名次，所有報表都從這裡開始">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
-<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-02">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P1-02" data-default-tab="study">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -25,75 +25,27 @@
     <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-02 · Phase 1 · 操作效率</div>
     <h1>基礎函式</h1>
     <div class="progress"><span></span></div>
-    <div class="progress-label">本課進度 0 / 3</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">7 個最常用的統計函數，幾乎所有報表都從這裡開始</p></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">先分清總和、平均、筆數與名次，基礎函式才不會選錯</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——背熟這幾個，才有資格往後學進階函數。</p><h2>基礎函數速覽</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">7 大基礎函數速查</caption><thead><tr><th>函數</th><th>用途</th><th>範例</th></tr></thead><tbody><tr><td>SUM</td><td>加總</td><td>=SUM(A2:A100)</td></tr><tr><td>AVERAGE</td><td>平均</td><td>=AVERAGE(B2:B100)</td></tr><tr><td>COUNT</td><td>計算數字個數</td><td>=COUNT(C2:C100)</td></tr><tr><td>COUNTA</td><td>計算非空個數（含文字）</td><td>=COUNTA(D2:D100)</td></tr><tr><td>MAX / MIN</td><td>最大 / 最小</td><td>=MAX(E2:E100)</td></tr><tr><td>MEDIAN</td><td>中位數</td><td>=MEDIAN(F2:F100)</td></tr><tr><td>LARGE / SMALL</td><td>第 N 大 / 小</td><td>=LARGE(G2:G100, 3) → 第 3 大</td></tr></tbody></table>
-<h2>LARGE 公式拆解動畫</h2>
-<div class="formula-demo" id="largeDemo">
-  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
-  <div class="formula-bar">=LARGE(<span class="fp c1" data-step="1">B2:B6</span>, <span class="fp c2" data-step="2">3</span>)</div>
-  <div class="explain-area" id="largeExplain">
-    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
-  </div>
-  <button class="play-btn" onclick="playFormula('large')">▶ 播放逐步解說</button>
-</div>
-
-<div class="excel-grid" id="largeGrid" style="grid-template-columns:repeat(2,1fr);max-width:360px">
-  <div class="cell header">業務員</div><div class="cell header">業績</div>
-  <div class="cell">王小明</div><div class="cell" data-val="1">120000</div>
-  <div class="cell">林美玲</div><div class="cell" data-val="2">85000</div>
-  <div class="cell">張志偉</div><div class="cell result" data-val="3">95000</div>
-  <div class="cell">陳雅婷</div><div class="cell" data-val="4">150000</div>
-  <div class="cell">李大華</div><div class="cell" data-val="5">72000</div>
-</div>
-<p style="font-size:13px;color:var(--muted);margin-top:4px">排序後：150000 &gt; 120000 &gt; <b style="color:#4ade80">95000（第 3 大）</b> &gt; 85000 &gt; 72000</p>
-
-<script>
-(function(){
-  var steps = {
-    large: [
-      {step:1,cls:'c1',label:'參數 1：資料範圍',text:'B2:B6 = 要找前 N 大的資料範圍。範圍內的文字/空白會被忽略。'},
-      {step:2,cls:'c2',label:'參數 2：第幾大',text:'3 = 要第 3 大的值。改成 1 就是最大、改成 2 就是第 2 大。要找前 5 名就從 1 跑到 5。'}
-    ]
-  };
-  function showStep(demoId,stepNum){
-    var demo = document.getElementById(demoId+'Demo');
-    if(!demo) return;
-    var info = steps[demoId].find(function(s){return s.step===stepNum});
-    if(!info) return;
-    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
-    var target = demo.querySelector('.fp[data-step="'+stepNum+'"]');
-    if(target) target.classList.add('active');
-    var area = demo.querySelector('.explain-area');
-    area.innerHTML = '<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
-  }
-  window.playFormula = function(demoId){
-    var s = steps[demoId];
-    if(!s) return;
-    s.forEach(function(item,i){
-      setTimeout(function(){showStep(demoId,item.step)}, i*2000);
-    });
-  };
-  document.querySelectorAll('.formula-demo .fp').forEach(function(el){
-    el.addEventListener('click',function(){
-      var demo = el.closest('.formula-demo');
-      var demoId = demo.id.replace('Demo','');
-      showStep(demoId, parseInt(el.dataset.step));
-    });
-  });
-})();
-</script>
-
-<h2>實戰範例</h2><pre><code class="lang-excel"># 業績統計（A欄=業務員，B欄=金額）
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——不是先背公式名字，而是先分清楚你到底在問總和、平均、筆數，還是名次。</p><h2>先分 5 種問題</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先問問題，再選函數</caption><thead><tr><th>你想知道什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>全部加起來</td><td>SUM</td><td>只加數字，文字與空白會忽略</td></tr><tr><td>平均值</td><td>AVERAGE</td><td>空白與文字忽略，但 0 會算進去</td></tr><tr><td>有幾個數字 / 有幾格有內容</td><td>COUNT / COUNTA</td><td>COUNT 只數數字；COUNTA 數所有非空白</td></tr><tr><td>最大最小 / 第 N 大小</td><td>MAX / MIN / LARGE / SMALL</td><td>問名次就用 LARGE / SMALL，不要只用 MAX / MIN</td></tr><tr><td>典型水準，不想被極端值帶歪</td><td>MEDIAN</td><td>薪資、房價、獎金這類偏態資料很常更適合用中位數</td></tr></tbody></table>
+<h2>3 個最容易搞混的地方</h2>
+<h3>COUNT 跟 COUNTA 差在哪？</h3>
+<p>COUNT 只會理會「數字」；COUNTA 則是只要不是空白就算進去，包含文字、日期、0、公式回傳的內容。你如果在算「有幾筆業績金額」，通常用 COUNT；如果在算「有幾位員工有填資料」，通常用 COUNTA。</p>
+<h3>AVERAGE 怎麼看 0、空白、文字？</h3>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">AVERAGE / COUNT / COUNTA 的處理差異</caption><thead><tr><th>儲存格內容</th><th>COUNT</th><th>COUNTA</th><th>AVERAGE</th></tr></thead><tbody><tr><td>120000</td><td>算</td><td>算</td><td>算</td></tr><tr><td>0</td><td>算</td><td>算</td><td>算</td></tr><tr><td>空白</td><td>不算</td><td>不算</td><td>不算</td></tr><tr><td>文字「待補」</td><td>不算</td><td>算</td><td>不算</td></tr></tbody></table>
+<p>所以如果資料是 120000、0、空白、待補、95000，AVERAGE 會用 <code>(120000 + 0 + 95000) ÷ 3</code>。0 不是空白，它會真的把平均拉低。</p>
+<h3>MAX / MIN 跟 LARGE / SMALL 怎麼分工？</h3>
+<p>MAX / MIN 只回答「最大值」和「最小值」；LARGE / SMALL 回答的是「第幾名」。問「最高業績多少」用 MAX，問「第 3 名業績多少」才用 LARGE。倒數第 2 名、倒數第 3 名，就換 SMALL。</p>
+<h2>實戰範例：同一張業績表能練熟的基本動作</h2><pre><code class="lang-excel"># 業績統計（A欄=業務員，B欄=金額）
 =SUM(B:B)              # 全部業績
 =AVERAGE(B2:B100)      # 平均單筆
 =COUNT(B:B)            # 有幾筆業績
 =COUNTA(A:A) - 1       # 業務員人數（扣標題）
-=LARGE(B:B, 1)         # 最高一筆
+=MAX(B:B)              # 最高一筆
 =LARGE(B:B, 3)         # 第 3 高（找前三名）</code></pre>
-<div class="callout"><strong>⚠️ 注意</strong>COUNT 只算「數字」，文字會被忽略！要算筆數請用 COUNTA。AVERAGE 會自動忽略空白和文字，但會把 0 算進去。</div>
+<div class="callout"><strong>⚠️ 本課真正要記住</strong>先問自己：你要的是總和、平均、筆數、還是名次？這個問題問對了，函數就不容易選錯。平均值怪怪的時，第一件事先檢查資料裡是不是有 0、空白或文字。</div>
 <h2>⌨️ 本課常用快捷鍵</h2>
 <div class="mac-kb" data-shortcuts='[{"keys": "cmd,shift,t", "label": "⌘ ⇧ T · 自動加總 SUM"}, {"keys": "=", "label": "= · 開始輸入公式"}, {"keys": "cmd,enter", "label": "⌘ ↩ · 多格同時輸入"}, {"keys": "ctrl,d", "label": "⌃ D · 填滿向下"}]'></div>
 <script src="../keyboard.js"></script>
@@ -110,7 +62,7 @@
 </div>
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">分清楚 COUNT vs COUNTA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 LARGE 找前 3 名</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 AVERAGE 怎麼處理 0 跟空白</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">分清楚 COUNT 跟 COUNTA</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">知道 AVERAGE 怎麼處理 0、空白、文字</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">分得清 MAX / MIN 與 LARGE / SMALL 何時用</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 MEDIAN 何時比 AVERAGE 更適合</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>

@@ -2,10 +2,10 @@
 <html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>綜合挑戰｜Excel 學習地圖</title>
-<meta name="description" content="綜合挑戰：跨章節整合題目練習，驗收 Excel 學習地圖 21 課的學習成果">
+<meta name="description" content="綜合挑戰：先選工具，再整合公式、樞紐、Power Query、資料模型與 VBA，驗收 Excel 學習地圖 21 課成果">
 <meta property="og:type" content="article">
 <meta property="og:title" content="綜合挑戰｜Excel 學習地圖">
-<meta property="og:description" content="綜合挑戰：跨章節整合題目練習，驗收 Excel 學習地圖 21 課的學習成果">
+<meta property="og:description" content="綜合挑戰：先選工具，再整合公式、樞紐、Power Query、資料模型與 VBA，驗收 Excel 學習地圖 21 課成果">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
@@ -26,7 +26,7 @@
     <h1>綜合挑戰</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">綜合挑戰：跨章節整合題目練習</p></div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">綜合挑戰真正驗收的是：能不能先選對工具，再把公式、樞紐、Power Query 與 VBA 串成可交付流程</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">把學過的全部用上。這些題目模擬真實工作場景——但每題開始前，請先回答一個問題：<strong>「這題我該用哪種工具？」</strong>能選對工具再動手，才是這課真正要驗收的能力。</p>
@@ -40,6 +40,10 @@
   <li><strong>Data Model / Power BI</strong>：多表關聯、量值治理、跨部門指標——Mac 上考慮跨 Windows 或 Power BI</li>
 </ul>
 </div>
+
+<h2>本課驗收方式</h2>
+<p>每題不要一看到資料就立刻寫公式。請先用 30 秒判斷：這是「算一欄」、「查一個值」、「彙總很多筆」、「重複清很多檔」、「輸出交付流程」中的哪一種問題。選對工具後，再開始做；做完要能說明你的選擇。</p>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">工具選擇驗收表</caption><thead><tr><th>如果題目主要在問</th><th>優先工具</th><th>為什麼</th></tr></thead><tbody><tr><td>每列判斷、條件統計、查找欄位</td><td>公式</td><td>反應快、可直接放在報表欄位中</td></tr><tr><td>大量明細要彙總成部門/月報</td><td>樞紐分析表</td><td>比堆公式更快，也更適合切片觀察</td></tr><tr><td>每月多檔 CSV 都要合併清理</td><td>Power Query</td><td>流程可以重新整理，不靠手動重做</td></tr><tr><td>多張維度表要關聯並治理指標</td><td>資料模型</td><td>用關聯與量值管理跨表分析邏輯</td></tr><tr><td>刷新、檢查、匯出、整理檔案</td><td>VBA</td><td>適合把已經穩定的流程按鈕化交付</td></tr></tbody></table>
 
 <h2>挑戰 1：年資與獎金</h2>
 <p><strong>先選工具：</strong>這是公式題。日期計算用 DATEDIF，條件判斷用 IFS，條件彙總用 SUMIFS。</p>

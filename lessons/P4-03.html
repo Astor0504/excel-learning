@@ -29,14 +29,22 @@
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">假設分析：給結果，反推輸入</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">「我想要利潤 100 萬，售價該訂多少？」這種問題就是假設分析的舞台。</p><h2>4 種工具</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">假設分析四大工具比較</caption><thead><tr><th>工具</th><th>適合</th></tr></thead><tbody><tr><td>目標搜尋（Goal Seek）</td><td>只有 1 個變數要求解</td></tr><tr><td>模擬分析表（Data Table）</td><td>看 1~2 個變數變化的結果矩陣</td></tr><tr><td>分析藍本（Scenario Manager）</td><td>比較幾個情境（樂觀/悲觀/正常）</td></tr><tr><td>規劃求解（Solver）</td><td>多變數+條件約束的最佳化</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">假設分析專門處理「如果...會怎樣？」和「我想達成某結果，輸入該是多少？」這兩類問題。先分清楚變數數量與問題型態，就能選對工具。</p><h2>4 種工具</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">假設分析四大工具比較</caption><thead><tr><th>工具</th><th>適合</th><th>典型問題</th></tr></thead><tbody><tr><td>目標搜尋（Goal Seek）</td><td>只有 1 個變數要求解</td><td>利潤要 100 萬，售價多少？</td></tr><tr><td>模擬分析表（Data Table）</td><td>看 1~2 個變數變化的結果矩陣</td><td>售價與銷量不同時，利潤如何變？</td></tr><tr><td>分析藍本（Scenario Manager）</td><td>比較少數幾組情境</td><td>樂觀/正常/悲觀三種預算</td></tr><tr><td>規劃求解（Solver）</td><td>多變數+條件約束的最佳化</td><td>產能有限時，產品組合怎麼排？</td></tr></tbody></table>
 <h2>該用哪個工具？（決策樹）</h2>
 <img class="diagram-light" src="img/goal-seek-decision.svg" alt="假設分析工具選擇決策樹" style="max-width:100%;margin:12px 0;border-radius:12px">
 <img class="diagram-dark" src="img/goal-seek-decision.dark.svg" alt="假設分析工具選擇決策樹" style="max-width:100%;margin:12px 0;border-radius:12px">
 <style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
 
-<h2>目標搜尋範例</h2><p>資料 → 模擬分析 → 目標搜尋。「將儲存格 B5（總利潤）設為 1000000，藉由變更儲存格 B2（售價）」→ Excel 會自動算出 B2 該是多少。</p>
-<h2>規劃求解（Solver）</h2><p>macOS 要先到「工具 → Excel 增益集 → Solver」啟用。可以設目標、可變儲存格、限制式。適合做產能規劃、運送路線等最佳化問題。</p>
+<h2>目標搜尋：反推單一輸入</h2><p>先建立公式，例如 <code>利潤=(售價-成本)*銷量</code>。接著到資料 → 模擬分析 → 目標搜尋：「將儲存格 B5（利潤）設為 1000000，藉由變更儲存格 B2（售價）」→ Excel 會反覆試算，直到 B5 接近目標值。</p>
+<h2>資料表：一次看敏感度</h2><p>如果不是要反推答案，而是想看「售價從 120 到 180 時利潤怎麼變」，用資料表更適合。單變數資料表看一排或一欄變化；雙變數資料表可以同時看售價與銷量，做成利潤矩陣。</p>
+<h2>分析藍本與 Solver 的邊界</h2><p>分析藍本適合少數人工定義的情境，例如樂觀、正常、悲觀；Solver 則是最佳化工具，能在多個限制式下找最大利潤、最低成本或指定目標。macOS 要先到「工具 → Excel 增益集 → Solver」啟用。</p>
+<h2>先把模型建乾淨</h2>
+<p>假設分析不是魔法，它只是在你已經寫好的模型上反覆試算。正式做之前，請把輸入、計算、輸出分開：輸入區放售價、成本、銷量、折扣；計算區寫毛利、稅費、固定成本；輸出區只放最後要觀察的利潤或現金流。這樣目標搜尋和 Solver 才知道要改哪個格子、觀察哪個結果。</p>
+<h2>工具邊界速查</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先看問題型態，再選工具</caption><thead><tr><th>問題型態</th><th>優先工具</th><th>不要硬用</th></tr></thead><tbody><tr><td>我知道目標結果，只有一個輸入要反推</td><td>目標搜尋</td><td>不要用 Solver 把簡單問題變複雜</td></tr><tr><td>我想看一個或兩個變數變化的結果</td><td>資料表</td><td>不要手動改 20 次再複製貼上</td></tr><tr><td>我要比較幾套已知假設</td><td>分析藍本</td><td>不要用一堆複製工作表管理情境</td></tr><tr><td>我要在限制條件下找最佳解</td><td>Solver</td><td>不要期待 Goal Seek 解多變數最佳化</td></tr></tbody></table>
+<h2>交付前檢查</h2>
+<p>做完假設分析後，不只要看 Excel 給的答案，也要檢查答案是否合理。售價反推出來如果低於成本、銷量變化不符合市場常識，代表模型假設可能錯了。請把「使用的假設值、限制條件、最後輸出」放在同一區，讓主管或同事能追溯這個答案從哪裡來。</p>
+<div class="callout"><strong>⚠️ 注意</strong>Goal Seek 和 Solver 都依賴你原本的公式模型。如果成本、稅率、銷量假設寫錯，工具會很認真地算出錯答案；先檢查公式，再做反推。</div>
 
 
     </article>

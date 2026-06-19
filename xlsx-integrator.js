@@ -519,7 +519,11 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
 
   function buildDemoPanel(panel){
     if (panel.type === 'sheet') return buildSheetPanel(panel);
-    var card = el('div',{class:'xc-demo-panel'});
+    var panelClass = 'xc-demo-panel';
+    if ((panel.columns || []).some(function(col){ return /前|後|Before|After/i.test(String(col)); })) {
+      panelClass += ' is-before-after';
+    }
+    var card = el('div',{class:panelClass});
     if (panel.title) card.appendChild(el('div',{class:'xc-demo-panel-title',text:panel.title}));
     if (panel.columns && panel.rows){
       var tableWrap = el('div',{class:'xc-demo-mini'});
@@ -569,15 +573,67 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
 
     shell.appendChild(table);
 
+    var legend = el('div',{class:'xc-demo-board-legend'},[
+      el('span',{class:'is-candidate',text:'候選'}),
+      el('span',{class:'is-match',text:'命中'}),
+      el('span',{class:'is-exclude',text:'排除'}),
+      el('span',{class:'is-result',text:'結果'})
+    ]);
+    shell.appendChild(legend);
+
     function setStep(stepNum){
+      var counts = { focus:0, candidate:0, match:0, exclude:0, result:0 };
       refs.forEach(function(ref){
-        ref.node.classList.remove('is-focus','is-match','is-result');
+        ref.node.classList.remove('is-focus','is-match','is-result','is-candidate','is-exclude');
         var mark = ref.marks[String(stepNum)] || ref.marks[stepNum];
-        if (mark) ref.node.classList.add('is-' + mark);
+        if (mark) {
+          ref.node.classList.add('is-' + mark);
+          if (counts[mark] != null) counts[mark] += 1;
+        }
       });
+      shell.setAttribute('data-active-step', String(stepNum));
+      return counts;
     }
 
     return { node: shell, setStep: setStep };
+  }
+
+  function createResultCard(demo, type){
+    var card = el('div',{class:'xc-demo-result-card'});
+    var label = el('div',{class:'xc-demo-result-label',text:type === 'workflow' ? '流程結果' : '本步結果'});
+    var title = el('div',{class:'xc-demo-result-title',text:demo.resultTitle || demo.outcome || '跟著步驟看結果如何形成'});
+    var meta = el('div',{class:'xc-demo-result-meta'});
+    var chips = el('div',{class:'xc-demo-result-chips'});
+    card.appendChild(label);
+    card.appendChild(title);
+    card.appendChild(meta);
+    card.appendChild(chips);
+
+    function setChips(items){
+      clearNode(chips);
+      (items || []).filter(Boolean).forEach(function(item){
+        chips.appendChild(el('span',{class:item.className || '',text:item.text || ''}));
+      });
+    }
+
+    return {
+      node: card,
+      update: function(step, idx, counts){
+        title.textContent = (step && (step.result || step.caption || step.label)) || demo.outcome || title.textContent;
+        meta.textContent = '正在看第 ' + (idx + 1) + ' 步' + (step && step.label ? ' · ' + step.label : '');
+        if (counts) {
+          setChips([
+            counts.candidate ? { className:'is-candidate', text:'候選 ' + counts.candidate } : null,
+            counts.match ? { className:'is-match', text:'命中 ' + counts.match } : null,
+            counts.exclude ? { className:'is-exclude', text:'排除 ' + counts.exclude } : null,
+            counts.result ? { className:'is-result', text:'結果 ' + counts.result } : null
+          ]);
+        } else if (type === 'workflow' && step && step.stage) {
+          setChips([{ className:'is-stage', text:'階段 ' + step.stage }]);
+        }
+        forceSwap(card);
+      }
+    };
   }
 
   function createDemoControls(totalSteps, onChange){
@@ -669,12 +725,15 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       var cls = 'xc-demo-part';
       if (part.tone) cls += ' ' + part.tone;
       if (!part.step) cls += ' is-passive';
+      var relatedStep = part.step ? (demo.steps || [])[part.step - 1] : null;
       var btn = el('button',{
         class:cls,
         type:'button',
         text:part.text || '',
-        'data-step': part.step || ''
+        'data-step': part.step || '',
+        title: relatedStep ? relatedStep.label || relatedStep.caption || '切到對應步驟' : ''
       });
+      if (relatedStep) btn.setAttribute('aria-label', (part.text || '') + '：' + (relatedStep.label || '切到對應步驟'));
       if (!part.step) btn.disabled = true;
       formulaBar.appendChild(btn);
       partButtons.push(btn);
@@ -692,8 +751,9 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     });
 
     var boardView = createBoardView(demo.board || {});
+    var resultCard = createResultCard(demo, 'formula');
     var rightRail = el('div',{class:'xc-demo-side'},[
-      demo.outcome ? el('div',{class:'xc-demo-outcome',text:demo.outcome}) : null,
+      resultCard.node,
       boardView.node
     ].filter(Boolean));
 
@@ -735,7 +795,8 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       summaryTitle.textContent = step.label || '';
       summaryText.textContent = step.text || '';
       summaryCaption.textContent = step.caption || '';
-      boardView.setStep(idx + 1);
+      var counts = boardView.setStep(idx + 1);
+      resultCard.update(step, idx, counts);
       forceSwap(summary);
       if (idx === (demo.steps || []).length - 1) api.stop();
     });
@@ -769,6 +830,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     var bodyTitle = el('div',{class:'xc-demo-summary-title'});
     var bodyText = el('div',{class:'xc-demo-summary-text'});
     var bodyCaption = el('div',{class:'xc-demo-summary-caption'});
+    var resultCard = createResultCard(demo, 'workflow');
     var bodyBox = el('div',{class:'xc-demo-summary','aria-live':'polite'},[
       el('div',{class:'xc-demo-step-label'}),
       bodyTitle,
@@ -785,7 +847,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
         panelHost
       ]),
       demo.outcome ? el('aside',{class:'xc-demo-side'},[
-        el('div',{class:'xc-demo-outcome',text:demo.outcome})
+        resultCard.node
       ]) : null
     ].filter(Boolean));
 
@@ -820,6 +882,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
       (step.panels || []).forEach(function(panel){
         panelHost.appendChild(buildDemoPanel(panel));
       });
+      resultCard.update(step, idx);
       forceSwap(bodyBox);
       forceSwap(panelHost);
       if (idx === (demo.steps || []).length - 1) api.stop();
@@ -852,19 +915,56 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
         demo.followup ? el('div',{class:'xc-demo-outcome-next',text:demo.followup}) : null
       ].filter(Boolean)));
     }
+    if (demo.observations && demo.observations.length){
+      card.appendChild(el('div',{class:'xc-demo-observation-grid'},
+        demo.observations.map(function(item, idx){
+          return el('div',{class:'xc-demo-observation'},[
+            el('span',{class:'xc-demo-observation-num',text:String(idx + 1).padStart(2,'0')}),
+            el('div',{class:'xc-demo-observation-copy'},[
+              el('strong',{text:item.title || ('觀察 ' + (idx + 1))}),
+              item.text ? el('span',{text:item.text}) : null
+            ].filter(Boolean))
+          ]);
+        })
+      ));
+    }
+    card.appendChild(el('div',{class:'xc-demo-observe'},[
+      el('span',{text:'先看節奏'}),
+      el('span',{text:'再看重點'}),
+      el('span',{text:'回練習重做'})
+    ]));
     return card;
   }
 
   function buildDemoSection(demos){
     if (!demos || !demos.length) return null;
+    var primaryDemos = demos.filter(function(demo){ return demo && (demo.role === 'primary' || demo.primary === true); });
+    if (!primaryDemos.length) primaryDemos = demos.length ? [demos[0]] : [];
+    var primarySet = new Set(primaryDemos);
+    var supportingDemos = demos.filter(function(demo){ return demo && !primarySet.has(demo); });
+    function appendDemo(host, demo){
+      if (demo.kind === 'formula') host.appendChild(buildFormulaDemo(demo));
+      else if (demo.kind === 'media') host.appendChild(buildMediaDemo(demo));
+      else host.appendChild(buildWorkflowDemo(demo));
+    }
     var sec = el('div',{class:'xc-section','data-xc-type':'demo'});
     sec.appendChild(el('h2',null,[el('span',{class:'xc-emoji',text:'🎬'}),document.createTextNode(' 實作動畫範例')]));
-    sec.appendChild(el('div',{class:'xc-sub',text:'操作課先看慢速短片抓節奏，公式課看拆解動畫抓邏輯。先看一次，再回 Excel 自己做，會比一開始就硬讀規則更容易進狀況。'}));
-    demos.forEach(function(demo){
-      if (demo.kind === 'formula') sec.appendChild(buildFormulaDemo(demo));
-      else if (demo.kind === 'media') sec.appendChild(buildMediaDemo(demo));
-      else sec.appendChild(buildWorkflowDemo(demo));
-    });
+    sec.appendChild(el('div',{class:'xc-sub',text:supportingDemos.length
+      ? '先看主線示範抓決策過程；需要補強時，再展開支援示範看單一公式或單一步驟。'
+      : '操作課先看慢速短片抓節奏，公式課看拆解動畫抓邏輯。先看一次，再回 Excel 自己做。'}));
+    primaryDemos.forEach(function(demo){ appendDemo(sec, demo); });
+    if (supportingDemos.length){
+      var details = el('details',{class:'xc-demo-more'});
+      details.appendChild(el('summary',{class:'xc-demo-more-summary'},[
+        el('span',{class:'xc-demo-more-title',text:'更多支援示範'}),
+        el('span',{class:'xc-demo-more-count',text:String(supportingDemos.length) + ' 個'}),
+        el('span',{class:'xc-demo-more-hint',text:supportingDemos.map(function(demo){ return demo.badge || demo.title; }).slice(0, 4).join(' / ')})
+      ]));
+      var moreBody = el('div',{class:'xc-demo-more-body'});
+      supportingDemos.forEach(function(demo){ appendDemo(moreBody, demo); });
+      details.appendChild(moreBody);
+      sec.appendChild(details);
+    }
     return sec;
   }
 

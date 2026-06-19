@@ -18,23 +18,23 @@ from excel_content import EXCEL_LESSONS
 EXCEL_PHASES = {
     1: {
         "name": "Phase 1 · 操作效率",
-        "desc": "完成後你能：不靠滑鼠完成 80% 日常操作，寫出基本公式",
+        "desc": "先把鍵盤節奏、基礎統計與條件判斷練穩；完成後你能不靠滑鼠完成多數日常操作，並寫出可檢查的基本公式。",
     },
     2: {
         "name": "Phase 2 · 職場即戰力",
-        "desc": "完成後你能：獨立處理跨表查找、自動產出樞紐報表",
+        "desc": "從公式走進報表交付；完成後你能獨立處理條件統計、跨表查找、樞紐彙總與重點標示。",
     },
     3: {
         "name": "Phase 3 · 專業打磨",
-        "desc": "完成後你能：設計防呆表單、做出專業圖表與報表",
+        "desc": "把檔案做得能交接、能長期維護；完成後你能設計防呆表單、清理資料、做圖表並保護公式區。",
     },
     4: {
         "name": "Phase 4 · 進階自動化",
-        "desc": "完成後你能：用動態陣列取代輔助欄、用 Power Query 自動清資料",
+        "desc": "把一次性操作升級成可重跑流程；完成後你能用動態陣列、進階函式、Power Query 與資料模型思維處理大量資料。",
     },
     5: {
         "name": "Phase 5 · VBA",
-        "desc": "完成後你能：寫巨集自動化重複工作、建立完整報表系統",
+        "desc": "最後才接 VBA，目標是系統化交付；完成後你能自動化穩定流程，並在綜合挑戰中選對工具解題。",
     },
 }
 
@@ -675,6 +675,8 @@ def _build_excel_entries(folder):
     entries = []
     for path in sorted(lessons_dir.glob("P*-*.html")):
         slug_name = path.stem
+        if not re.match(r"^P\d-\d{2}$", slug_name):
+            continue
         raw = path.read_text(encoding="utf-8")
         title = _extract(r"<h1>(.*?)</h1>", raw, slug_name)
         summary = _extract(r'<meta name="description" content="(.*?)">', raw,

@@ -83,8 +83,8 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
     }).join('');
 
     mount.innerHTML = '' +
-      '<section class="lci-wrap">' +
-        '<div class="lci-header">' +
+      '<details class="lci-wrap lci-collapsible">' +
+        '<summary class="lci-header">' +
           '<div class="lci-headline">' +
             '<h3 class="lci-title">⚡ 本課關鍵速查</h3>' +
             '<span class="lci-subtitle">'+esc(conf.title)+' · 打勾標記已學會</span>' +
@@ -93,10 +93,11 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
             '<div class="lci-progress-bar"><span style="width:'+pct+'%"></span></div>' +
             '<div class="lci-progress-text">'+done+' / '+cards.length+' 已學會</div>' +
           '</div>' +
-        '</div>' +
+          '<span class="lci-summary-cta">展開速查</span>' +
+        '</summary>' +
         '<div class="lci-grid">'+cardsHtml+'</div>' +
         '<p class="lci-hint">需要更多？點右下角 <b>📘 速查</b> 看全部 '+D.formulas.length+' 個函式</p>' +
-      '</section>';
+      '</details>';
 
     // 綁勾選
     mount.querySelectorAll('.lci-toggle').forEach(function(b){

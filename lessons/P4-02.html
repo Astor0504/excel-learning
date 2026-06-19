@@ -9,7 +9,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles.css">
-<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P4-02">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P4-02" data-default-tab="study">
 <nav class="nav">
   <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
   <div class="tools">
@@ -26,75 +26,44 @@
     <h1>進階函式</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
-    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">進階函數：解決傳統函數做不到的場景</p></div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">進階函式不是炫技，而是把長公式變得可讀、可測、可重用</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">這些函數平常用不到，但碰到時你會慶幸自己學過。</p><h2>重點函數</h2><pre><code class="lang-excel">=LET(x, A2*0.05, y, B2+x, y*1.1)
-# 命名變數，避免重複計算同一個東西
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這一課不是把冷門函數塞滿腦袋，而是學會判斷：公式太長時怎麼拆？同一段邏輯重複出現時怎麼封裝？交付給別人時哪些函數會有風險？</p><h2>先把工具分成 4 類</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">進階函式的使用場景</caption><thead><tr><th>需求</th><th>優先工具</th><th>一句提醒</th></tr></thead><tbody><tr><td>公式太長、重複計算太多</td><td>LET</td><td>替中間結果命名，讓公式像分段說明</td></tr><tr><td>同一段商業邏輯會重複用</td><td>LAMBDA</td><td>先測公式，再放進名稱管理員變成自訂函式</td></tr><tr><td>統計時要忽略錯誤或隱藏列</td><td>AGGREGATE</td><td>比 SUM / AVERAGE 多了錯誤處理選項</td></tr><tr><td>依代碼回傳不同結果</td><td>SWITCH</td><td>比多層 IF 更像對照表，維護成本較低</td></tr><tr><td>用文字組參照或動態範圍</td><td>INDIRECT / OFFSET</td><td>可用，但屬於 volatile 函數，檔案大時要節制</td></tr></tbody></table>
+<h2>語法起手式</h2><pre><code class="lang-excel"># LET：替中間結果命名，最後一段是回傳值
+=LET(total, SUM(B2:E2), bonus, IF(total&gt;=500000, total*5%, 0), total+bonus)
 
-=INDIRECT(&quot;工作表&quot; &amp; A2 &amp; &quot;!B5&quot;)
-# 用文字組出儲存格參照（動態跨表查詢）
+# LAMBDA：先用立即執行測試，再放到名稱管理員
+=LAMBDA(amount, rate, amount*(1+rate))(120000, 5%)
 
-=OFFSET(A1, 5, 2, 1, 1)
-# 從 A1 偏移 5 列 2 欄 → C6
+# AGGREGATE：忽略錯誤值求平均
+=AGGREGATE(1, 6, B2:B100)
 
-=AGGREGATE(9, 7, A:A)
-# 強化版 SUM，可忽略隱藏列、錯誤值
+# SWITCH：用代碼對應結果，少寫多層 IF
+=SWITCH(A2, &quot;A&quot;, &quot;優先&quot;, &quot;B&quot;, &quot;一般&quot;, &quot;其他&quot;)
 
-=SWITCH(A2, &quot;A&quot;, 100, &quot;B&quot;, 80, &quot;C&quot;, 60, 0)
-# 比巢狀 IF 好讀的多分支
+# INDIRECT / OFFSET：能做動態參照，但大型檔案要小心效能
+=INDIRECT(&quot;業績表!&quot; &amp; A2)
+=OFFSET(A1, 0, 0, COUNTA(A:A), 1)</code></pre>
+<h2>何時該重構成 LET？</h2><p>當同一段計算在公式裡出現兩次以上，或公式已經長到你要左右捲動才看得完，就該考慮 LET。LET 的好處不是「比較高級」，而是讓下一個維護的人能看懂 total、bonus、result 各自代表什麼。</p>
+<h2>LAMBDA 的學習順序</h2><p>先在儲存格裡用一般公式測通，再改成 LAMBDA 立即執行版本，最後才放進名稱管理員。不要一開始就把還沒測過的公式封裝起來，否則除錯會變得很痛苦。</p>
+<h2>兩個高風險函數：INDIRECT / OFFSET</h2><p>這兩個函數能做動態參照，但它們是 volatile 函數，工作表重算時容易被反覆觸發。小表可以用；大型報表或多人協作檔，請優先考慮 Table 結構化參照、XLOOKUP、FILTER 或 Power Query。</p>
+<h2>實戰範例：季度業績公式重構</h2><pre><code class="lang-excel"># 目標：算全年業績，達標 500,000 時加 5% 獎金
+=LET(
+  total, SUM(B2:E2),
+  bonus, IF(total&gt;=500000, total*5%, 0),
+  total+bonus
+)
 
-=LAMBDA(x, y, x^2 + y^2)(3, 4)
-# 自訂函數（M365 only），可放在「名稱管理員」變成可重用函式</code></pre>
-<h2>LET 公式拆解</h2>
-<div class="formula-demo" id="letDemo">
-  <div class="formula-title">點擊各參數或按「播放」逐步解說</div>
-  <div class="formula-bar">=LET(<span class="fp c1" data-step="1">t</span>, <span class="fp c2" data-step="2">A1*0.05</span>, <span class="fp c3" data-step="3">t + t*1.1</span>)</div>
-  <div class="explain-area" id="letExplain">
-    <div style="color:var(--muted);font-size:14px">點擊公式中任何參數，或按下方「播放」按鈕</div>
-  </div>
-  <button class="play-btn" onclick="playFormula('let')">▶ 播放</button>
-</div>
-<script>
-(function(){
-  var steps = {
-    let: [
-      {step:1,cls:'c1',label:'變數名稱',text:'t = 自訂的變數名稱，可取任何名字。LET 可以同時定義多個變數，格式是「名稱, 值, 名稱, 值, ...結果」。'},
-      {step:2,cls:'c2',label:'變數的值',text:'A1*0.05 = 把這個計算結果存入 t。這樣之後不管用幾次 t，Excel 只算一次，比重複寫 A1*0.05 更快更清楚。'},
-      {step:3,cls:'c3',label:'最終計算式（回傳值）',text:'t + t*1.1 = LET 的最後一個引數是最終的計算結果。這裡相當於 (A1*0.05) + (A1*0.05)*1.1，但只需計算 A1*0.05 一次。'}
-    ]
-  };
-  function showStep(demoId,stepNum){
-    var demo=document.getElementById(demoId+'Demo');
-    if(!demo)return;
-    var info=steps[demoId].find(function(s){return s.step===stepNum});
-    if(!info)return;
-    demo.querySelectorAll('.fp').forEach(function(el){el.classList.remove('active')});
-    var t=demo.querySelector('.fp[data-step="'+stepNum+'"]');
-    if(t)t.classList.add('active');
-    var area=demo.querySelector('.explain-area');
-    area.innerHTML='<div class="step-label '+info.cls+'">'+info.label+'</div><div>'+info.text+'</div>';
-  }
-  if(!window.playFormula){
-    window.playFormula=function(demoId){
-      var s=steps[demoId];if(!s)return;
-      s.forEach(function(item,i){setTimeout(function(){showStep(demoId,item.step)},i*2000)});
-    };
-    document.querySelectorAll('.formula-demo .fp').forEach(function(el){
-      el.addEventListener('click',function(){
-        var demo=el.closest('.formula-demo');
-        showStep(demo.id.replace('Demo',''),parseInt(el.dataset.step));
-      });
-    });
-  }
-})();
-</script>
-
-<h2>使用建議</h2><p>LET 是現在最被推薦的「公式重構」工具——把 =A1*0.05 + (A1*0.05)*1.1 改成 =LET(t, A1*0.05, t + t*1.1) 容易讀又只算一次。</p>
+# 若這段邏輯很多地方會用，再封裝成 LAMBDA
+=LAMBDA(q1, q2, q3, q4,
+  LET(total, SUM(q1, q2, q3, q4), bonus, IF(total&gt;=500000, total*5%, 0), total+bonus)
+)</code></pre>
+<div class="callout"><strong>⚠️ 交付提醒</strong>進階函數要先確認版本。LET / LAMBDA 需要較新的 Microsoft 365 / Excel 2021+ 環境；若收件者用舊版 Excel，請先準備替代方案或把結果值貼上。</div>
 
 
     </article>
-    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">寫一個 LET</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用 SWITCH 取代巢狀 IF</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 INDIRECT 的用法</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">知道 LAMBDA 是什麼</span></label></div>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">用 LET 命名中間結果</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">讀懂 LAMBDA 的參數與回傳值</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">知道 INDIRECT / OFFSET 的效能風險</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">用 AGGREGATE / SWITCH 處理錯誤與分支</span></label></div>
     <div class="notes">
       <h3>📝 我的筆記</h3>
       <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
