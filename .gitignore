@@ -3,3 +3,6 @@
 .vercel
 __pycache__/
 *.pyc
+
+# 本地歸檔（不進 repo）
+tmp/
