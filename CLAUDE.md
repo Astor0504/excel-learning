@@ -13,6 +13,7 @@
 - **2026-04-14**：前端 `app.js` 裡的 `getApiKey()` 曾把 Anthropic key base64 寫死，已改走 `/api/chat`。**永遠不要把 key 放回前端。**
 - 前端用 `<meta name="api-base">` 拿後端 URL；打 `/api/chat`、`/api/tts`、`/api/voices`。
 - TTS epoch guard 保留原樣，不要拿掉。
+- **2026-07-05**：WPS 宏的正解是**內建 JS 宏（JSA）**，macOS 國際版免費 WPS 實測可用（見 P5-05 番外課）。舊說法「WPS 裝 VBA 支援元件就能跑巨集」查證不成立、已從 P5-02/P5-03 移除——**不要寫回去**。細節見 auto-memory `reference_wps_js_macro_mac`。
 
 ## 教學素材慣例（可復用元件）
 Excel 站建立了一套 lesson 結構，新增課程請沿用：
