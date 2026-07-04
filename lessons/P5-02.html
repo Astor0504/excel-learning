@@ -79,7 +79,7 @@ End Sub</code></pre>
 <p>Excel for Mac 可以做工作簿內資料處理、格式化、匯出 PDF、刷新查詢和基本檔案流程；但不要把 Windows 專屬的 COM / ActiveX / Outlook 自動化當成主路線。若需求是清理資料，先問 Power Query 能不能處理；若需求是按鈕化交付流程，再把 VBA 接進來。</p>
 <h2>交付前檢查</h2>
 <table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">進階 VBA 不是只測成功路徑</caption><thead><tr><th>檢查項目</th><th>原因</th></tr></thead><tbody><tr><td>大量資料是否一次讀寫</td><td>避免逐格操作造成卡頓</td></tr><tr><td>錯誤時設定是否復原</td><td>ScreenUpdating、EnableEvents、Calculation 不該永久被關掉</td></tr><tr><td>事件是否避免遞迴觸發</td><td>Worksheet_Change 修改儲存格時最容易出問題</td></tr><tr><td>Mac / Windows 差異是否標清楚</td><td>避免交付後使用者照著不可用的功能操作</td></tr></tbody></table>
-<div class="callout"><strong>WPS 使用者注意</strong>WPS 免費版預設不含 VBA 模組，巨集無法直接執行——需另外下載安裝「VBA 支援元件（VBA 7.x）」才能用。用 WPS 練這課前先確認該元件已裝好；不確定就直接用 Microsoft Excel 跟著做，省得卡在環境問題。</div>
+<div class="callout"><strong>WPS 使用者注意</strong>WPS 免費版不含 VBA 模組，這課的 VBA 範例在 WPS 裡跑不動——但不用裝任何元件：WPS 內建的「JS 宏」就是官方的自動化路線，物件模型跟 VBA 同一套，寫法平移方式見番外課 P5-05。想照本課原樣練 VBA，請用 Microsoft Excel。</div>
 
 
     </article>

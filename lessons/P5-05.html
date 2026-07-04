@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-TW"><head><meta name="api-base" content="https://excel-learning-theta.vercel.app"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WPS JS 宏｜Excel 學習地圖</title>
+<meta name="description" content="WPS JS 宏（JSA）番外課：用 JavaScript 語法驅動 VBA 同款物件模型，macOS 免費版 WPS 也能寫巨集自動化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WPS JS 宏｜Excel 學習地圖">
+<meta property="og:description" content="WPS JS 宏（JSA）番外課：用 JavaScript 語法驅動 VBA 同款物件模型，macOS 免費版 WPS 也能寫巨集自動化">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../styles.css">
+<script defer src="/_vercel/insights/script.js"></script></head><body data-depth="../" data-lesson-slug="P5-05">
+<nav class="nav">
+  <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px"><span class="dot"></span> Excel 學習地圖</a></div>
+  <div class="tools">
+    <button class="btn print-btn" id="printBtn" title="列印">🖨</button>
+    <button class="btn" id="markWeakBtn" title="標記為不熟">🔖</button>
+    <button class="btn" id="searchBtn">🔍</button>
+    <button class="btn" id="themeBtn">🌙</button>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <main class="lesson">
+    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-05 · Phase 5 · VBA 番外</div>
+    <h1>WPS JS 宏——把你會的 VBA 平移過去</h1>
+    <div class="progress"><span></span></div>
+    <div class="progress-label">本課進度 0 / 4</div>
+    <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">WPS 免費版沒有 VBA，但內建「JS 宏」：語法換成 JavaScript，物件模型跟 VBA 幾乎同一套。學完 P5-01～03 的你只要換三個習慣就能上手——連 macOS 免費版都能用。</p></div>
+    <div id="cheatInline"></div>
+    <article class="md-body">
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是一堂番外課，寫給平常用 WPS 的你。前面三課的 VBA 觀念——流程拆解、錯誤處理、陣列加速——一個都不會浪費，這課只是幫它們換一個語法的殼。</p>
+<h2>為什麼 WPS 用戶需要這一課</h2>
+<p>WPS 免費版不含 VBA 模組，P5-01～03 的巨集在 WPS 裡按了沒反應是正常的。WPS 官方的自動化路線是內建的 <strong>JS 宏（JSA）</strong>：用 JavaScript 語法，操作跟 VBA 同一套物件模型（Application、Worksheets、Range）。macOS 國際版免費 WPS（v12.1 實測）就內建，不用另外裝任何元件。</p>
+<h2>打開 JS 宏編輯器</h2>
+<p>在 WPS 表格裡找「<strong>開發工具</strong>」分頁 →「<strong>JS 宏</strong>」（不同版本入口名稱略有差異，可能在「工具」選單底下；找不到就用選單搜尋輸入「宏」）。打開後新增一個模組，就可以寫第一個宏了。</p>
+<h2>第一個 JS 宏</h2>
+<pre><code class="lang-js">function 第一個宏() {
+    Range("A1").Value2 = "Hello WPS";
+    alert("寫入完成！");
+}</code></pre>
+<p style="font-size:13px;color:var(--muted)">跟 VBA 的三個第一眼差異：不用 Dim 宣告型別、<code>alert()</code> 取代 <code>MsgBox</code>、註解用 <code>//</code>。游標放在函式裡按執行鍵就會跑。</p>
+<h2>VBA ↔ JS 宏對照表</h2>
+<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">會 VBA 的人只要背這張表</caption><thead><tr><th>VBA 寫法</th><th>JS 宏寫法</th><th>提醒</th></tr></thead><tbody><tr><td><code>Sub 名稱() … End Sub</code></td><td><code>function 名稱() { … }</code></td><td>大括號包住內容</td></tr><tr><td><code>Dim x As Long</code></td><td><code>let x = 0;</code></td><td>不用宣告型別</td></tr><tr><td><code>MsgBox "完成"</code></td><td><code>alert("完成");</code></td><td>—</td></tr><tr><td><code>' 註解</code></td><td><code>// 註解</code></td><td>—</td></tr><tr><td><code>"A" &amp; B</code></td><td><code>"A" + B</code></td><td>字串連接改用 +</td></tr><tr><td><code>Worksheets("月報")</code></td><td><code>Worksheets.Item("月報")</code></td><td>集合取值加 <code>.Item()</code> 最穩</td></tr><tr><td><code>On Error GoTo / Resume</code></td><td><code>try { } catch (err) { } finally { }</code></td><td>復原設定放 <code>finally</code></td></tr></tbody></table>
+<h2>範例：迴圈與最後一列</h2>
+<p>VBA 課教過的 <code>End(xlUp)</code> 找最後一列，在 JS 宏裡長得幾乎一樣：</p>
+<pre><code class="lang-js">function 標記缺交() {
+    let sh = Worksheets.Item("名單");
+    let lastRow = sh.Cells.Item(sh.Rows.Count, "A").End(xlUp).Row;
+    for (let r = 2; r &lt;= lastRow; r++) {
+        if (!sh.Cells.Item(r, 2).Value2) {        // B 欄空白視為未填
+            sh.Cells.Item(r, 3).Value2 = "缺交";
+        }
+    }
+}</code></pre>
+<h2>範例：錯誤處理與設定復原</h2>
+<p>P5-02 的「出錯也要把設定復原」原則，在 JS 宏用 <code>try / catch / finally</code> 實現——<code>finally</code> 不管成功失敗都會執行，正是放復原程式碼的位置：</p>
+<pre><code class="lang-js">function 安全執行() {
+    Application.ScreenUpdating = false;
+    Application.DisplayAlerts = false;
+    try {
+        Worksheets.Item("月報").Range("A1").Value2 = "更新於 " + new Date().toLocaleString();
+    } catch (err) {
+        alert("流程失敗：" + err.message);
+    } finally {
+        Application.ScreenUpdating = true;
+        Application.DisplayAlerts = true;
+    }
+}</code></pre>
+<h2>範例：陣列一次讀寫</h2>
+<p>大量資料逐格讀寫一樣會卡。JS 宏的解法跟 VBA 課同一招：<code>Value2</code> 一次讀進二維陣列、處理完用 <code>Resize</code> 一次寫回：</p>
+<pre><code class="lang-js">function 陣列加速() {
+    let sh = Worksheets.Item("資料");
+    let lastRow = sh.Cells.Item(sh.Rows.Count, "A").End(xlUp).Row;
+    let data = sh.Range("A2:B" + lastRow).Value2;      // 一次讀進二維陣列
+    let result = [];
+    for (let i = 0; i &lt; data.length; i++) {
+        result.push([data[i][0] + "-" + data[i][1]]);
+    }
+    sh.Range("C2").Resize(result.length, 1).Value2 = result;  // 一次寫回
+}</code></pre>
+<h2>實戰：跨工作表彙總</h2>
+<p>把整本活頁簿裡名稱符合規則的工作表掃一遍、彙總到同一張表——月報、分店報表最常見的需求，也是前面所有招式的合體：</p>
+<pre><code class="lang-js">function 彙總各分店() {
+    Application.ScreenUpdating = false;
+    try {
+        let target = Worksheets.Item("彙總");
+        let result = [];
+        for (let s = 1; s &lt;= Worksheets.Count; s++) {
+            let sh = Worksheets.Item(s);
+            let name = sh.Name.trim();
+            if (!name.startsWith("分店-")) continue;   // 只收分店工作表
+            let lastRow = sh.Cells.Item(sh.Rows.Count, "B").End(xlUp).Row;
+            if (lastRow &lt; 2) continue;
+            let data = sh.Range("A2:B" + lastRow).Value2;
+            for (let i = 0; i &lt; data.length; i++) {
+                if (data[i][0]) result.push([name, data[i][0], data[i][1]]);
+            }
+        }
+        if (result.length &gt; 0) {
+            target.Range("A2").Resize(result.length, 3).Value2 = result;
+        } else {
+            alert("找不到任何「分店-」開頭的工作表資料");
+        }
+    } catch (err) {
+        alert("彙總失敗：" + err.message);
+    } finally {
+        Application.ScreenUpdating = true;
+    }
+}</code></pre>
+<div class="callout"><strong>⚠️ 交付天坑：JS 宏檔案 Excel 打不開</strong>JS 宏存在活頁簿的 WPS 專屬區塊（JDEData.bin），Microsoft Excel 完全看不到：檔案照開、資料都在，但宏消失、按鈕沒反應——這不是壞檔，是格式邊界。交付前先問對方用什麼開檔：對方用 WPS → JS 宏沒問題；對方用 Excel → 請改交 VBA 版（P5-01～03）。同一份檔案想兩邊都能自動化，目前沒有好解法，選定主工具再開工。</div>
+<div class="callout"><strong>macOS 提醒</strong>本課內容在 macOS 國際版免費 WPS（v12.1）實測可用。反過來說，Excel 使用者這課用不到——JS 宏是 WPS 專屬功能，用 Excel 請照 P5-01～03 的 VBA 主線走。</div>
+    </article>
+    <div class="checklist"><h3>✅ 本課任務</h3><label><input type="checkbox" data-key="0"><span class="box"></span><span class="txt">打開 JS 宏編輯器，跑通「第一個宏」</span></label><label><input type="checkbox" data-key="1"><span class="box"></span><span class="txt">用對照表把 P5-01 的一個小巨集改寫成 JS 宏</span></label><label><input type="checkbox" data-key="2"><span class="box"></span><span class="txt">跑通 try / catch / finally 設定復原樣板</span></label><label><input type="checkbox" data-key="3"><span class="box"></span><span class="txt">跑通跨工作表彙總，並能說出 Excel 開檔時宏為什麼消失</span></label></div>
+    <div class="notes">
+      <h3>📝 我的筆記</h3>
+      <textarea data-note placeholder="寫一兩句心得、疑問、想記住的關鍵字…（自動儲存）"></textarea>
+    </div>
+    <div class="lesson-nav"><a class="btn" href="P5-04.html">← 綜合挑戰</a><a class="btn primary" href="../index.html">完成 ✓</a></div>
+  </main>
+</div>
+<div class="pomo"><span>🍅</span><span class="time">25:00</span><button class="play">▶</button><button class="reset">↺</button></div>
+
+<button id="aiFab" title="問 AI 教練">💬</button>
+<div id="aiPanel">
+  <div class="ai-header">
+    <h3>💬 AI 學習教練</h3>
+    <button id="aiClose" title="關閉">×</button>
+  </div>
+  <div id="aiLog"></div>
+  <div class="ai-input-area">
+    <textarea id="aiInput" placeholder="問我這課的任何問題…（Enter 送出）" rows="2"></textarea>
+    <div class="ai-btn-row">
+      <button id="aiCopy">📋 複製問題到剪貼簿</button>
+      <button id="aiSend">送出 ↵</button>
+    </div>
+  </div>
+</div>
+
+<div id="searchModal" class="modal"><div class="modal-inner">
+  <input id="searchInput" placeholder="搜尋全部單元…" autocomplete="off">
+  <div id="searchResults"></div>
+  <div class="modal-hint">Esc 關閉 · ↑↓ 選擇 · Enter 開啟</div>
+</div></div>
+<footer>一次一小步，你做得到 🌱</footer>
+<script type="module" src="../app.js"></script>
+<script type="module" src="../lesson-cheat-inline.js"></script>
+<script type="module" src="../drawer.js"></script>
+<script type="module" src="../xlsx-integrator.js"></script>
+<script type="module" src="../lesson-tabs.js"></script>
+</body></html>

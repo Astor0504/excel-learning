@@ -16,7 +16,7 @@ const LESSON_SEQUENCE = [
   "P2-01","P2-02","P2-03","P2-04",
   "P3-01","P3-02","P3-03","P3-04","P3-05",
   "P4-01","P4-02","P4-03","P4-04","P4-05",
-  "P5-01","P5-02","P5-03","P5-04",
+  "P5-01","P5-02","P5-03","P5-04","P5-05",
 ];
 const LESSON_WORKBOOK_MAP = {
   "P1-01": "P1-01 ⌨️ 鍵盤操作",
@@ -40,6 +40,7 @@ const LESSON_WORKBOOK_MAP = {
   "P5-02": "P5-02 🔧 VBA 進階",
   "P5-03": "P5-03 🏗️ VBA 實戰",
   "P5-04": "P5-04 🏆 綜合挑戰",
+  "P5-05": "P5-05 📜 WPS JS 宏",
 };
 const LESSON_GUIDE = {
   "P1-01": {
@@ -145,7 +146,12 @@ const LESSON_GUIDE = {
   "P5-04": {
     focus: "把前面 20 課的能力串起來，先選對工具，再把答案做成可交付流程。",
     unlock: "你會更清楚公式、樞紐、Power Query、Data Model 與 VBA 分別該在什麼時候出場。",
-    nextWhy: "做完後最有價值的下一步不是再往下衝，而是回頭重做弱點課與建立自己的模板。",
+    nextWhy: "做完後最有價值的下一步不是再往下衝，而是回頭重做弱點課與建立自己的模板；平常用 WPS 的話，還有一堂番外 P5-05，把 VBA 平移成 JS 宏。",
+  },
+  "P5-05": {
+    focus: "把 P5 學會的 VBA 觀念平移到 WPS 內建的 JS 宏，讓免費版 WPS（含 Mac）也能自動化。",
+    unlock: "你會用 JavaScript 語法驅動同一套物件模型，寫出可交付的 WPS 巨集，並說得出檔案相容性的邊界在哪。",
+    nextWhy: "這是番外加碼課：做完代表整張地圖連 WPS 路線都走完了，接下來回頭補弱點課、建立自己的模板庫。",
   },
 };
 const LESSON_FLOW_TYPES = {
@@ -208,6 +214,7 @@ const LESSON_FLOW_BY_SLUG = {
   "P5-02": "vba",
   "P5-03": "vba",
   "P5-04": "capstone",
+  "P5-05": "vba",
 };
 const LESSON_PRO_NOTES = {
   "P1-01": {
@@ -402,6 +409,15 @@ const LESSON_PRO_NOTES = {
       "當流程會反覆跑在每月報表或批次檔案上時，文件化和可重複執行比一時寫得快更重要。",
     ],
   },
+  "P5-05": {
+    title: "同一套物件模型，第二種語法殼",
+    eyebrow: "Professional Default",
+    items: [
+      "JS 宏不用從零學：Application / Worksheets / Range 這套物件模型跟 VBA 完全同源，變的只是語法殼。",
+      "真正要內化的是三個習慣差異：集合用 .Item() 取、字串用 + 連接、錯誤處理交給 try / catch / finally。",
+      "交付前先問對方用什麼開檔：JS 宏存在 WPS 專屬區塊，Excel 打開時宏會直接消失——這是格式邊界，不是 bug。",
+    ],
+  },
 };
 const LESSON_BADGES = {
   "P1-01": [
@@ -495,6 +511,11 @@ const LESSON_BADGES = {
   "P5-04": [
     { kind: "mac", label: "macOS 主路線", note: "這課重點是整合 Excel 能力，而不是依賴某個單一 Windows-only 功能。" },
     { kind: "workflow", label: "能力驗收", note: "建議把挑戰題當成真實工作流練習，而不是只求做完。" },
+  ],
+  "P5-05": [
+    { kind: "platform", label: "WPS 專屬", note: "JS 宏只存在於 WPS；用 Excel 的人請走 P5-01～03 的 VBA 主線。" },
+    { kind: "mac", label: "macOS 實測可用", note: "macOS 國際版免費 WPS（v12.1 實測）內建 JS 宏編輯器，不需另裝元件。" },
+    { kind: "compat", label: "相容性邊界", note: "JS 宏存在 JDEData.bin，用 Excel 開檔宏會消失——交付前先確認對方的工具。" },
   ],
 };
 const LESSON_BADGE_KIND_ORDER = [
