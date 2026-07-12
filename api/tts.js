@@ -1,5 +1,6 @@
 const https = require('https');
 const { applyCors, preflight } = require('./_cors');
+const { applyRateLimit } = require('./_rateLimit');
 
 function escapeXml(s) {
   return s.replace(/[<>&'"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
@@ -20,8 +21,9 @@ function readJson(req, max = 20_000) {
 }
 
 module.exports = async (req, res) => {
-  applyCors(req, res);
+  if (applyCors(req, res)) return;
   if (preflight(req, res)) return;
+  if (applyRateLimit(req, res)) return;
   if (req.method !== 'POST') { res.statusCode = 405; return res.end('method not allowed'); }
 
   const AZURE_KEY = process.env.AZURE_KEY || '';
@@ -47,6 +49,7 @@ module.exports = async (req, res) => {
     hostname: `${AZURE_REGION}.tts.speech.microsoft.com`,
     path: '/cognitiveservices/v1',
     method: 'POST',
+    timeout: 20000,
     headers: {
       'Ocp-Apim-Subscription-Key': AZURE_KEY,
       'Content-Type': 'application/ssml+xml',
@@ -64,7 +67,11 @@ module.exports = async (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=86400');
     azRes.pipe(res);
   });
-  azReq.on('error', e => { res.statusCode = 500; res.end(JSON.stringify({ error: e.message })); });
+  azReq.on('timeout', () => azReq.destroy(new Error('upstream timeout')));
+  azReq.on('error', e => {
+    res.statusCode = e.message === 'upstream timeout' ? 502 : 500;
+    res.end(JSON.stringify({ error: e.message }));
+  });
   azReq.write(ssml);
   azReq.end();
 };
