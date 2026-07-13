@@ -219,7 +219,7 @@ const LESSON_FLOW_BY_SLUG = {
 const LESSON_PRO_NOTES = {
   "P1-01": {
     title: "Mac 鍵位節奏是你的操作地基",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "這站以 macOS Excel 為主路線。你在這裡學到的快捷鍵，預設就是 Mac 版 Excel 的實際按法，不是從 Windows 翻譯過來的。",
       "先把 ⌘ S / ⌘ Z / ⌘+方向鍵 / F2 這幾個練成反射，後面學公式時才不會一直被操作介面卡住。",
@@ -228,7 +228,7 @@ const LESSON_PRO_NOTES = {
   },
   "P1-02": {
     title: "先把基礎函數練穩，再往複雜走",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "SUM / AVERAGE / COUNT / COUNTA 看起來簡單，但很多錯誤報表都是因為混用 COUNT 和 COUNTA、或誤解 AVERAGE 對空白、文字與 0 的處理而出現的。",
       "MAX / MIN 解決的是『最值』，LARGE / SMALL 解決的是『名次』。能分清這兩組，之後做排行榜、前後段分析才不會繞遠路。",
@@ -238,7 +238,7 @@ const LESSON_PRO_NOTES = {
   },
   "P1-03": {
     title: "知道 IF 的邊界，才知道什麼時候該出場",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "IFS 比巢狀 IF 好讀，且不容易出現括號配對錯誤。有 IFS 可以用的環境，沒有理由繼續寫 IF(A, X, IF(B, Y, ...))。",
       "SWITCH 適合固定值對應，例如部門或狀態轉換；如果條件是大於、小於、區間門檻，仍然優先用 IFS。",
@@ -248,7 +248,7 @@ const LESSON_PRO_NOTES = {
   },
   "P2-01": {
     title: "條件統計是報表工作的基本盤",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "SUMIFS、COUNTIFS 這類條件統計公式，通常比複雜巢狀 IF 更適合做正式報表。",
       "如果需求只是依條件加總與計數，先用條件統計公式；不要太早把簡單問題做成很重的模型。",
@@ -257,7 +257,7 @@ const LESSON_PRO_NOTES = {
   },
   "P2-02": {
     title: "專業現場怎麼選查找工具",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "如果是 Microsoft 365 或 Excel 2021 以上，預設優先用 XLOOKUP；它不用手算欄位，也能向左查找。",
       "如果你在維護舊公司檔案或 2016 / 2019 環境，請把 INDEX + MATCH 視為真正的通用備案，不要只會 VLOOKUP。",
@@ -267,7 +267,7 @@ const LESSON_PRO_NOTES = {
   },
   "P2-03": {
     title: "樞紐不是取代公式，而是接手彙總",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "樞紐分析最適合接手大量原始資料的彙總、切片與觀察，不適合拿來取代所有細部商業規則。",
       "比較穩的工作流通常是：原始資料先整理成 Table，再用樞紐做彙總，必要時才補公式欄位。",
@@ -276,7 +276,7 @@ const LESSON_PRO_NOTES = {
   },
   "P2-04": {
     title: "格式化要幫助決策，不只是上色",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "條件式格式化最有價值的地方，是幫人快速看到異常、門檻與趨勢，而不是把整張表染滿顏色。",
       "正式報表應先定義哪些數值真的需要被看見，再設規則，不要讓格式化搶走資料本身的可讀性。",
@@ -285,7 +285,7 @@ const LESSON_PRO_NOTES = {
   },
   "P3-01": {
     title: "專業報表先從防呆開始",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "資料驗證的價值不是限制使用者，而是把髒資料擋在輸入端，減少之後清理與追錯成本。",
       "如果一份工作簿會交給別人長期輸入，資料驗證幾乎應該視為預設，而不是可選配件。",
@@ -294,7 +294,7 @@ const LESSON_PRO_NOTES = {
   },
   "P3-02": {
     title: "清資料能力決定你能不能接住真實世界資料",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "文字與日期函數看起來零碎，但它們處理的是最常見的外部貼上資料、系統匯出資料與格式混亂問題。",
       "正式工作流中，先處理不可見空白與髒字元，再拆欄位、轉日期，會比邊清邊猜更穩。",
@@ -303,7 +303,7 @@ const LESSON_PRO_NOTES = {
   },
   "P3-03": {
     title: "圖表真正的專業感來自選對，不是堆特效",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "專業圖表最重要的是讓讀者更快理解，不是讓圖表本身更花。",
       "先決定你要比較類別、看趨勢、看占比，圖表類型自然就會縮小到少數幾種合理選項。",
@@ -312,7 +312,7 @@ const LESSON_PRO_NOTES = {
   },
   "P3-04": {
     title: "專業工作簿的預設習慣",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "正式報表或要長期維護的資料，應先轉成 Table，再開始寫公式與做樞紐。",
       "結構化參照的價值不只是好看，而是新增列、欄位調整、交接給同事時都更穩。",
@@ -321,7 +321,7 @@ const LESSON_PRO_NOTES = {
   },
   "P3-05": {
     title: "保護的目的，是讓檔案能安心交付",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "工作表保護不是為了把檔案藏起來，而是區分哪些欄位可以填、哪些公式不該被誤改。",
       "真正專業的交付，會把可輸入區、計算區、輸出區責任分清楚，再決定保護策略。",
@@ -330,7 +330,7 @@ const LESSON_PRO_NOTES = {
   },
   "P4-01": {
     title: "動態陣列在實務上的邊界",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "動態陣列適合拿來輸出分析結果與中間結果，但溢出公式本身不應該寫在 Table 裡。",
       "比較穩的做法是：原始資料放 Table，動態陣列公式寫在表格外，用結構化參照去吃資料。",
@@ -339,7 +339,7 @@ const LESSON_PRO_NOTES = {
   },
   "P4-02": {
     title: "進階函數的重點是可讀與可重用",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "LET 和 LAMBDA 的價值，不是把公式寫得更炫，而是把重複邏輯封裝得更清楚。",
       "當一條公式長到同事看不懂時，先想可讀性與拆解，而不是再往裡面硬塞一層巢狀。",
@@ -348,7 +348,7 @@ const LESSON_PRO_NOTES = {
   },
   "P4-03": {
     title: "假設分析是決策工具，不是計算工具",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "目標搜尋適合「只改一個變數、反推輸入」的場景；Solver 才適合多變數加約束條件的最佳化——不要一開始就用 Solver，先看目標搜尋夠不夠。",
       "規劃求解（Solver）在 macOS 上需要先到「工具 → Excel 增益集」啟用，不是預設開啟的。",
@@ -357,7 +357,7 @@ const LESSON_PRO_NOTES = {
   },
   "P4-04": {
     title: "Power Query 為什麼是專業分水嶺",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "真正專業的差別，通常不在於手動清資料多快，而在於能不能把清理流程變成可重跑的步驟。",
       "Power Query 的核心思維是 Connect → Transform → Combine → Load；一旦建立好，之後應優先按重新整理，而不是重做。",
@@ -366,7 +366,7 @@ const LESSON_PRO_NOTES = {
   },
   "P4-05": {
     title: "什麼時候該進資料模型",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "只要開始遇到多張表關聯、數十萬列以上資料，或需要穩定量值計算，就應該考慮 Data Model / Power Pivot。",
       "這一塊最像真正的分析建模，不再只是單一工作表上的公式技巧。",
@@ -375,7 +375,7 @@ const LESSON_PRO_NOTES = {
   },
   "P5-01": {
     title: "專業自動化的起點不是炫技",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "VBA 最適合拿來解決重複、規則清楚、人工又容易出錯的流程。",
       "專業做法不是一開始就寫很大的巨集，而是先把手動流程拆清楚，再自動化最穩定的一段。",
@@ -384,7 +384,7 @@ const LESSON_PRO_NOTES = {
   },
   "P5-02": {
     title: "VBA 進階真正要學的是穩定性",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "專業 VBA 不只是跑得動，而是大量資料也跑得穩、出錯時知道怎麼停在安全的位置。",
       "陣列、Dictionary、錯誤處理這些看起來比較工程化，但它們真正解決的是交付品質與維護成本。",
@@ -393,7 +393,7 @@ const LESSON_PRO_NOTES = {
   },
   "P5-04": {
     title: "能選對工具，才算真的學完了",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "綜合挑戰的重點不是把題目做完，而是每題開始前先判斷：這是公式題、樞紐題、Power Query 題、Data Model 題，還是 VBA 題？",
       "能選對工具再動手，比堆功能完成題目更接近真正的職場能力。",
@@ -402,7 +402,7 @@ const LESSON_PRO_NOTES = {
   },
   "P5-03": {
     title: "把巨集升級成可交付的工作系統",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "實戰專案最重要的不是功能越多越好，而是輸入、處理、輸出三段責任要清楚。",
       "真正專業的自動化專案會先想檔名規則、錯誤處理、設定復原、執行前檢查與結果驗證，而不是只想主流程。",
@@ -411,7 +411,7 @@ const LESSON_PRO_NOTES = {
   },
   "P5-05": {
     title: "同一套物件模型，第二種語法殼",
-    eyebrow: "Professional Default",
+    eyebrow: "本課專業慣例",
     items: [
       "JS 宏不用從零學：Application / Worksheets / Range 這套物件模型跟 VBA 完全同源，變的只是語法殼。",
       "真正要內化的是三個習慣差異：集合用 .Item() 取、字串用 + 連接、錯誤處理交給 try / catch / finally。",
@@ -571,31 +571,31 @@ const HOME_CAPABILITY_MAP = {
   ],
   stages: [
     {
-      eyebrow: "Stage 1",
+      eyebrow: "階段 1",
       title: "操作與公式基本功",
       summary: "先把輸入速度、基礎函數與條件邏輯練成反射動作。",
       skills: ["快捷鍵節奏", "基礎函數", "IF / IFS 判斷"],
     },
     {
-      eyebrow: "Stage 2",
+      eyebrow: "階段 2",
       title: "職場報表核心",
       summary: "學會查找、條件統計、樞紐與格式化，開始能獨立做分析報表。",
       skills: ["XLOOKUP / INDEX+MATCH", "SUMIFS", "PivotTable", "條件式格式化"],
     },
     {
-      eyebrow: "Stage 3",
+      eyebrow: "階段 3",
       title: "資料結構與可維護性",
       summary: "從會做結果，升級成能把檔案做得穩、做得久、做得能交接。",
       skills: ["資料驗證", "文字日期清理", "圖表設計", "Table / Structured References"],
     },
     {
-      eyebrow: "Stage 4",
+      eyebrow: "階段 4",
       title: "可重跑的資料流程",
       summary: "把分析從單次操作，推進到能重新整理、能處理多來源資料的流程。",
       skills: ["動態陣列", "進階函數", "Power Query", "Data Model"],
     },
     {
-      eyebrow: "Stage 5",
+      eyebrow: "階段 5",
       title: "自動化與系統化交付",
       summary: "最後才是巨集與專案化，把前面能力組成真正能落地的工作系統。",
       skills: ["VBA 基礎", "錯誤處理", "專案化自動化", "綜合挑戰"],
@@ -1413,7 +1413,7 @@ initChecklist();
   box.className = "lesson-pro-note";
   box.innerHTML = `
     <div class="lesson-pro-note-head">
-      <div class="lesson-pro-note-eyebrow">${escHtml(note.eyebrow || "Professional Note")}</div>
+      <div class="lesson-pro-note-eyebrow">${escHtml(note.eyebrow || "專業備註")}</div>
       <h2 class="lesson-pro-note-title">${escHtml(note.title)}</h2>
     </div>
     <div class="lesson-pro-note-body">
@@ -1813,7 +1813,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       <summary class="hero-capability-summary">
         <div class="hero-capability-head">
           <div>
-            <div class="hero-capability-eyebrow">Professional Path</div>
+            <div class="hero-capability-eyebrow">能力養成路線</div>
             <h2 class="hero-capability-title"></h2>
           </div>
           <p class="hero-capability-intro"></p>
@@ -1828,7 +1828,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         </div>
         <section class="home-tool-map" aria-label="工具選擇地圖">
           <div class="home-tool-map-head">
-            <span>Tool Decision Map</span>
+            <span>工具決策地圖</span>
             <strong>先選對工具，再開始做</strong>
             <p>同一個問題可能可以用公式、樞紐、Power Query 或 VBA 解，但交付穩定度差很多。這張表是全站共同的判斷準則。</p>
           </div>
@@ -1849,7 +1849,6 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
           ${HOME_CAPABILITY_MAP.stages.map(function(stage, index){
             return `
               <div class="hero-capability-node" data-phase="${index + 1}">
-                <div class="hero-capability-node-num">${String(index + 1).padStart(2, "0")}</div>
                 <div class="hero-capability-node-copy">
                   <span>${escHtml(stage.eyebrow)}</span>
                   <strong>${escHtml(stage.title)}</strong>
@@ -1864,7 +1863,6 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
               <article class="hero-capability-card" data-phase="${index + 1}">
                 <div class="hero-capability-card-top">
                   <div class="hero-capability-card-eyebrow">${escHtml(stage.eyebrow)}</div>
-                  <div class="hero-capability-card-num">${String(index + 1).padStart(2, "0")}</div>
                 </div>
                 <h3>${escHtml(stage.title)}</h3>
                 <p>${escHtml(stage.summary)}</p>
@@ -1889,7 +1887,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       phaseGuideWrap.innerHTML = `
         <div class="home-phase-guide-head">
           <div>
-            <div class="home-phase-guide-eyebrow">Checkpoint</div>
+            <div class="home-phase-guide-eyebrow">檢核點</div>
             <h3 class="home-phase-guide-title">這一段什麼時候算可以往下</h3>
             <p class="home-phase-guide-intro">${escHtml(selected.label === "全部"
               ? "先看完整地圖也沒關係，但每一段只要達到這些過關線，就可以放心往下一階段走。"
@@ -1938,7 +1936,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       curriculumWrap.innerHTML = `
         <div class="home-curriculum-head">
           <div>
-            <div class="home-curriculum-eyebrow">Curriculum</div>
+            <div class="home-curriculum-eyebrow">課程總覽</div>
             <h3 class="home-curriculum-title">${escHtml(selected.label)} 的完整課表</h3>
             <p class="home-curriculum-intro">先照這個順序走就好。每一階段先做完最關鍵的幾課，再往下一段推，會比來回跳著學更穩。</p>
           </div>
@@ -2095,7 +2093,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       featureWrap.innerHTML = `
         <div class="hero-featured-head">
           <div>
-            <div class="hero-featured-eyebrow">Start Here</div>
+            <div class="hero-featured-eyebrow">從這裡開始</div>
             <h3 class="hero-featured-title">${escHtml(selected.label)} 先學哪 3 課</h3>
           </div>
           <div class="hero-featured-skills">
@@ -2182,7 +2180,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       copyGroup.className = "hero-copy-group";
       const eyebrow = document.createElement("div");
       eyebrow.className = "hero-eyebrow";
-      eyebrow.textContent = "Modern Academy · 從 Excel 新手一路走到專業";
+      eyebrow.textContent = "從 Excel 新手一路走到專業";
       copyGroup.appendChild(eyebrow);
       copyGroup.appendChild(titleNode);
       copyGroup.appendChild(copyNode);
