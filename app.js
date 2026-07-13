@@ -2283,10 +2283,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
       <div class="quiz-card">
         <div style="color:var(--muted);font-size:13px">第 ${i+1} / ${cards.length} 題</div>
         <div class="quiz-q">${c.q}</div>
-        <div class="quiz-options">
-          ${opts.map((o,j) => `<div class="quiz-option" data-i="${j}">${o}</div>`).join("")}
+        <div class="quiz-options" role="group" aria-label="測驗選項">
+          ${opts.map((o,j) => `<button type="button" class="quiz-option" data-i="${j}">${o}</button>`).join("")}
         </div>
-        <div class="quiz-feedback" style="display:none"></div>
+        <div class="quiz-feedback" style="display:none" aria-live="polite"></div>
         <div style="margin-top:14px;display:flex;gap:10px">
           <button class="btn" id="quizPrev">← 上一題</button>
           <button class="btn primary" id="quizNext">下一題 →</button>
@@ -2299,7 +2299,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
         quizBox.querySelectorAll(".quiz-option").forEach((x,j) => {
           if (j === c.answer) x.classList.add("correct");
           else if (j === idx) x.classList.add("wrong");
-          x.style.pointerEvents = "none";
+          x.disabled = true;
         });
         fb.style.display = "block";
         fb.innerHTML = `${idx === c.answer ? "✅ 答對了！" : "❌ 答錯了"}<br>${c.explain || ""}`;
@@ -2309,6 +2309,17 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     quizBox.querySelector("#quizNext").onclick = () => { if (i<cards.length-1) { i++; render(); } else alert("做完啦 🎉"); };
   }
   render();
+})();
+
+// ========= 課文表格:手機橫向捲動保護 =========
+(function(){
+  document.querySelectorAll(".lesson .md-body table").forEach(t => {
+    if (t.parentElement && t.parentElement.classList.contains("table-scroll")) return;
+    const w = document.createElement("div");
+    w.className = "table-scroll";
+    t.parentNode.insertBefore(w, t);
+    w.appendChild(t);
+  });
 })();
 
 // ========= AI 助教浮動聊天 =========

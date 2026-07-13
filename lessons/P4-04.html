@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-04 · Phase 4 · 進階自動化</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-04 · Phase 4 · 進階自動化</div>
     <h1>Power Query</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -31,9 +31,9 @@
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">再也不用每月手動清資料。Power Query 真正厲害的地方，不是「匯一次」而是把整理流程存成可重跑步驟；下個月資料一到，重新整理就能再跑一次。</p>
 <h2>什麼是 ETL</h2><p>Extract（取資料）→ Transform（清資料）→ Load（載入 Excel）。Power Query 把這三步全部視覺化，不用寫程式碼。</p>
-<img class="diagram-light" src="img/etl-flow.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
-<img class="diagram-dark" src="img/etl-flow.dark.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
-<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+<img class="diagram-light" src="img/etl-flow.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px" loading="lazy" decoding="async">
+<img class="diagram-dark" src="img/etl-flow.dark.svg" alt="ETL 資料流程圖" style="max-width:100%;margin:12px 0;border-radius:12px" loading="lazy" decoding="async">
+
 <h2>常見操作</h2><p>在 Mac 上通常也是從「資料 → 取得資料」進去，再從檔案、資料表或其他來源匯入。進入 Power Query 編輯器後，可以拆欄、合併欄、移除列、轉置、樞紐/反樞紐、合併查詢（類似 JOIN）、附加查詢（類似 UNION）。如果某些資料來源選項和 Windows 畫面不完全一樣，先記住流程概念比硬背選單位置更重要。</p>
 <h2>M 語言</h2><pre><code class="lang-powerquery">let
     來源 = Excel.CurrentWorkbook(){[Name=&quot;訂單&quot;]}[Content],

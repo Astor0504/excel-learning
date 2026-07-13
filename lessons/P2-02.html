@@ -20,16 +20,16 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-02 · Phase 2 · 職場即戰力</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-02 · Phase 2 · 職場即戰力</div>
     <h1>查找比對</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">XLOOKUP / VLOOKUP / INDEX+MATCH：跨表查資料的命脈函數</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">查找比對不是先背 VLOOKUP，而是先搞清楚：你拿什麼值去找？去哪一欄找？要回傳哪一欄？找不到時怎麼顯示？</p><h2>先分 4 種查找情境</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先判斷環境與資料方向，再選工具</caption><thead><tr><th>你的情境</th><th>優先用</th><th>一句提醒</th></tr></thead><tbody><tr><td>Microsoft 365 / Excel 2021 以上</td><td>XLOOKUP</td><td>查找欄和回傳欄分開寫，不用數第幾欄</td></tr><tr><td>舊版 Excel 或要相容舊檔</td><td>INDEX + MATCH</td><td>穩、可往左查，是舊版環境的專業備案</td></tr><tr><td>維護既有 VLOOKUP 公式</td><td>VLOOKUP</td><td>確認第四參數是 FALSE / 0，且查找欄在表格最左邊</td></tr><tr><td>找不到資料時不能出錯</td><td>XLOOKUP 第 4 參數 / IFERROR</td><td>不要讓 #N/A 直接出現在要交付的報表裡</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">查找比對不是先背 VLOOKUP，而是先搞清楚：你拿什麼值去找？去哪一欄找？要回傳哪一欄？找不到時怎麼顯示？</p><h2>先分 4 種查找情境</h2><table><caption class="lesson-caption">先判斷環境與資料方向，再選工具</caption><thead><tr><th>你的情境</th><th>優先用</th><th>一句提醒</th></tr></thead><tbody><tr><td>Microsoft 365 / Excel 2021 以上</td><td>XLOOKUP</td><td>查找欄和回傳欄分開寫，不用數第幾欄</td></tr><tr><td>舊版 Excel 或要相容舊檔</td><td>INDEX + MATCH</td><td>穩、可往左查，是舊版環境的專業備案</td></tr><tr><td>維護既有 VLOOKUP 公式</td><td>VLOOKUP</td><td>確認第四參數是 FALSE / 0，且查找欄在表格最左邊</td></tr><tr><td>找不到資料時不能出錯</td><td>XLOOKUP 第 4 參數 / IFERROR</td><td>不要讓 #N/A 直接出現在要交付的報表裡</td></tr></tbody></table>
 <h2>語法起手式</h2><pre><code class="lang-excel"># 新版主路線：用產品代碼查產品名稱
 =XLOOKUP(A2, 商品表!A:A, 商品表!B:B, &quot;查無此商品&quot;)
 
@@ -51,9 +51,9 @@
 =INDEX(A:A, MATCH(&quot;機械鍵盤&quot;, B:B, 0))             # 已知名稱反查代碼
 =IFERROR(VLOOKUP(&quot;P999&quot;, A:E, 2, FALSE), &quot;無此商品&quot;) # 舊檔錯誤處理</code></pre>
 <h2>哪個該用？</h2><p>M365 / Excel 2021 以上：優先用 XLOOKUP。需要維護舊版環境：熟 INDEX + MATCH。VLOOKUP 不是不能用，而是應該被放在「維護舊檔」和「相容需求」的位置。</p>
-<img class="diagram-light" src="img/lookup-decision.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
-<img class="diagram-dark" src="img/lookup-decision.dark.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
-<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+<img class="diagram-light" src="img/lookup-decision.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px" loading="lazy" decoding="async">
+<img class="diagram-dark" src="img/lookup-decision.dark.svg" alt="LOOKUP 函式選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px" loading="lazy" decoding="async">
+
 <h2>⌨️ 本課常用快捷鍵</h2>
 <div class="mac-kb" data-shortcuts='[{"keys": "cmd,left,right,up,down", "label": "⌘ + 方向鍵 · 跳資料邊界"}, {"keys": "cmd,t", "label": "⌘ T · 切換絕對/相對參照"}, {"keys": "cmd,shift,enter", "label": "⌘ ⇧ ↩ · 陣列公式（舊版）"}, {"keys": "fn,f4", "label": "fn+F4 · 切換 $ 鎖定（Mac 替代）"}]'></div>
 <script src="../keyboard.js"></script>

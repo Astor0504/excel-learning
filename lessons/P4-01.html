@@ -20,16 +20,16 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-01 · Phase 4 · 進階自動化</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-01 · Phase 4 · 進階自動化</div>
     <h1>陣列與動態函式</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">動態陣列：一個公式吐出整片結果，搭配 # 溢出範圍建立會自動更新的清單</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">動態陣列不是多背幾個新函數，而是換一種做清單的方式：一個公式放在左上角，結果自動向外展開；來源資料變動，整片結果一起更新。</p><h2>先掌握 3 個觀念</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">動態陣列的心智模型</caption><thead><tr><th>觀念</th><th>你要記住</th><th>常見用途</th></tr></thead><tbody><tr><td>Spill 溢出</td><td>公式只輸入一次，結果會自動展開到多格</td><td>動態名單、篩選結果、排行表</td></tr><tr><td>D2#</td><td># 代表從 D2 開始的整個溢出範圍</td><td>把動態結果餵給圖表、驗證清單或其他公式</td></tr><tr><td>條件陣列</td><td>FILTER 的條件其實是一串 TRUE/FALSE</td><td>多條件篩選、清單自動更新</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">動態陣列不是多背幾個新函數，而是換一種做清單的方式：一個公式放在左上角，結果自動向外展開；來源資料變動，整片結果一起更新。</p><h2>先掌握 3 個觀念</h2><table><caption class="lesson-caption">動態陣列的心智模型</caption><thead><tr><th>觀念</th><th>你要記住</th><th>常見用途</th></tr></thead><tbody><tr><td>Spill 溢出</td><td>公式只輸入一次，結果會自動展開到多格</td><td>動態名單、篩選結果、排行表</td></tr><tr><td>D2#</td><td># 代表從 D2 開始的整個溢出範圍</td><td>把動態結果餵給圖表、驗證清單或其他公式</td></tr><tr><td>條件陣列</td><td>FILTER 的條件其實是一串 TRUE/FALSE</td><td>多條件篩選、清單自動更新</td></tr></tbody></table>
 <h2>核心語法</h2><pre><code class="lang-excel"># 篩選符合條件的整列；第 3 參數是找不到時的顯示文字
 =FILTER(A2:E100, B2:B100=&quot;業務&quot;, &quot;查無資料&quot;)
 

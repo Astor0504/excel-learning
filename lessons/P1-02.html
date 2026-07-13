@@ -20,21 +20,21 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-02 · Phase 1 · 操作效率</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-02 · Phase 1 · 操作效率</div>
     <h1>基礎函式</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">先分清總和、平均、筆數與名次，基礎函式才不會選錯</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——不是先背公式名字，而是先分清楚你到底在問總和、平均、筆數，還是名次。</p><h2>先分 5 種問題</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先問問題，再選函數</caption><thead><tr><th>你想知道什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>全部加起來</td><td>SUM</td><td>只加數字，文字與空白會忽略</td></tr><tr><td>平均值</td><td>AVERAGE</td><td>空白與文字忽略，但 0 會算進去</td></tr><tr><td>有幾個數字 / 有幾格有內容</td><td>COUNT / COUNTA</td><td>COUNT 只數數字；COUNTA 數所有非空白</td></tr><tr><td>最大最小 / 第 N 大小</td><td>MAX / MIN / LARGE / SMALL</td><td>問名次就用 LARGE / SMALL，不要只用 MAX / MIN</td></tr><tr><td>典型水準，不想被極端值帶歪</td><td>MEDIAN</td><td>薪資、房價、獎金這類偏態資料很常更適合用中位數</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這是 Excel 的「九九乘法表」——不是先背公式名字，而是先分清楚你到底在問總和、平均、筆數，還是名次。</p><h2>先分 5 種問題</h2><table><caption class="lesson-caption">先問問題，再選函數</caption><thead><tr><th>你想知道什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>全部加起來</td><td>SUM</td><td>只加數字，文字與空白會忽略</td></tr><tr><td>平均值</td><td>AVERAGE</td><td>空白與文字忽略，但 0 會算進去</td></tr><tr><td>有幾個數字 / 有幾格有內容</td><td>COUNT / COUNTA</td><td>COUNT 只數數字；COUNTA 數所有非空白</td></tr><tr><td>最大最小 / 第 N 大小</td><td>MAX / MIN / LARGE / SMALL</td><td>問名次就用 LARGE / SMALL，不要只用 MAX / MIN</td></tr><tr><td>典型水準，不想被極端值帶歪</td><td>MEDIAN</td><td>薪資、房價、獎金這類偏態資料很常更適合用中位數</td></tr></tbody></table>
 <h2>3 個最容易搞混的地方</h2>
 <h3>COUNT 跟 COUNTA 差在哪？</h3>
 <p>COUNT 只會理會「數字」；COUNTA 則是只要不是空白就算進去，包含文字、日期、0、公式回傳的內容。你如果在算「有幾筆業績金額」，通常用 COUNT；如果在算「有幾位員工有填資料」，通常用 COUNTA。</p>
 <h3>AVERAGE 怎麼看 0、空白、文字？</h3>
-<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">AVERAGE / COUNT / COUNTA 的處理差異</caption><thead><tr><th>儲存格內容</th><th>COUNT</th><th>COUNTA</th><th>AVERAGE</th></tr></thead><tbody><tr><td>120000</td><td>算</td><td>算</td><td>算</td></tr><tr><td>0</td><td>算</td><td>算</td><td>算</td></tr><tr><td>空白</td><td>不算</td><td>不算</td><td>不算</td></tr><tr><td>文字「待補」</td><td>不算</td><td>算</td><td>不算</td></tr></tbody></table>
+<table><caption class="lesson-caption">AVERAGE / COUNT / COUNTA 的處理差異</caption><thead><tr><th>儲存格內容</th><th>COUNT</th><th>COUNTA</th><th>AVERAGE</th></tr></thead><tbody><tr><td>120000</td><td>算</td><td>算</td><td>算</td></tr><tr><td>0</td><td>算</td><td>算</td><td>算</td></tr><tr><td>空白</td><td>不算</td><td>不算</td><td>不算</td></tr><tr><td>文字「待補」</td><td>不算</td><td>算</td><td>不算</td></tr></tbody></table>
 <p>所以如果資料是 120000、0、空白、待補、95000，AVERAGE 會用 <code>(120000 + 0 + 95000) ÷ 3</code>。0 不是空白，它會真的把平均拉低。</p>
 <h3>MAX / MIN 跟 LARGE / SMALL 怎麼分工？</h3>
 <p>MAX / MIN 只回答「最大值」和「最小值」；LARGE / SMALL 回答的是「第幾名」。問「最高業績多少」用 MAX，問「第 3 名業績多少」才用 LARGE。倒數第 2 名、倒數第 3 名，就換 SMALL。</p>

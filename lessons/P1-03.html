@@ -20,20 +20,20 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-03 · Phase 1 · 操作效率</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P1-03 · Phase 1 · 操作效率</div>
     <h1>條件判斷</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">IF 是 Excel 的「if 陳述式」，會了它才能寫條件邏輯</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">從這課開始，Excel 不只是算數字，而是會根據條件給出不同結果。先分清楚你要判斷的是一件事、多個門檻、多個條件，還是固定值對應。</p><h2>先分 4 種判斷</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">先問判斷型態，再選函數</caption><thead><tr><th>你想判斷什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>一個條件成立或不成立</td><td>IF</td><td>最基本的「如果...否則...」</td></tr><tr><td>同一欄有多個門檻</td><td>IFS</td><td>由左到右檢查，一命中就停止</td></tr><tr><td>多個條件要一起看</td><td>AND / OR</td><td>AND 是全部成立；OR 是任一成立</td></tr><tr><td>固定值對應固定結果</td><td>SWITCH</td><td>部門代碼、狀態代碼、月份代碼這類很適合</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">從這課開始，Excel 不只是算數字，而是會根據條件給出不同結果。先分清楚你要判斷的是一件事、多個門檻、多個條件，還是固定值對應。</p><h2>先分 4 種判斷</h2><table><caption class="lesson-caption">先問判斷型態，再選函數</caption><thead><tr><th>你想判斷什麼</th><th>用哪個函數</th><th>一句提醒</th></tr></thead><tbody><tr><td>一個條件成立或不成立</td><td>IF</td><td>最基本的「如果...否則...」</td></tr><tr><td>同一欄有多個門檻</td><td>IFS</td><td>由左到右檢查，一命中就停止</td></tr><tr><td>多個條件要一起看</td><td>AND / OR</td><td>AND 是全部成立；OR 是任一成立</td></tr><tr><td>固定值對應固定結果</td><td>SWITCH</td><td>部門代碼、狀態代碼、月份代碼這類很適合</td></tr></tbody></table>
 <h2>怎麼選：一張決策樹</h2>
-<img class="diagram-light" src="img/if-decision.png" alt="IF / IFS / SWITCH 條件判斷選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
-<img class="diagram-dark" src="img/if-decision.dark.png" alt="IF / IFS / SWITCH 條件判斷選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px">
-<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+<img class="diagram-light" src="img/if-decision.png" alt="IF / IFS / SWITCH 條件判斷選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px" loading="lazy" decoding="async">
+<img class="diagram-dark" src="img/if-decision.dark.png" alt="IF / IFS / SWITCH 條件判斷選擇決策樹" style="max-width:100%;margin:16px 0;border-radius:12px" loading="lazy" decoding="async">
+
 <h2>語法起手式</h2><pre><code class="lang-excel"># 單一條件：成績及格判斷
 =IF(B2&gt;=60, &quot;及格&quot;, &quot;不及格&quot;)
 

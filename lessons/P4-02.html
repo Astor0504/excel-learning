@@ -20,16 +20,16 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-02 · Phase 4 · 進階自動化</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P4-02 · Phase 4 · 進階自動化</div>
     <h1>進階函式</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
     <div class="tldr"><strong>TL;DR — 30 秒看懂</strong><p style="margin:6px 0 0">進階函式不是炫技，而是把長公式變得可讀、可測、可重用</p></div>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">這一課不是把冷門函數塞滿腦袋，而是學會判斷：公式太長時怎麼拆？同一段邏輯重複出現時怎麼封裝？交付給別人時哪些函數會有風險？</p><h2>先把工具分成 4 類</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">進階函式的使用場景</caption><thead><tr><th>需求</th><th>優先工具</th><th>一句提醒</th></tr></thead><tbody><tr><td>公式太長、重複計算太多</td><td>LET</td><td>替中間結果命名，讓公式像分段說明</td></tr><tr><td>同一段商業邏輯會重複用</td><td>LAMBDA</td><td>先測公式，再放進名稱管理員變成自訂函式</td></tr><tr><td>統計時要忽略錯誤或隱藏列</td><td>AGGREGATE</td><td>比 SUM / AVERAGE 多了錯誤處理選項</td></tr><tr><td>依代碼回傳不同結果</td><td>SWITCH</td><td>比多層 IF 更像對照表，維護成本較低</td></tr><tr><td>用文字組參照或動態範圍</td><td>INDIRECT / OFFSET</td><td>可用，但屬於 volatile 函數，檔案大時要節制</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">這一課不是把冷門函數塞滿腦袋，而是學會判斷：公式太長時怎麼拆？同一段邏輯重複出現時怎麼封裝？交付給別人時哪些函數會有風險？</p><h2>先把工具分成 4 類</h2><table><caption class="lesson-caption">進階函式的使用場景</caption><thead><tr><th>需求</th><th>優先工具</th><th>一句提醒</th></tr></thead><tbody><tr><td>公式太長、重複計算太多</td><td>LET</td><td>替中間結果命名，讓公式像分段說明</td></tr><tr><td>同一段商業邏輯會重複用</td><td>LAMBDA</td><td>先測公式，再放進名稱管理員變成自訂函式</td></tr><tr><td>統計時要忽略錯誤或隱藏列</td><td>AGGREGATE</td><td>比 SUM / AVERAGE 多了錯誤處理選項</td></tr><tr><td>依代碼回傳不同結果</td><td>SWITCH</td><td>比多層 IF 更像對照表，維護成本較低</td></tr><tr><td>用文字組參照或動態範圍</td><td>INDIRECT / OFFSET</td><td>可用，但屬於 volatile 函數，檔案大時要節制</td></tr></tbody></table>
 <h2>語法起手式</h2><pre><code class="lang-excel"># LET：替中間結果命名，最後一段是回傳值
 =LET(total, SUM(B2:E2), bonus, IF(total&gt;=500000, total*5%, 0), total+bonus)
 

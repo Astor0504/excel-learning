@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-03 · Phase 5 · VBA</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-03 · Phase 5 · VBA</div>
     <h1>VBA 實戰專案</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -42,11 +42,11 @@
     </section>
     <div id="cheatInline"></div>
     <article class="md-body">
-    <p style="font-size:18px;color:var(--muted);line-height:1.7">實戰專案不是把巨集寫越長越好，而是把「輸入、處理、輸出、驗證」四段責任切清楚。這樣流程壞掉時才知道該查哪裡，也比較能交給別人使用。</p><h2>專案流程先拆成 4 段</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">月報自動化的責任分工</caption><thead><tr><th>階段</th><th>誰負責</th><th>交付標準</th></tr></thead><tbody><tr><td>輸入</td><td>CSV / Excel 原始資料</td><td>檔名、欄位、資料夾位置固定</td></tr><tr><td>處理</td><td>Power Query / 公式 / 樞紐</td><td>可重新整理，不靠手動複製貼上</td></tr><tr><td>輸出</td><td>VBA</td><td>重新整理、匯出 PDF、建立交付資料夾</td></tr><tr><td>驗證</td><td>VBA + 檢查表</td><td>留下執行時間、輸出路徑、錯誤訊息</td></tr></tbody></table>
+    <p style="font-size:18px;color:var(--muted);line-height:1.7">實戰專案不是把巨集寫越長越好，而是把「輸入、處理、輸出、驗證」四段責任切清楚。這樣流程壞掉時才知道該查哪裡，也比較能交給別人使用。</p><h2>專案流程先拆成 4 段</h2><table><caption class="lesson-caption">月報自動化的責任分工</caption><thead><tr><th>階段</th><th>誰負責</th><th>交付標準</th></tr></thead><tbody><tr><td>輸入</td><td>CSV / Excel 原始資料</td><td>檔名、欄位、資料夾位置固定</td></tr><tr><td>處理</td><td>Power Query / 公式 / 樞紐</td><td>可重新整理，不靠手動複製貼上</td></tr><tr><td>輸出</td><td>VBA</td><td>重新整理、匯出 PDF、建立交付資料夾</td></tr><tr><td>驗證</td><td>VBA + 檢查表</td><td>留下執行時間、輸出路徑、錯誤訊息</td></tr></tbody></table>
 <h2>自動化流程總覽</h2>
-<img class="diagram-light" src="img/vba-pipeline.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
-<img class="diagram-dark" src="img/vba-pipeline.dark.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px">
-<style>.diagram-light,.diagram-dark{display:block}html[data-theme="dark"] .diagram-light{display:none}html:not([data-theme="dark"]) .diagram-dark{display:none}</style>
+<img class="diagram-light" src="img/vba-pipeline.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px" loading="lazy" decoding="async">
+<img class="diagram-dark" src="img/vba-pipeline.dark.svg" alt="VBA 月報自動化流程圖" style="max-width:100%;margin:12px 0;border-radius:12px" loading="lazy" decoding="async">
+
 
 <h2>範例：月報交付自動化</h2>
 <div class="callout"><strong>工具分工提醒</strong>這個範例的重點是 VBA 負責的部分：<strong>觸發更新 → 控制輸出 → 留下交付紀錄</strong>。清資料（刪空白、重複值、格式整形）應該先在 Power Query 裡建好可重跑步驟，再讓 VBA 呼叫 <code>RefreshAll</code>。如果你把清資料邏輯寫進 VBA，每次流程變動就要改巨集，不如讓 Power Query 負責「清」，VBA 負責「跑」。</div>

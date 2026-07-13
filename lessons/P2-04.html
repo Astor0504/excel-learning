@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-04 · Phase 2 · 職場即戰力</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-04 · Phase 2 · 職場即戰力</div>
     <h1>條件式格式化</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -30,7 +30,7 @@
     <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">條件式格式化不是把報表塗漂亮，而是把「需要採取行動」的資料自動推到眼前。好的規則會回答一個明確問題：誰超標？誰逾期？哪個數字正在變差？</p>
-<h2>先判斷目的，再選規則</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">條件式格式化決策表</caption><thead><tr><th>判斷目的</th><th>建議規則</th><th>適合場景</th></tr></thead><tbody><tr><td>比較大小</td><td>資料橫條</td><td>業績、庫存、完成率</td></tr><tr><td>看高低分布</td><td>色階</td><td>熱力圖、風險分數、毛利率</td></tr><tr><td>標出狀態</td><td>圖示集</td><td>上升/下降、紅黃綠燈</td></tr><tr><td>依多欄判斷整列</td><td>使用公式決定格式</td><td>逾期訂單、需追蹤客戶、異常交易</td></tr></tbody></table>
+<h2>先判斷目的，再選規則</h2><table><caption class="lesson-caption">條件式格式化決策表</caption><thead><tr><th>判斷目的</th><th>建議規則</th><th>適合場景</th></tr></thead><tbody><tr><td>比較大小</td><td>資料橫條</td><td>業績、庫存、完成率</td></tr><tr><td>看高低分布</td><td>色階</td><td>熱力圖、風險分數、毛利率</td></tr><tr><td>標出狀態</td><td>圖示集</td><td>上升/下降、紅黃綠燈</td></tr><tr><td>依多欄判斷整列</td><td>使用公式決定格式</td><td>逾期訂單、需追蹤客戶、異常交易</td></tr></tbody></table>
 <h2>完整流程：範圍、規則、格式</h2><p>先選「要被上色的範圍」，再建立規則。這個順序很重要：如果你只選 D 欄，公式即使判斷正確，也只會把 D 欄上色；若要整列提醒，就要先選整個資料區，例如 A2:F100。</p>
 <h2>自訂公式規則（最強）</h2><pre><code class="lang-excel"># 整列上色：當 D 欄是「逾期」就把 A:F 整列變紅
 # 先選 A2:F100 → 條件式格式化 → 新增規則 → 使用公式
@@ -47,7 +47,7 @@
 =AND($E2&gt;=3, $F2&lt;0)</code></pre>
 <h2>管理規則順序</h2><p>規則多了之後，請進「管理規則」檢查三件事：套用範圍是否正確、規則順序是否合理、是否需要勾選「若為 True 則停止」。同一格同時被多個規則命中時，最後看到的格式可能不是你以為的那個。</p>
 <h2>一個穩定的規則設計流程</h2>
-<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">從商業訊號到可交付格式</caption><thead><tr><th>步驟</th><th>你要先決定</th><th>檢查方式</th></tr></thead><tbody><tr><td>1. 定義訊號</td><td>這個顏色代表要追蹤、表揚、還是修正？</td><td>用一句話說清楚，不清楚就不要上色</td></tr><tr><td>2. 選套用範圍</td><td>只標單格，還是整列都要提醒？</td><td>管理規則裡檢查「套用到」是否涵蓋整個資料區</td></tr><tr><td>3. 寫規則</td><td>單欄大小比較、文字狀態，還是多欄 AND 條件？</td><td>用 2~3 列測試資料確認命中與排除都正確</td></tr><tr><td>4. 控制視覺層級</td><td>哪個規則最重要？是否需要停止為 True？</td><td>避免每格同時有 3 種顏色，最後反而看不出重點</td></tr></tbody></table>
+<table><caption class="lesson-caption">從商業訊號到可交付格式</caption><thead><tr><th>步驟</th><th>你要先決定</th><th>檢查方式</th></tr></thead><tbody><tr><td>1. 定義訊號</td><td>這個顏色代表要追蹤、表揚、還是修正？</td><td>用一句話說清楚，不清楚就不要上色</td></tr><tr><td>2. 選套用範圍</td><td>只標單格，還是整列都要提醒？</td><td>管理規則裡檢查「套用到」是否涵蓋整個資料區</td></tr><tr><td>3. 寫規則</td><td>單欄大小比較、文字狀態，還是多欄 AND 條件？</td><td>用 2~3 列測試資料確認命中與排除都正確</td></tr><tr><td>4. 控制視覺層級</td><td>哪個規則最重要？是否需要停止為 True？</td><td>避免每格同時有 3 種顏色，最後反而看不出重點</td></tr></tbody></table>
 <h2>交付前檢查</h2>
 <p>條件式格式化做好後，請刻意新增一筆「應該命中」和一筆「不該命中」的資料，確認格式會跟著反應。正式報表要把規則名稱或判斷邏輯寫在旁邊的小註記，否則下個接手的人只會看到一堆顏色，不知道它們代表什麼。</p>
 <div class="callout"><strong>⚠️ 注意</strong>公式裡 $ 用錯地方是最常犯的錯。整列上色通常要鎖欄不鎖列，例如 <code>$D2</code>；如果寫成 <code>$D$2</code>，整張表都只會看 D2，一改就全錯。</div>

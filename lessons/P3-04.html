@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P3-04 · Phase 3 · 專業打磨</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P3-04 · Phase 3 · 專業打磨</div>
     <h1>命名範圍與表格</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -41,11 +41,11 @@
 =SUM(業績表[金額])
 =SUMIFS(業績表[金額], 業績表[部門], &quot;電子&quot;)
 =業績表[@金額] * 0.05  # @ 代表本列</code></pre>
-<h2>普通範圍 vs 表格</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">維護差異比較</caption><thead><tr><th>項目</th><th>普通範圍</th><th>表格</th></tr></thead><tbody><tr><td>新增資料列</td><td>公式可能沒有涵蓋</td><td>自動納入表格範圍</td></tr><tr><td>公式可讀性</td><td>C2:C500、A2:A500</td><td>業績表[金額]、業績表[部門]</td></tr><tr><td>樞紐/圖表來源</td><td>常要手動改範圍</td><td>重新整理即可吃到新列</td></tr><tr><td>維護風險</td><td>容易漏列或選錯欄</td><td>欄名清楚，較不容易誤接</td></tr></tbody></table>
+<h2>普通範圍 vs 表格</h2><table><caption class="lesson-caption">維護差異比較</caption><thead><tr><th>項目</th><th>普通範圍</th><th>表格</th></tr></thead><tbody><tr><td>新增資料列</td><td>公式可能沒有涵蓋</td><td>自動納入表格範圍</td></tr><tr><td>公式可讀性</td><td>C2:C500、A2:A500</td><td>業績表[金額]、業績表[部門]</td></tr><tr><td>樞紐/圖表來源</td><td>常要手動改範圍</td><td>重新整理即可吃到新列</td></tr><tr><td>維護風險</td><td>容易漏列或選錯欄</td><td>欄名清楚，較不容易誤接</td></tr></tbody></table>
 <h2>命名規則與維護邏輯</h2>
 <p>好的名稱要讓人知道資料的角色，而不是只知道位置。建議表格用名詞，例如 <code>銷售表</code>、<code>商品表</code>、<code>客戶表</code>；參數用明確用途，例如 <code>稅率</code>、<code>匯率</code>、<code>目標毛利率</code>。不要用 <code>Table1</code>、<code>資料2</code> 這類名稱，因為它們在公式裡沒有任何商業意義。</p>
 <h2>什麼時候用命名範圍，什麼時候用表格</h2>
-<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">兩者不是二選一，而是分工</caption><thead><tr><th>情境</th><th>建議</th><th>理由</th></tr></thead><tbody><tr><td>交易明細、訂單、客戶清單會新增列</td><td>先轉成表格</td><td>範圍會自動擴張，公式、樞紐、圖表都比較穩</td></tr><tr><td>稅率、匯率、目標值這類固定參數</td><td>用命名範圍</td><td>公式可讀性更好，調整參數也更集中</td></tr><tr><td>資料驗證來源清單</td><td>表格或命名範圍都可</td><td>清單會增減時用表格更省維護</td></tr><tr><td>跨工作表公式長到難讀</td><td>表格 + 清楚名稱</td><td>讓公式從位置語言變成資料語言</td></tr></tbody></table>
+<table><caption class="lesson-caption">兩者不是二選一，而是分工</caption><thead><tr><th>情境</th><th>建議</th><th>理由</th></tr></thead><tbody><tr><td>交易明細、訂單、客戶清單會新增列</td><td>先轉成表格</td><td>範圍會自動擴張，公式、樞紐、圖表都比較穩</td></tr><tr><td>稅率、匯率、目標值這類固定參數</td><td>用命名範圍</td><td>公式可讀性更好，調整參數也更集中</td></tr><tr><td>資料驗證來源清單</td><td>表格或命名範圍都可</td><td>清單會增減時用表格更省維護</td></tr><tr><td>跨工作表公式長到難讀</td><td>表格 + 清楚名稱</td><td>讓公式從位置語言變成資料語言</td></tr></tbody></table>
 <h2>常見錯誤</h2><p>表格名稱不要用空白或特殊符號，建議用 <code>業績表</code>、<code>產品表</code>、<code>客戶表</code> 這種清楚短名。欄位改名後，相關公式也會跟著更新，但如果刪掉整個欄位，公式仍可能失效；交付前要檢查錯誤值。</p>
 <div class="callout"><strong>小技巧</strong>養成「先把原始資料轉成表格，再做公式、樞紐、圖表」的習慣。這不是儀式感，是降低後續維護成本。</div>
 

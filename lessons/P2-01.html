@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-01 · Phase 2 · 職場即戰力</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P2-01 · Phase 2 · 職場即戰力</div>
     <h1>條件統計</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -30,7 +30,7 @@
     <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">條件統計不是六個函數分開背，而是一條固定判斷路徑：先看要算筆數、合計還是平均；再看條件是一個還是多個；最後才寫語法與驗算命中列。</p>
-<h2>本課解法路徑</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">遇到條件統計題，照這 4 步走</caption><thead><tr><th>步驟</th><th>你要回答</th><th>結果</th></tr></thead><tbody><tr><td>1. 算什麼</td><td>幾筆、合計、還是平均？</td><td>COUNT / SUM / AVERAGE 家族</td></tr><tr><td>2. 條件幾個</td><td>一個條件，還是多個條件同時成立？</td><td>IF 或 IFS 版本</td></tr><tr><td>3. 範圍順序</td><td>先寫條件範圍，還是先寫計算範圍？</td><td>避免 SUMIF / SUMIFS 順序寫反</td></tr><tr><td>4. 驗算命中列</td><td>哪些列真的被算進去？</td><td>確認結果可以交付</td></tr></tbody></table>
+<h2>本課解法路徑</h2><table><caption class="lesson-caption">遇到條件統計題，照這 4 步走</caption><thead><tr><th>步驟</th><th>你要回答</th><th>結果</th></tr></thead><tbody><tr><td>1. 算什麼</td><td>幾筆、合計、還是平均？</td><td>COUNT / SUM / AVERAGE 家族</td></tr><tr><td>2. 條件幾個</td><td>一個條件，還是多個條件同時成立？</td><td>IF 或 IFS 版本</td></tr><tr><td>3. 範圍順序</td><td>先寫條件範圍，還是先寫計算範圍？</td><td>避免 SUMIF / SUMIFS 順序寫反</td></tr><tr><td>4. 驗算命中列</td><td>哪些列真的被算進去？</td><td>確認結果可以交付</td></tr></tbody></table>
 <h2>第一步：先選公式家族</h2><table><thead><tr><th>主管問法</th><th>單一條件</th><th>多個條件</th><th>你在算什麼</th></tr></thead><tbody><tr><td>北區有幾筆訂單？</td><td>COUNTIF</td><td>COUNTIFS</td><td>符合條件的筆數</td></tr><tr><td>電子類金額合計？</td><td>SUMIF</td><td>SUMIFS</td><td>符合條件的數字合計</td></tr><tr><td>北區電子平均金額？</td><td>AVERAGEIF</td><td>AVERAGEIFS</td><td>符合條件的數字平均</td></tr></tbody></table>
 <p>這張表是本課的核心。先不要急著背括號裡的參數，先把問題翻成「算筆數 / 算合計 / 算平均」和「單條件 / 多條件」。選對公式後，語法只剩下照順序填範圍。</p>
 <h2>第二步：單條件先抓條件欄</h2><pre><code class="lang-excel"># 數筆數：北區有幾筆訂單？

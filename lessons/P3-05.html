@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P3-05 · Phase 3 · 專業打磨</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P3-05 · Phase 3 · 專業打磨</div>
     <h1>保護與安全</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -30,12 +30,12 @@
     <div id="cheatInline"></div>
     <article class="md-body">
     <p style="font-size:18px;color:var(--muted);line-height:1.7">把報表寄出去之前，先決定「哪些格子可以填、哪些公式不能碰、哪些工作表結構不能改」。Excel 保護的目標是防誤改，不是拿來做資安邊界。</p>
-<h2>先分清楚 4 種保護</h2><table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">工作表保護層級說明</caption><thead><tr><th>層級</th><th>保護什麼</th><th>怎麼做</th></tr></thead><tbody><tr><td>儲存格鎖定</td><td>哪些格子不能被改</td><td>格式 → 儲存格 → 保護 → 鎖定</td></tr><tr><td>工作表保護</td><td>禁止改鎖定格、控制可用動作</td><td>校閱 → 保護工作表</td></tr><tr><td>活頁簿保護</td><td>防止新增、刪除、移動工作表</td><td>校閱 → 保護活頁簿</td></tr><tr><td>檔案密碼</td><td>限制誰能開啟檔案</td><td>檔案 → 密碼或另存時設定</td></tr></tbody></table>
+<h2>先分清楚 4 種保護</h2><table><caption class="lesson-caption">工作表保護層級說明</caption><thead><tr><th>層級</th><th>保護什麼</th><th>怎麼做</th></tr></thead><tbody><tr><td>儲存格鎖定</td><td>哪些格子不能被改</td><td>格式 → 儲存格 → 保護 → 鎖定</td></tr><tr><td>工作表保護</td><td>禁止改鎖定格、控制可用動作</td><td>校閱 → 保護工作表</td></tr><tr><td>活頁簿保護</td><td>防止新增、刪除、移動工作表</td><td>校閱 → 保護活頁簿</td></tr><tr><td>檔案密碼</td><td>限制誰能開啟檔案</td><td>檔案 → 密碼或另存時設定</td></tr></tbody></table>
 <h2>標準流程：先解鎖，再保護</h2><p>Excel 預設所有儲存格都是「鎖定」，但只有在你啟用保護工作表後才會生效。所以流程要反過來想：先選「使用者可以填寫的儲存格」→ 取消鎖定 → 再保護工作表。這樣使用者只能填輸入區，公式區維持不可改。</p>
 <h2>保護工作表時要勾什麼</h2><p>通常至少保留「選取未鎖定的儲存格」，讓使用者能跳到輸入欄位。是否允許排序、篩選、插入列，取決於你的表單設計；若資料區是表格且使用者需要新增資料，請先測一次新增列會不會破壞公式。</p>
 <h2>交付前測試</h2><p>保護後請用使用者視角測三件事：輸入欄位能不能填、公式欄位能不能被擋住、篩選/列印/貼上是否符合預期。不要只測密碼有沒有生效，真正會出事的是使用者工作流程被你鎖壞。</p>
 <h2>建議交付流程</h2>
-<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">把保護當成交付流程，不是最後才補密碼</caption><thead><tr><th>步驟</th><th>要做什麼</th><th>為什麼</th></tr></thead><tbody><tr><td>1. 標示輸入區</td><td>用淡色底或註解標出使用者可填欄位</td><td>保護不是讓人猜哪裡能填</td></tr><tr><td>2. 解鎖輸入格</td><td>只取消鎖定真正要填的儲存格</td><td>避免使用者誤改公式或參數</td></tr><tr><td>3. 鎖住公式與結構</td><td>保護工作表，必要時再保護活頁簿結構</td><td>防止刪欄、改公式、移動工作表</td></tr><tr><td>4. 測使用者流程</td><td>填資料、貼上、篩選、列印、儲存都跑一次</td><td>很多保護問題不是不能鎖，而是鎖太死</td></tr><tr><td>5. 留一份未保護備份</td><td>保存作者版與交付版</td><td>忘記密碼或規則設錯時還能修</td></tr></tbody></table>
+<table><caption class="lesson-caption">把保護當成交付流程，不是最後才補密碼</caption><thead><tr><th>步驟</th><th>要做什麼</th><th>為什麼</th></tr></thead><tbody><tr><td>1. 標示輸入區</td><td>用淡色底或註解標出使用者可填欄位</td><td>保護不是讓人猜哪裡能填</td></tr><tr><td>2. 解鎖輸入格</td><td>只取消鎖定真正要填的儲存格</td><td>避免使用者誤改公式或參數</td></tr><tr><td>3. 鎖住公式與結構</td><td>保護工作表，必要時再保護活頁簿結構</td><td>防止刪欄、改公式、移動工作表</td></tr><tr><td>4. 測使用者流程</td><td>填資料、貼上、篩選、列印、儲存都跑一次</td><td>很多保護問題不是不能鎖，而是鎖太死</td></tr><tr><td>5. 留一份未保護備份</td><td>保存作者版與交付版</td><td>忘記密碼或規則設錯時還能修</td></tr></tbody></table>
 <h2>保護與資安的邊界</h2>
 <p>工作表保護適合防手滑，不適合防外流。如果檔案內有薪資、客戶個資或報價底價，請用檔案開啟密碼、雲端權限、版本控管與最小分享範圍，而不是期待「保護工作表」本身能擋住有心人。</p>
 <div class="callout"><strong>⚠️ 注意</strong>工作表保護不是加密，懂 Excel 的人仍可能繞過。機密資料請用檔案密碼、權限控管和正式的檔案分享機制，不要只靠保護工作表。</div>

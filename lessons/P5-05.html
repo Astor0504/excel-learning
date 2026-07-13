@@ -20,9 +20,9 @@
   </div>
 </nav>
 <div class="layout">
-  <aside class="toc"><h5>本頁目錄</h5><nav id="tocNav"></nav></aside>
+  <aside class="toc"><p class="toc-label">本頁目錄</p><nav id="tocNav"></nav></aside>
   <main class="lesson">
-    <div style="color:var(--muted);font-size:13px"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-05 · Phase 5 · VBA 番外</div>
+    <div class="lesson-crumb"><a href="../index.html" style="color:inherit">← 回到目錄</a> · P5-05 · Phase 5 · VBA 番外</div>
     <h1>WPS JS 宏——把你會的 VBA 平移過去</h1>
     <div class="progress"><span></span></div>
     <div class="progress-label">本課進度 0 / 4</div>
@@ -41,7 +41,7 @@
 }</code></pre>
 <p style="font-size:13px;color:var(--muted)">跟 VBA 的三個第一眼差異：不用 Dim 宣告型別、<code>alert()</code> 取代 <code>MsgBox</code>、註解用 <code>//</code>。游標放在函式裡按執行鍵就會跑。</p>
 <h2>VBA ↔ JS 宏對照表</h2>
-<table><caption style="caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 6px;font-weight:600">會 VBA 的人只要背這張表</caption><thead><tr><th>VBA 寫法</th><th>JS 宏寫法</th><th>提醒</th></tr></thead><tbody><tr><td><code>Sub 名稱() … End Sub</code></td><td><code>function 名稱() { … }</code></td><td>大括號包住內容</td></tr><tr><td><code>Dim x As Long</code></td><td><code>let x = 0;</code></td><td>不用宣告型別</td></tr><tr><td><code>MsgBox "完成"</code></td><td><code>alert("完成");</code></td><td>—</td></tr><tr><td><code>' 註解</code></td><td><code>// 註解</code></td><td>—</td></tr><tr><td><code>"A" &amp; B</code></td><td><code>"A" + B</code></td><td>字串連接改用 +</td></tr><tr><td><code>Worksheets("月報")</code></td><td><code>Worksheets.Item("月報")</code></td><td>集合取值加 <code>.Item()</code> 最穩</td></tr><tr><td><code>On Error GoTo / Resume</code></td><td><code>try { } catch (err) { } finally { }</code></td><td>復原設定放 <code>finally</code></td></tr></tbody></table>
+<table><caption class="lesson-caption">會 VBA 的人只要背這張表</caption><thead><tr><th>VBA 寫法</th><th>JS 宏寫法</th><th>提醒</th></tr></thead><tbody><tr><td><code>Sub 名稱() … End Sub</code></td><td><code>function 名稱() { … }</code></td><td>大括號包住內容</td></tr><tr><td><code>Dim x As Long</code></td><td><code>let x = 0;</code></td><td>不用宣告型別</td></tr><tr><td><code>MsgBox "完成"</code></td><td><code>alert("完成");</code></td><td>—</td></tr><tr><td><code>' 註解</code></td><td><code>// 註解</code></td><td>—</td></tr><tr><td><code>"A" &amp; B</code></td><td><code>"A" + B</code></td><td>字串連接改用 +</td></tr><tr><td><code>Worksheets("月報")</code></td><td><code>Worksheets.Item("月報")</code></td><td>集合取值加 <code>.Item()</code> 最穩</td></tr><tr><td><code>On Error GoTo / Resume</code></td><td><code>try { } catch (err) { } finally { }</code></td><td>復原設定放 <code>finally</code></td></tr></tbody></table>
 <h2>範例：迴圈與最後一列</h2>
 <p>VBA 課教過的 <code>End(xlUp)</code> 找最後一列，在 JS 宏裡長得幾乎一樣：</p>
 <pre><code class="lang-js">function 標記缺交() {
