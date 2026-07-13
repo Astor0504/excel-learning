@@ -49,10 +49,13 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
 
   var panel = document.createElement('div');
   panel.id = 'cheatDrawer';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-modal', 'true');
+  panel.setAttribute('aria-label', '速查手冊');
   panel.innerHTML = [
     '<div class="cd-head">',
     '  <strong id="cdTitle">'+lessonConf.title+'</strong>',
-    '  <button id="cdClose" title="關閉">×</button>',
+    '  <button id="cdClose" title="關閉" aria-label="關閉速查手冊">×</button>',
     '</div>',
     '<div class="cd-search">',
     '  <input id="cdSearch" placeholder="搜尋函式/快捷鍵…" autocomplete="off">',
@@ -186,7 +189,9 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
   }
 
   // ── 開關 ──
+  var lastTrigger = null;
   function open(){
+    lastTrigger = document.activeElement;
     panel.classList.add('open');
     backdrop.classList.add('show');
     setTimeout(function(){ panel.querySelector('#cdSearch').focus(); }, 200);
@@ -194,10 +199,24 @@ import { CHEATSHEET_DATA } from './cheatsheet-data.js';
   function close(){
     panel.classList.remove('open');
     backdrop.classList.remove('show');
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    else fab.focus();
+  }
+  function trapFocus(e){
+    if (e.key !== 'Tab') return;
+    var focusable = Array.prototype.filter.call(
+      panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      function(el){ return el.offsetParent !== null; }
+    );
+    if (!focusable.length) return;
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
   fab.addEventListener('click', open);
   panel.querySelector('#cdClose').addEventListener('click', close);
   backdrop.addEventListener('click', close);
+  panel.addEventListener('keydown', trapFocus);
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && panel.classList.contains('open')) close();
   });

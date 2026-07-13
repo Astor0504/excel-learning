@@ -2322,6 +2322,19 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   });
 })();
 
+// ========= 無障礙:對話框 focus trap 共用 helper =========
+// 開啟中的彈窗把 Tab / Shift+Tab 鎖在內部可聚焦元素之間，避免焦點跑到底下的頁面內容。
+function a11yTrapTab(container, e){
+  if (e.key !== "Tab") return;
+  const focusable = Array.from(container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
 // ========= AI 助教浮動聊天 =========
 (function(){
   if (!document.getElementById("aiFab")) return;
@@ -2334,6 +2347,10 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   const input = document.getElementById("aiInput");
   const sendBtn = document.getElementById("aiSend");
   const copyBtn = document.getElementById("aiCopy");
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-label", "AI 助教");
+  let aiLastTrigger = null;
 
   // 收集當前頁面內容當 context
   const lessonTitle = document.querySelector(".lesson h1")?.textContent || document.title;
@@ -2343,10 +2360,18 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   const sysPrompt = `你是一位友善、簡潔的學習教練，使用繁體中文回答。學生正在閱讀「${SITE_NAME}」中的單元：「${lessonTitle}」（${breadcrumb}）。\n\n本課內容摘要：\n${bodyText}\n\n回答原則：\n- 用最白話的方式解釋\n- 優先用條列、表格或範例\n- 如果學生問題和本課無關，也可以回答\n- 保持簡短，重點優先`;
 
   let messages = [];
-  function open(){ panel.classList.add("open"); fab.classList.add("hidden"); setTimeout(()=>input.focus(),200); }
-  function close(){ panel.classList.remove("open"); fab.classList.remove("hidden"); }
+  function open(){ aiLastTrigger = document.activeElement; panel.classList.add("open"); fab.classList.add("hidden"); setTimeout(()=>input.focus(),200); }
+  function close(){
+    panel.classList.remove("open"); fab.classList.remove("hidden");
+    if (aiLastTrigger && typeof aiLastTrigger.focus === "function") aiLastTrigger.focus();
+    else fab.focus();
+  }
   fab.addEventListener("click", open);
   closeBtn.addEventListener("click", close);
+  panel.addEventListener("keydown", e => {
+    if (e.key === "Escape") { close(); return; }
+    a11yTrapTab(panel, e);
+  });
 
   function add(role, text){
     const div = document.createElement("div");
@@ -2443,9 +2468,17 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
   const input = document.getElementById("searchInput");
   const results = document.getElementById("searchResults");
   if (!btn || !modal) return;
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-label", "搜尋");
   let cursor = 0, current = [];
-  function open(){ modal.classList.add("open"); input.value=""; render(""); setTimeout(()=>input.focus(),50); }
-  function close(){ modal.classList.remove("open"); }
+  let searchLastTrigger = null;
+  function open(){ searchLastTrigger = document.activeElement; modal.classList.add("open"); input.value=""; render(""); setTimeout(()=>input.focus(),50); }
+  function close(){
+    modal.classList.remove("open");
+    if (searchLastTrigger && typeof searchLastTrigger.focus === "function") searchLastTrigger.focus();
+    else btn.focus();
+  }
   function render(q){
     q = q.trim().toLowerCase();
     current = !q ? idx.slice(0, 30) : idx.filter(e => (e.t+" "+(e.b||"")+" "+(e.s||"")).toLowerCase().includes(q)).slice(0, 50);
@@ -2468,6 +2501,7 @@ idx.forEach(e => { const k = "done:" + e.u.split("/").slice(-2).join("/"); if (l
     if (e.key === "ArrowDown") { e.preventDefault(); cursor=Math.min(cursor+1,current.length-1); upd(); }
     if (e.key === "ArrowUp")   { e.preventDefault(); cursor=Math.max(cursor-1,0); upd(); }
     if (e.key === "Enter") { const a = results.querySelectorAll(".search-item")[cursor]; if (a) location.href = a.href; }
+    a11yTrapTab(modal, e);
   });
   function upd(){
     results.querySelectorAll(".search-item").forEach((el,i) => el.classList.toggle("active", i===cursor));
@@ -2806,11 +2840,11 @@ window.__TTS = (function(){
     </div>
     <div class="tts-current" data-tts-current>按播放可朗讀目前頁面，或用段落按鈕只讀這一段。</div>
     <div class="tts-controls">
-    <button class="tts-ico" data-act="prev" title="上一句">⏮</button>
-    <button class="tts-ico" data-act="toggle" title="播放或暫停">▶</button>
-    <button class="tts-ico" data-act="next" title="下一句">⏭</button>
-    <button class="tts-ico" data-act="stop" title="停止">⏹</button>
-    <button class="tts-ico" data-act="selection" title="朗讀選取文字">✂</button>
+    <button class="tts-ico" data-act="prev" title="上一句" aria-label="上一句">⏮</button>
+    <button class="tts-ico" data-act="toggle" title="播放或暫停" aria-label="播放或暫停" aria-pressed="false">▶</button>
+    <button class="tts-ico" data-act="next" title="下一句" aria-label="下一句">⏭</button>
+    <button class="tts-ico" data-act="stop" title="停止" aria-label="停止">⏹</button>
+    <button class="tts-ico" data-act="selection" title="朗讀選取文字" aria-label="朗讀選取文字">✂</button>
     <label class="tts-rate">速度<select data-act="rate">
       <option value="0.85">0.85x</option><option value="1">1x</option>
       <option value="1.05">1.05x</option><option value="1.2">1.2x</option>
@@ -2818,8 +2852,8 @@ window.__TTS = (function(){
     </select></label>
     <select class="tts-voice" data-act="voice"></select>
     <label class="tts-rate"><input type="checkbox" data-act="mode"> Azure 自然</label>
-    <button class="tts-ico" data-act="page" title="朗讀整頁">📖</button>
-    <button class="tts-ico" data-act="close" title="收起">✕</button>
+    <button class="tts-ico" data-act="page" title="朗讀整頁" aria-label="朗讀整頁">📖</button>
+    <button class="tts-ico" data-act="close" title="收起" aria-label="關閉朗讀工具">✕</button>
     </div>
   `;
   document.body.appendChild(panel);
@@ -2860,7 +2894,10 @@ window.__TTS = (function(){
   function setStatus(s){
     ttsState = s;
     const t = panel.querySelector('[data-act="toggle"]');
-    if (t) t.textContent = (s === 'playing' || s === 'loading') ? '⏸' : '▶';
+    if (t) {
+      t.textContent = (s === 'playing' || s === 'loading') ? '⏸' : '▶';
+      t.setAttribute('aria-pressed', (s === 'playing' || s === 'loading') ? 'true' : 'false');
+    }
     updatePanelStatus();
   }
 

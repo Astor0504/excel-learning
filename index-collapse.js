@@ -40,9 +40,11 @@
     var label = h2.textContent.trim();
     h2.className = 'phase-head';
     h2.innerHTML = '';
-    h2.setAttribute('role','button');
-    h2.setAttribute('tabindex','0');
-    h2.setAttribute('aria-expanded','true');
+
+    var toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'phase-toggle';
+    toggleBtn.setAttribute('aria-expanded','true');
 
     var title = document.createElement('span');
     title.className = 'phase-title';
@@ -56,9 +58,10 @@
     chev.className = 'phase-chev';
     chev.textContent = '▾';
 
-    h2.appendChild(title);
-    h2.appendChild(stat);
-    h2.appendChild(chev);
+    toggleBtn.appendChild(title);
+    toggleBtn.appendChild(stat);
+    toggleBtn.appendChild(chev);
+    h2.appendChild(toggleBtn);
 
     section.insertAdjacentElement('afterend', group);
 
@@ -72,15 +75,12 @@
     function setOpen(o){
       open = o;
       group.classList.toggle('is-open', o);
-      h2.setAttribute('aria-expanded', o ? 'true' : 'false');
+      toggleBtn.setAttribute('aria-expanded', o ? 'true' : 'false');
       h2.classList.toggle('is-open', o);
       section.classList.toggle('is-open', o);
       try { localStorage.setItem(key, o ? '1' : '0'); } catch(e){}
     }
-    h2.addEventListener('click', function(){ setOpen(!open); });
-    h2.addEventListener('keydown', function(e){
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!open); }
-    });
+    toggleBtn.addEventListener('click', function(){ setOpen(!open); });
   });
 
   // 看看 referrer 來自哪個 lesson → 自動展開那個 Phase
@@ -98,7 +98,8 @@
           if (sec) sec.classList.add('is-open');
           if (hd) {
             hd.classList.add('is-open');
-            hd.setAttribute('aria-expanded', 'true');
+            var hdBtn = hd.querySelector('.phase-toggle');
+            if (hdBtn) hdBtn.setAttribute('aria-expanded', 'true');
           }
         }
       }

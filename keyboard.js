@@ -40,7 +40,7 @@
     el.classList.add('kbWrap');
     var chipsHtml = '<div class="kbChips">';
     shortcuts.forEach(function(s){
-      chipsHtml += '<div class="chip" data-keys="'+s.keys+'">'+s.label+'</div>';
+      chipsHtml += '<div class="chip" data-keys="'+s.keys+'" tabindex="0" role="button">'+s.label+'</div>';
     });
     chipsHtml += '</div>';
     el.innerHTML = buildKeyboard() + chipsHtml;
@@ -59,6 +59,12 @@
       c.addEventListener('click', function(){
         chips.querySelectorAll('.chip.active').forEach(function(e){e.classList.remove('active');});
         c.classList.add('active'); light(c.dataset.keys);
+      });
+      c.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+          e.preventDefault();
+          c.click();
+        }
       });
     });
     el.addEventListener('mouseleave', function(){

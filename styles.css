@@ -3702,6 +3702,7 @@ html[data-theme="dark"] .xc-diff-pill{background:transparent}
 .phase-head.is-open{border-color:var(--accent);background:var(--accent-soft)}
 .phase-head.is-open .phase-chev{transform:rotate(180deg);color:var(--accent)}
 .phase-head.is-open .phase-stat{background:var(--surface);color:var(--accent)}
+.phase-toggle{background:none;border:0;font:inherit;color:inherit;display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;padding:0}
 
 .phase-group{
   display:none;
@@ -5285,3 +5286,7 @@ body[data-lesson-slug][data-focus-mode="on"] .lesson > .lesson-nav{
 .diagram-light,.diagram-dark{display:block}
 html[data-theme="dark"] .diagram-light{display:none}
 html:not([data-theme="dark"]) .diagram-dark{display:none}
+
+/* ===== 無障礙:skip link(2026-07-13 P2 修復) ===== */
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--surface);color:var(--text);padding:10px 16px;border-radius:0 0 12px 0;z-index:2000;border:2px solid var(--accent-2)}
+.skip-link:focus{left:0}
