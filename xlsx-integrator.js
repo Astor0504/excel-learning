@@ -504,15 +504,29 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
     if (media.title) headBits.push(el('div',{class:'xc-demo-media-title',text:media.title}));
     if (headBits.length) fig.appendChild(el('figcaption',{class:'xc-demo-media-head'},headBits));
 
-    var picture = el('picture',{class:'xc-demo-media-frame'});
-    if (media.webp) picture.appendChild(el('source',{type:'image/webp',srcset:media.webp}));
-    picture.appendChild(el('img',{
-      src: media.src,
-      alt: media.alt || media.title || '操作示範短片',
-      loading: 'lazy',
-      decoding: 'async'
-    }));
-    fig.appendChild(picture);
+    var frame;
+    if (media.video){
+      frame = el('div',{class:'xc-demo-media-frame is-video'});
+      var video = el('video',{
+        src: media.video,
+        'aria-label': media.alt || media.title || '操作示範短片',
+        preload: 'metadata',
+        playsinline: '', muted: '', autoplay: '', loop: '', controls: ''
+      });
+      video.muted = true; // 部分瀏覽器的自動播放政策只認 property,不認 attribute
+      if (media.poster) video.setAttribute('poster', media.poster);
+      frame.appendChild(video);
+    } else {
+      frame = el('picture',{class:'xc-demo-media-frame'});
+      if (media.webp) frame.appendChild(el('source',{type:'image/webp',srcset:media.webp}));
+      frame.appendChild(el('img',{
+        src: media.src,
+        alt: media.alt || media.title || '操作示範短片',
+        loading: 'lazy',
+        decoding: 'async'
+      }));
+    }
+    fig.appendChild(frame);
     if (media.note) fig.appendChild(el('div',{class:'xc-demo-media-note',text:media.note}));
     return fig;
   }

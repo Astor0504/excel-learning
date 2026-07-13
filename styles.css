@@ -889,6 +889,11 @@ html.js-anim .animate-in.visible{opacity:1;transform:none}
 .phase-3 .phase-badge{background:#C4935A}
 .phase-4 .phase-badge{background:#9B7FBF}
 .phase-5 .phase-badge{background:#D06B6B}
+html[data-theme="dark"] .phase-1 .phase-badge{background:#4E7A5E}
+html[data-theme="dark"] .phase-2 .phase-badge{background:#48688C}
+html[data-theme="dark"] .phase-3 .phase-badge{background:#96693A}
+html[data-theme="dark"] .phase-4 .phase-badge{background:#6F5691}
+html[data-theme="dark"] .phase-5 .phase-badge{background:#A34A4A}
 
 /* Checklist completion animation */
 .checklist input:checked+.box{animation:checkBounce .35s ease}
@@ -2128,7 +2133,7 @@ html[data-theme="dark"] .lesson pre{background:#0d1117;border:1px solid var(--li
 /* Warning callout */
 .callout{border-left:4px solid #f5a623;background:#fff8eb;
   padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0}
-html[data-theme="dark"] .callout{background:#3a2f15;color:#ffd58a}
+html[data-theme="dark"] .callout{background:#3a2f15;color:#ffd58a;border-left-color:#C98F2F}
 .callout strong{color:#b8721a;display:block;margin-bottom:4px}
 html[data-theme="dark"] .callout strong{color:#ffb84d}
 
@@ -2932,10 +2937,12 @@ html[data-theme="dark"] .xc-demo-media{background:rgba(27,30,28,.96)}
   padding:7px 12px;border-radius:999px;background:rgba(27,29,28,.76);color:#fff;
   font-size:12px;font-weight:700;letter-spacing:.4px;backdrop-filter:blur(8px)
 }
-.xc-demo-media-frame img{
+.xc-demo-media-frame img,
+.xc-demo-media-frame video{
   display:block;width:100%;height:auto;border-radius:14px;border:1px solid rgba(125,132,121,.14);
   box-shadow:0 16px 28px rgba(40,42,39,.10)
 }
+.xc-demo-media-frame.is-video::after{display:none}
 .xc-demo-media-note{
   padding:0 16px 15px;color:var(--muted);font-size:13px;line-height:1.65
 }

@@ -757,6 +757,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "先看一次完整操作，再直接去練習區跟做",
         src: "/media/p2-03-pivot-demo.webp",
+        video: "/media/p2-03-pivot-demo.mp4",
+        poster: "/media/p2-03-pivot-demo-poster.jpg",
         alt: "樞紐分析操作短片：從原始資料、插入樞紐分析表、把部門拖到列、月份拖到欄、業績拖到值，最後形成彙總報表。",
         note: "這支短片刻意放慢節奏，讓你看清楚每一次拖曳、停頓和報表長出的順序。這一課不再重複放第二套 Pivot 拆步，避免同頁內容重複。"
       },
@@ -780,6 +782,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "從黑白表格，變成會自己說重點的月報",
         src: "/media/p2-04-conditional-demo.webp",
+        video: "/media/p2-04-conditional-demo.mp4",
+        poster: "/media/p2-04-conditional-demo-poster.jpg",
         alt: "條件式格式化操作短片：選取業績欄位、建立規則、套用資料橫條與醒目提醒，最後形成可快速判讀的月報。",
         note: "這支短片聚焦在三個實務動作：業績橫條、負成長標紅、客訴偏高提醒。看懂之後再去練習區自己重做，會比先讀一堆規則更容易進狀況。"
       },
@@ -803,6 +807,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "從下拉選單到錯誤提醒，示範一次完整表單防呆",
         src: "/media/p3-01-validation-demo.webp",
+        video: "/media/p3-01-validation-demo.mp4",
+        poster: "/media/p3-01-validation-demo-poster.jpg",
         alt: "資料驗證操作短片：設定部門清單、開啟下拉選單、輸入錯誤手機時跳出提醒，最後形成乾淨可交付的表單。",
         note: "這支短片故意把節奏放慢，讓你看清楚規則設定、使用者實際填表，以及錯誤被阻止時的差別。資料驗證真正有價值的地方，就是把清理成本往前移。"
       },
@@ -961,6 +967,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "示範一次：選資料、插組合圖、去雜訊、補觀點",
         src: "/media/p3-03-chart-demo.webp",
+        video: "/media/p3-03-chart-demo.mp4",
+        poster: "/media/p3-03-chart-demo-poster.jpg",
         alt: "圖表設計操作短片：選取月份、營收和成長率資料，插入組合圖，刪除雜訊並加上有觀點的標題，最後形成更專業的圖表。",
         note: "這裡刻意不是教你所有圖表類型，而是示範一條最常見的職場流程：把原始自動圖修成主管願意直接貼進簡報的版本。"
       },
@@ -1470,6 +1478,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "從髒 CSV 到月報自動更新，先看一次完整路徑",
         src: "/media/p4-04-power-query-demo.webp",
+        video: "/media/p4-04-power-query-demo.mp4",
+        poster: "/media/p4-04-power-query-demo-poster.jpg",
         alt: "Power Query 操作短片：連到原始 CSV、記住清理步驟、附加每月資料，最後在新增四月檔後按重新整理更新報表。",
         note: "這支短片保留了最有感的四個瞬間：接來源、記步驟、附加月份、重新整理。先建立整體節奏感，再去課文和練習裡補細節，會比較容易懂為什麼 Power Query 值得學。"
       },
@@ -1493,6 +1503,8 @@ export const LESSON_DEMOS = {
         kicker: "慢速循環短片",
         title: "從多表、關聯、量值，到最後交給樞紐展示",
         src: "/media/p4-05-data-model-demo.webp",
+        video: "/media/p4-05-data-model-demo.mp4",
+        poster: "/media/p4-05-data-model-demo-poster.jpg",
         alt: "資料模型操作短片：先分開訂單表與產品表，建立產品ID關聯，寫量值公式，最後把結果交給樞紐分析表展示。",
         note: "這一課本來就偏觀念，所以短片重點不是花俏拖曳，而是把『多表 → 關聯 → 量值 → 樞紐』這條路徑建立起來。對 Mac 使用者尤其重要，因為你更需要判斷何時該交給模型，而不是硬把所有邏輯塞進樞紐。"
       },
