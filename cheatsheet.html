@@ -4,23 +4,61 @@
 <meta name="api-base" content="https://excel-learning-theta.vercel.app">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#F1F4EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1A1D1B" media="(prefers-color-scheme: dark)">
 <title>Excel 函式 & VBA 速查手冊 | macOS 版</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+<script>
+(function(){
+  try {
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) {}
+})();
+</script>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap");
 :root {
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --surface2: #334155;
-  --border: #475569;
-  --text: #e2e8f0;
-  --text2: #94a3b8;
-  --accent: #60a5fa;
+  --bg: #F1F4EE;
+  --surface: #FBFDF9;
+  --surface2: #F5F8F2;
+  --border: #E5DCCC;
+  --text: #26221D;
+  --text2: #6D665D;
+  --accent: #4A6B4D;
+  --accent-bg: #567A59;
+  --green: #1F7A3D;
+  --yellow: #8A6100;
+  --orange: #9A4A12;
+  --red: #A32B2B;
+  --purple: #6B46A3;
+  --tipbg: #EFEAF7;
+  --tipborder: rgba(107, 70, 163, .35);
+  --topbar-bg: rgba(241, 244, 238, .92);
+  --lv1: #1E6B3A; --lv1bg: #DEF3E4;
+  --lv2: #2B5C86; --lv2bg: #DCEAF5;
+  --lv3: #8A6100; --lv3bg: #FBF0CC;
+  --lv4: #9A4A12; --lv4bg: #FBE4D2;
+  --lv5: #A32B2B; --lv5bg: #FADCDC;
+}
+html[data-theme="dark"] {
+  --bg: #1A1D1B;
+  --surface: #232826;
+  --surface2: #2A302D;
+  --border: #363C38;
+  --text: #F4EFE6;
+  --text2: #B4AC9F;
+  --accent: #94B690;
+  --accent-bg: #4E6E51;
   --green: #4ade80;
   --yellow: #fbbf24;
   --orange: #fb923c;
   --red: #f87171;
   --purple: #a78bfa;
+  --tipbg: #1a1a2e;
+  --tipborder: rgba(167, 139, 250, .35);
+  --topbar-bg: rgba(26, 29, 27, .92);
   --lv1: #4ade80; --lv1bg: #052e16;
   --lv2: #60a5fa; --lv2bg: #0c1e3a;
   --lv3: #fbbf24; --lv3bg: #2d2006;
@@ -29,7 +67,7 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: 'Segoe UI', -apple-system, 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', 'PingFang TC', -apple-system, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -99,17 +137,19 @@ header p { color: var(--text2); font-size: 0.95em; }
   transition: all .2s;
 }
 .filter-btn:hover { border-color: var(--accent); color: var(--text); }
-.filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.filter-btn.active { background: var(--accent-bg); color: #fff; border-color: var(--accent-bg); font-weight: 600; }
 .filter-btn[data-lv="1"] { border-color: var(--lv1); }
-.filter-btn[data-lv="1"].active { background: var(--lv1); }
+.filter-btn[data-lv="1"].active { background: var(--lv1); color: #fff; }
 .filter-btn[data-lv="2"] { border-color: var(--lv2); }
-.filter-btn[data-lv="2"].active { background: var(--lv2); }
+.filter-btn[data-lv="2"].active { background: var(--lv2); color: #fff; }
 .filter-btn[data-lv="3"] { border-color: var(--lv3); }
-.filter-btn[data-lv="3"].active { background: var(--lv3); }
+.filter-btn[data-lv="3"].active { background: var(--lv3); color: #fff; }
 .filter-btn[data-lv="4"] { border-color: var(--lv4); }
-.filter-btn[data-lv="4"].active { background: var(--lv4); }
+.filter-btn[data-lv="4"].active { background: var(--lv4); color: #fff; }
 .filter-btn[data-lv="5"] { border-color: var(--lv5); }
-.filter-btn[data-lv="5"].active { background: var(--lv5); }
+.filter-btn[data-lv="5"].active { background: var(--lv5); color: #fff; }
+/* dark theme: lv1-5 stay bright/neon, so active buttons need dark (not white) text */
+html[data-theme="dark"] .filter-btn[data-lv].active { color: #000; }
 
 /* Cards */
 .card {
@@ -179,8 +219,8 @@ header p { color: var(--text2); font-size: 0.95em; }
 .card-detail h4 { color: var(--accent); margin-bottom: 6px; font-size: 0.95em; }
 .card-detail p { color: var(--text2); font-size: 0.88em; margin-bottom: 8px; }
 .card-detail .tip {
-  background: #1a1a2e;
-  border: 1px solid rgba(167, 139, 250, .35);
+  background: var(--tipbg);
+  border: 1px solid var(--tipborder);
   padding: 8px 12px;
   border-radius: 8px;
   margin-top: 8px;
@@ -240,12 +280,12 @@ header p { color: var(--text2); font-size: 0.95em; }
   font-size: 0.75em;
   transition: all .2s;
 }
-.copy-btn:hover { background: var(--accent); color: #000; }
+.copy-btn:hover { background: var(--accent-bg); color: #fff; }
 .vba-explain {
   padding: 10px 16px;
   font-size: 0.88em;
   color: var(--purple);
-  background: #1a1a2e;
+  background: var(--tipbg);
   border-top: 1px solid var(--border);
 }
 
@@ -285,8 +325,8 @@ header p { color: var(--text2); font-size: 0.95em; }
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--accent);
-  color: #000;
+  background: var(--accent-bg);
+  color: #fff;
   border: none;
   font-size: 1.2em;
   cursor: pointer;
@@ -322,9 +362,12 @@ mark {
 <script defer src="/_vercel/insights/script.js"></script></head>
 <body>
 
-<div style="position:sticky;top:0;z-index:100;background:rgba(15,23,42,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between">
+<div style="position:sticky;top:0;z-index:100;background:var(--topbar-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between">
   <a href="index.html" style="color:var(--accent);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px">← 回到學習地圖</a>
-  <span style="color:var(--text2);font-size:13px">📖 速查手冊</span>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="color:var(--text2);font-size:13px">📖 速查手冊</span>
+    <button id="themeToggle" type="button" aria-label="切換深色模式" title="切換深色模式" style="background:none;border:1px solid var(--border);border-radius:8px;width:32px;height:32px;font-size:16px;line-height:1;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;">🌙</button>
+  </div>
 </div>
 
 <main class="container">
@@ -595,9 +638,36 @@ window.addEventListener('scroll', () => {
   document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
 });
 
+// ── Theme toggle (syncs with main site via localStorage 'theme') ──
+const themeToggleBtn = document.getElementById('themeToggle');
+function syncThemeToggleIcon() {
+  if (!themeToggleBtn) return;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+  const label = isDark ? '切換到亮色模式' : '切換到深色模式';
+  themeToggleBtn.setAttribute('aria-label', label);
+  themeToggleBtn.title = label;
+}
+themeToggleBtn?.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', '');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  }
+  syncThemeToggleIcon();
+});
+
 // ── Init ──
 renderCards(formulas);
 renderVBA(vbaTemplates);
+syncThemeToggleIcon();
+
+// 這幾個函式被 HTML 的 inline onclick 呼叫，但 module 作用域不會自動掛到 window，
+// 所以必須顯式導出，否則「標記學會/重置進度/複製/展開」點下去會 ReferenceError。
+Object.assign(window, { toggleLearned, resetProgress, copyCode, togglePanel });
 </script>
 </body>
 </html>
