@@ -1167,8 +1167,7 @@ initChecklist();
     `;
   }).join("");
 
-  const anchor = lesson.querySelector(".lesson-variant-switch")
-    || lesson.querySelector(".tldr")
+  const anchor = lesson.querySelector(".tldr")
     || lesson.querySelector(".progress-label");
   if (anchor) anchor.insertAdjacentElement("afterend", rail);
 })();
