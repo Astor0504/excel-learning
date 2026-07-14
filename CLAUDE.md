@@ -21,6 +21,7 @@ Excel 站建立了一套 lesson 結構，新增課程請沿用：
 - **決策樹**：用 Mermaid（`npx --yes @mermaid-js/mermaid-cli`）產 SVG，light/dark 兩版
 - **平台 callout（兩維度都要查）**：凡遇平台差異一律加 callout，且**分開檢查兩維度**——①macOS 版 Excel 限制（本站 macOS 取向）②WPS 差異（台灣 WPS 使用者多）。常見只補了 macOS 卻漏 WPS（如 Power Query/Power Pivot 課）；新增或修課時兩維度都要確認。
 - 每課 HTML 行數 `wc -l` 控制在可維護範圍
+- **課程資料按課切片(2026-07-14 起)**:每課的互動內容與示範資料在 `lesson-data/{slug}.js`(`export const CONTENT / DEMOS`),首頁用的全站資料+各課 meta 在 `site-data.js`。舊的 xlsx-content.js / lesson-demos-data.js 已移除——**新增課程時直接建立新切片檔,不要重建整包大檔**。
 
 ## 建站時的部署流程
 1. `git push` → Vercel 自動部署

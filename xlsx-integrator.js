@@ -1,15 +1,17 @@
-import { XLSX_CONTENT } from './xlsx-content.js';
-import { LESSON_DEMOS } from './lesson-demos-data.js';
-
 /* xlsx-integrator.js
  * 把 Excel互動練習 / Excel專業養成 的內容深度整合進 lesson 頁。
  * 依 body[data-lesson-slug] 自動找對應內容並注入到主內容區末端。
+ * 資料改為按課切片載入(lesson-data/{slug}.js),只抓當頁需要的一份。
  */
-(function(){
-  if (!XLSX_CONTENT) return;
+(async function(){
   var slug = document.body.getAttribute('data-lesson-slug');
   if (!slug) return;
-  var data = XLSX_CONTENT.lessons?.[slug];
+  var data = null, __DEMOS = [];
+  try {
+    var __m = await import('./lesson-data/' + slug + '.js');
+    data = __m.CONTENT;
+    __DEMOS = __m.DEMOS || [];
+  } catch(e){ return; }
   if (!data) return;
 
   // 工具
@@ -987,7 +989,7 @@ import { LESSON_DEMOS } from './lesson-demos-data.js';
   if (!article) return;
 
   var container = el('div', {class:'xc-integrated'});
-  var demos = LESSON_DEMOS[slug] || [];
+  var demos = __DEMOS;
 
   var meta = buildMetaSection();
   if (meta) {

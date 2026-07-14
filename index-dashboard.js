@@ -1,11 +1,11 @@
-import { XLSX_CONTENT } from './xlsx-content.js';
+import { SITE_DATA } from './site-data.js';
 
 /* index-dashboard.js — 首頁學習儀表板：徽章、學習策略、起點 */
 (function(){
   if (!document.querySelector('.hero')) return;
-  if (!XLSX_CONTENT) return;
+  if (!SITE_DATA) return;
 
-  var D = XLSX_CONTENT;
+  var D = SITE_DATA;
   var badges = D.badges || [];
   var strategies = D.strategies || [];
 

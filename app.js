@@ -1,8 +1,14 @@
 
 import { SEARCH_INDEX } from './search-index.js';
 import { QUIZ_CARDS } from './quiz-data.js';
-import { LESSON_DEMOS } from './lesson-demos-data.js';
 import { LESSON_DOWNLOADS } from './lesson-downloads-data.js';
+
+// 每課資料切片:只載入當頁課程的 demos(取代整包 lesson-demos-data)
+const __lessonSlug = document.body?.dataset.lessonSlug || "";
+let __lessonDemos = [];
+if (__lessonSlug) {
+  try { __lessonDemos = (await import('./lesson-data/' + __lessonSlug + '.js')).DEMOS || []; } catch(e){}
+}
 
 function pageKey(){
   const parts = location.pathname.split("/").filter(Boolean);
@@ -747,7 +753,7 @@ function isLessonPage(){
   return !!document.body?.dataset.lessonSlug;
 }
 function getPrimaryLessonDemo(slug){
-  const demos = LESSON_DEMOS[slug] || [];
+  const demos = (slug === __lessonSlug ? __lessonDemos : []);
   return demos.find(demo => demo?.role === "primary" || demo?.primary === true) || demos[0] || null;
 }
 function getLessonDownloads(slug){
