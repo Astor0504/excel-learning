@@ -745,6 +745,284 @@ if (document.body?.dataset.lessonSlug) {
 
 // Shared HTML escape — used by AI chat and search
 function escHtml(s){ return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const RUNTIME_ENV = (() => {
+  const protocol = location.protocol;
+  const hostname = location.hostname;
+  const isFile = protocol === "file:";
+  const isLocalhost = !isFile && (
+    hostname === "localhost"
+    || hostname === "127.0.0.1"
+    || hostname === "[::1]"
+    || hostname === "::1"
+  );
+  const metaBase = document.querySelector('meta[name="api-base"]')?.content?.trim().replace(/\/$/, "") || "";
+  const apiBase = isFile ? "" : (isLocalhost ? "" : metaBase);
+  const env = {
+    isFile,
+    isLocalhost,
+    apiBase,
+    localDemoMode: isFile,
+    backendAvailable: false,
+    backendHealth: null,
+  };
+  const healthController = isFile ? null : new AbortController();
+  const healthTimeout = healthController
+    ? window.setTimeout(() => healthController.abort(), 4500)
+    : 0;
+  env.healthPromise = isFile
+    ? Promise.resolve(null)
+    : fetch(`${apiBase}/api/health`, {
+        headers: { "Accept": "application/json" },
+        cache: "no-store",
+        signal: healthController.signal,
+      })
+        .then(response => {
+          if (!response.ok) throw new Error(`health ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          env.backendAvailable = true;
+          env.backendHealth = data || {};
+          env.localDemoMode = env.isLocalhost && env.backendHealth.chat !== true;
+          return env.backendHealth;
+        })
+        .catch(error => {
+          env.backendAvailable = false;
+          env.backendHealth = null;
+          if (env.isLocalhost) env.localDemoMode = true;
+          console.info("API health probe unavailable", error);
+          return null;
+        })
+        .finally(() => window.clearTimeout(healthTimeout));
+  return env;
+})();
+(function setupGridOpsBrand(){
+  const brand = document.querySelector(".nav .brand");
+  if (!brand || brand.querySelector(".brand-lockup")) return;
+  const target = brand.querySelector("a") || brand;
+  target.innerHTML = `
+    <span class="dot"></span>
+    <span class="brand-lockup">
+      <strong>GRID <i>/</i> OPS</strong>
+      <small>EXCEL SYSTEMS LAB</small>
+    </span>
+  `;
+})();
+function runtimeApiUrl(path){
+  return `${RUNTIME_ENV.apiBase}${path}`;
+}
+function showRuntimeNotice(message, tone = "info"){
+  let region = document.getElementById("runtimeNoticeRegion");
+  if (!region) {
+    region = document.createElement("div");
+    region.id = "runtimeNoticeRegion";
+    region.setAttribute("aria-live", "polite");
+    region.setAttribute("aria-atomic", "true");
+    region.dataset.ttsSkip = "true";
+    Object.assign(region.style, {
+      position: "fixed",
+      top: "76px",
+      right: "16px",
+      zIndex: "2200",
+      display: "grid",
+      gap: "8px",
+      width: "min(360px, calc(100vw - 32px))",
+      pointerEvents: "none",
+    });
+    document.body.appendChild(region);
+  }
+  const notice = document.createElement("div");
+  notice.dataset.runtimeNotice = tone;
+  notice.dataset.ttsSkip = "true";
+  notice.setAttribute("role", "status");
+  notice.textContent = message;
+  Object.assign(notice.style, {
+    padding: "11px 14px",
+    border: "1px solid var(--line, #d7ddd8)",
+    borderLeft: `4px solid ${tone === "error" ? "#d25b4b" : tone === "success" ? "#4f8b5f" : "#5f77a8"}`,
+    borderRadius: "12px",
+    background: "var(--surface, #fff)",
+    color: "var(--text, #1f2722)",
+    boxShadow: "0 10px 28px rgba(24, 32, 27, .14)",
+    fontSize: "13px",
+    lineHeight: "1.55",
+    opacity: "1",
+    transform: "translateY(0)",
+    transition: "opacity .18s ease, transform .18s ease",
+  });
+  region.appendChild(notice);
+  window.setTimeout(() => {
+    notice.style.opacity = "0";
+    notice.style.transform = "translateY(-6px)";
+    window.setTimeout(() => {
+      notice.remove();
+      if (!region.childElementCount) region.remove();
+    }, 220);
+  }, 3200);
+}
+async function copyTextWithFallback(text){
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {}
+  }
+  const active = document.activeElement;
+  const helper = document.createElement("textarea");
+  helper.value = text;
+  helper.setAttribute("readonly", "");
+  helper.setAttribute("aria-hidden", "true");
+  helper.dataset.ttsSkip = "true";
+  Object.assign(helper.style, {
+    position: "fixed",
+    left: "-9999px",
+    top: "0",
+    opacity: "0",
+  });
+  document.body.appendChild(helper);
+  helper.focus();
+  helper.select();
+  helper.setSelectionRange(0, helper.value.length);
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch (e) {
+    copied = false;
+  }
+  helper.remove();
+  if (active && typeof active.focus === "function") active.focus();
+  if (!copied) throw new Error("clipboard unavailable");
+  return true;
+}
+function showManualCopyFallback(text){
+  document.getElementById("manualCopyFallback")?.remove();
+  const wrap = document.createElement("div");
+  wrap.id = "manualCopyFallback";
+  wrap.dataset.ttsSkip = "true";
+  wrap.setAttribute("role", "dialog");
+  wrap.setAttribute("aria-modal", "true");
+  wrap.setAttribute("aria-label", "手動複製文字");
+  Object.assign(wrap.style, {
+    position: "fixed",
+    inset: "0",
+    zIndex: "2300",
+    display: "grid",
+    placeItems: "center",
+    padding: "20px",
+    background: "rgba(20, 27, 23, .42)",
+  });
+  const card = document.createElement("div");
+  Object.assign(card.style, {
+    width: "min(620px, 100%)",
+    padding: "18px",
+    border: "1px solid var(--line, #d7ddd8)",
+    borderRadius: "16px",
+    background: "var(--surface, #fff)",
+    color: "var(--text, #1f2722)",
+    boxShadow: "0 20px 56px rgba(20, 27, 23, .24)",
+  });
+  const title = document.createElement("strong");
+  title.textContent = "瀏覽器未開放自動複製";
+  const hint = document.createElement("p");
+  hint.textContent = "文字已全選，請按 ⌘ C（Windows：Ctrl C）複製。";
+  Object.assign(hint.style, { margin: "6px 0 10px", fontSize: "13px", lineHeight: "1.55" });
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  Object.assign(area.style, {
+    width: "100%",
+    minHeight: "180px",
+    padding: "12px",
+    border: "1px solid var(--line, #d7ddd8)",
+    borderRadius: "10px",
+    resize: "vertical",
+    background: "var(--bg, #f5f7f5)",
+    color: "inherit",
+    font: "13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace",
+  });
+  const close = document.createElement("button");
+  close.type = "button";
+  close.textContent = "完成";
+  Object.assign(close.style, {
+    display: "block",
+    margin: "12px 0 0 auto",
+    padding: "9px 16px",
+    border: "0",
+    borderRadius: "9px",
+    background: "var(--accent-strong, #3f7450)",
+    color: "#fff",
+    cursor: "pointer",
+  });
+  card.append(title, hint, area, close);
+  wrap.appendChild(card);
+  document.body.appendChild(wrap);
+  const dismiss = () => wrap.remove();
+  close.addEventListener("click", dismiss);
+  wrap.addEventListener("click", event => { if (event.target === wrap) dismiss(); });
+  wrap.addEventListener("keydown", event => { if (event.key === "Escape") dismiss(); });
+  area.focus();
+  area.select();
+  area.setSelectionRange(0, area.value.length);
+}
+const FLOATING_UI = (() => {
+  let active = "";
+  const hiddenState = new WeakMap();
+  function setTemporarilyHidden(node, hidden){
+    if (!node) return;
+    if (hidden) {
+      if (!hiddenState.has(node)) {
+        hiddenState.set(node, {
+          visibility: node.style.visibility,
+          opacity: node.style.opacity,
+          pointerEvents: node.style.pointerEvents,
+        });
+      }
+      node.style.visibility = "hidden";
+      node.style.opacity = "0";
+      node.style.pointerEvents = "none";
+      node.setAttribute("aria-hidden", "true");
+      return;
+    }
+    const previous = hiddenState.get(node);
+    if (!previous) return;
+    node.style.visibility = previous.visibility;
+    node.style.opacity = previous.opacity;
+    node.style.pointerEvents = previous.pointerEvents;
+    node.removeAttribute("aria-hidden");
+    hiddenState.delete(node);
+  }
+  function sync(){
+    document.body.dataset.floatingSurface = active;
+    setTemporarilyHidden(document.querySelector(".pomo"), !!active);
+    setTemporarilyHidden(document.getElementById("ttsFab"), active === "ai");
+    if (active === "tts") document.getElementById("aiFab")?.classList.add("hidden");
+    else if (!document.getElementById("aiPanel")?.classList.contains("open")) {
+      document.getElementById("aiFab")?.classList.remove("hidden");
+    }
+  }
+  function activate(kind){
+    if (kind === "ai") {
+      document.getElementById("ttsPanel")?.classList.remove("open");
+      window.__TTS?.stop?.();
+    } else if (kind === "tts") {
+      document.getElementById("aiPanel")?.classList.remove("open");
+    }
+    active = kind;
+    sync();
+  }
+  function deactivate(kind){
+    if (!kind || active === kind) active = "";
+    sync();
+  }
+  function closeAll(){
+    document.getElementById("aiPanel")?.classList.remove("open");
+    document.getElementById("ttsPanel")?.classList.remove("open");
+    window.__TTS?.stop?.();
+    active = "";
+    sync();
+  }
+  return { activate, deactivate, closeAll };
+})();
 function usesReadingLessonFlow(){
   const variant = document.body?.dataset.lessonVariant || "";
   return variant !== "command" && variant !== "studio";
@@ -860,9 +1138,7 @@ function setFocusMode(on){
     localStorage.setItem(FOCUS_MODE_KEY, on ? "1" : "0");
   } catch (e) {}
   if (on) {
-    document.getElementById("aiPanel")?.classList.remove("open");
-    document.getElementById("aiFab")?.classList.remove("hidden");
-    document.getElementById("ttsPanel")?.classList.remove("open");
+    FLOATING_UI.closeAll();
     document.getElementById("cheatDrawer")?.classList.remove("open");
     document.getElementById("cheatBackdrop")?.classList.remove("show");
   }
@@ -2341,8 +2617,6 @@ function a11yTrapTab(container, e){
 // ========= AI 助教浮動聊天 =========
 (function(){
   if (!document.getElementById("aiFab")) return;
-  const __apiMeta = document.querySelector('meta[name="api-base"]');
-  const CHAT_API_BASE = (__apiMeta && __apiMeta.content) ? __apiMeta.content.replace(/\/$/,'') : '';
   const fab = document.getElementById("aiFab");
   const panel = document.getElementById("aiPanel");
   const closeBtn = document.getElementById("aiClose");
@@ -2363,9 +2637,16 @@ function a11yTrapTab(container, e){
   const sysPrompt = `你是一位友善、簡潔的學習教練，使用繁體中文回答。學生正在閱讀「${SITE_NAME}」中的單元：「${lessonTitle}」（${breadcrumb}）。\n\n本課內容摘要：\n${bodyText}\n\n回答原則：\n- 用最白話的方式解釋\n- 優先用條列、表格或範例\n- 如果學生問題和本課無關，也可以回答\n- 保持簡短，重點優先`;
 
   let messages = [];
-  function open(){ aiLastTrigger = document.activeElement; panel.classList.add("open"); fab.classList.add("hidden"); setTimeout(()=>input.focus(),200); }
+  function open(){
+    aiLastTrigger = document.activeElement;
+    FLOATING_UI.activate("ai");
+    panel.classList.add("open");
+    fab.classList.add("hidden");
+    setTimeout(()=>input.focus(),200);
+  }
   function close(){
     panel.classList.remove("open"); fab.classList.remove("hidden");
+    FLOATING_UI.deactivate("ai");
     if (aiLastTrigger && typeof aiLastTrigger.focus === "function") aiLastTrigger.focus();
     else fab.focus();
   }
@@ -2382,6 +2663,18 @@ function a11yTrapTab(container, e){
     div.innerHTML = role === "user" ? esc(text) : renderMd(text);
     log.appendChild(div);
     log.scrollTop = log.scrollHeight;
+  }
+  function addNotice(text, tone = "info"){
+    const div = document.createElement("div");
+    div.className = "ai-msg ai-system-notice";
+    div.dataset.aiTransient = "true";
+    div.dataset.ttsSkip = "true";
+    div.setAttribute("role", "status");
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    showRuntimeNotice(text, tone);
+    window.setTimeout(() => div.remove(), 9000);
   }
   const esc = escHtml;
   function renderMd(s){
@@ -2402,6 +2695,33 @@ function a11yTrapTab(container, e){
     s = s.replace(/\n\n/g, "<br><br>");
     return s;
   }
+  function offlineCoachReply(question){
+    const q = String(question || "").toLowerCase();
+    const title = lessonTitle.trim() || "這個 Excel 單元";
+    if (/vba|巨集|宏|自動化|script/.test(q)) {
+      return `**先把手動流程跑穩，再自動化。**\n\n在「${title}」可以照這 4 格拆：\n- 輸入：資料從哪裡來？\n- 處理：哪些步驟每次都重複？\n- 驗證：怎麼知道結果正確？\n- 輸出：最後要交付哪張表或檔案？\n\n最小練習：先只自動化一個可復原的步驟，再補錯誤處理。`;
+    }
+    if (/power query|query|清理|合併|csv|匯入|etl/.test(q)) {
+      return `**這類工作優先考慮 Power Query。**\n\n判斷順序：\n- 資料來源是否固定？\n- 清理步驟是否每週／每月重複？\n- 結果是否需要按「重新整理」就更新？\n\n如果多數答案是「是」，就把流程做成「匯入 → 轉換 → 載入」，不要繼續手動複製貼上。`;
+    }
+    if (/樞紐|pivot|彙總|報表/.test(q)) {
+      return `**先把原始資料整理成一列一筆、欄名唯一的 Table。**\n\n樞紐欄位先這樣分：\n- 列：要比較的分類\n- 欄：月份或狀態\n- 值：金額、數量等指標\n- 篩選：部門、區域等情境\n\n做完後，用原始資料手算一個小計，確認彙總方式沒有選錯。`;
+    }
+    if (/圖表|chart|視覺|趨勢/.test(q)) {
+      return `**先決定你要回答哪個問題，再選圖表。**\n\n- 比大小：橫條圖\n- 看時間趨勢：折線圖\n- 看組成：堆疊圖\n\n在「${title}」先保留一個主訊息、移除多餘格線與裝飾，再檢查座標軸是否會誤導。`;
+    }
+    if (/驗證|下拉|輸入|防呆/.test(q)) {
+      return `**資料驗證的目的不是限制人，而是提早阻止髒資料。**\n\n先定義：允許什麼、拒絕什麼、輸入錯誤時要提示什麼。最小範例可以先做一個固定清單下拉，再測試空白、錯字與貼上資料三種情況。`;
+    }
+    if (/公式|函式|if|lookup|xlookup|vlookup|sum|count|錯|為什麼|#n\/a|#value/.test(q)) {
+      return `**先判斷這題是「算、查、還是判斷」。**\n\n1. 用一筆資料手算預期答案。\n2. 把公式拆成範圍、條件、回傳值。\n3. 用公式列逐段選取，確認參照沒有位移。\n\n查找可先從這個安全骨架開始：\n\`=IFERROR(XLOOKUP(查找值, 查找欄, 回傳欄), "找不到")\`\n\n再把範例中的三個範圍換成本課資料。`;
+    }
+    return `你現在在學「**${title}**」。先用一句話回答：「這個工具解決哪個工作問題？」接著只做一個最小範例，最後改一個條件，確認你不是只照著步驟點。`;
+  }
+  function rollbackPendingUser(text){
+    const last = messages[messages.length - 1];
+    if (last?.role === "user" && last.content === text) messages.pop();
+  }
 
   async function send(){
     const text = input.value.trim();
@@ -2412,13 +2732,25 @@ function a11yTrapTab(container, e){
     sendBtn.disabled = true;
     const thinking = document.createElement("div");
     thinking.className = "ai-msg ai-assistant ai-thinking";
+    thinking.dataset.ttsSkip = "true";
     thinking.textContent = "🤔 思考中…";
     log.appendChild(thinking);
     log.scrollTop = log.scrollHeight;
+    await RUNTIME_ENV.healthPromise;
+    if (RUNTIME_ENV.localDemoMode) {
+      await new Promise(resolve => window.setTimeout(resolve, 180));
+      thinking.remove();
+      const reply = offlineCoachReply(text);
+      messages.push({role:"assistant", content:reply});
+      add("assistant", reply);
+      sendBtn.disabled = false;
+      input.focus();
+      return;
+    }
     const ctrl = new AbortController();
     const timeout = setTimeout(() => ctrl.abort(), 30_000);
     try {
-      const resp = await fetch(CHAT_API_BASE + '/api/chat', {
+      const resp = await fetch(runtimeApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: ctrl.signal,
@@ -2429,6 +2761,7 @@ function a11yTrapTab(container, e){
           messages: messages
         })
       });
+      if (!resp.ok) throw new Error(`AI 服務暫時無法使用（${resp.status}）`);
       const data = await resp.json();
       thinking.remove();
       if (data.content && data.content[0]) {
@@ -2436,12 +2769,14 @@ function a11yTrapTab(container, e){
         messages.push({role:"assistant", content:reply});
         add("assistant", reply);
       } else {
-        add("assistant", "❌ " + (data.error?.message || data.error || "API 回應異常，可改用「複製問題」貼到 Claude/ChatGPT 網頁版"));
+        rollbackPendingUser(text);
+        addNotice(data.error?.message || data.error || "AI 回應格式異常，請稍後再試。", "error");
       }
     } catch(err) {
       thinking.remove();
+      rollbackPendingUser(text);
       const msg = err.name === 'AbortError' ? '請求逾時（30 秒）' : err.message;
-      add("assistant", "🌐 連線失敗：" + msg + "\n\n你可以按「📋 複製到剪貼簿」貼到 Claude/ChatGPT 網頁版繼續問。");
+      addNotice(`AI 連線未完成：${msg}。你可以先複製問題，稍後再送出。`, "error");
     } finally {
       clearTimeout(timeout);
     }
@@ -2451,17 +2786,33 @@ function a11yTrapTab(container, e){
   sendBtn.addEventListener("click", send);
   input.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
 
-  copyBtn.addEventListener("click", () => {
+  copyBtn.addEventListener("click", async () => {
     const q = input.value.trim() || "請幫我解釋這個單元的重點";
     const full = `我正在學「${lessonTitle}」（${breadcrumb}）。\n\n本課內容：\n${bodyText}\n\n我的問題：${q}`;
-    navigator.clipboard.writeText(full).then(() => {
+    const original = copyBtn.textContent;
+    try {
+      await copyTextWithFallback(full);
       copyBtn.textContent = "✅ 已複製！貼到 Claude/ChatGPT";
-      setTimeout(()=>copyBtn.textContent = "📋 複製問題到剪貼簿", 2500);
-    });
+      showRuntimeNotice("問題已複製到剪貼簿。", "success");
+    } catch (e) {
+      copyBtn.textContent = "無法複製，請手動選取";
+      showManualCopyFallback(full);
+      addNotice("瀏覽器沒有開放剪貼簿權限，請手動選取問題文字。", "error");
+    }
+    setTimeout(()=>copyBtn.textContent = original, 2500);
   });
 
   // 預設打招呼
-  add("assistant", `嗨！我是這課的 AI 學習教練 👋\n\n你正在學「**${lessonTitle}**」。卡住或想更深入的話，直接問我吧～`);
+  add("assistant", RUNTIME_ENV.isFile
+    ? `嗨！你正在學「**${lessonTitle}**」。目前是本機離線示範，我會用內建的 Excel 教練範例回答，不會傳送資料到遠端。`
+    : `嗨！我是這課的 AI 學習教練 👋\n\n你正在學「**${lessonTitle}**」。卡住或想更深入的話，直接問我吧～`);
+  if (RUNTIME_ENV.isLocalhost) {
+    RUNTIME_ENV.healthPromise.then(() => {
+      if (RUNTIME_ENV.localDemoMode) {
+        addNotice("目前是 localhost 靜態預覽：AI 已切換成本機 Excel 教練，不會傳送資料到遠端。");
+      }
+    });
+  }
 })();
 
 // Search
@@ -2525,21 +2876,45 @@ window.__TTS = (function(){
   let ttsState = 'idle';
   let queueMeta = { scope: 'idle', title: '尚未開始', anchor: null };
   let activeAnchor = null;
+  let fallbackNoticeShown = false;
 
-  const __ttsMeta = document.querySelector('meta[name="api-base"]');
-  const API_BASE = (__ttsMeta && __ttsMeta.content) ? __ttsMeta.content.replace(/\/$/,'')
-                 : (location.protocol === 'file:' ? 'http://localhost:5173' : '');
-  function detectBackend(){
-    return fetch(API_BASE + '/api/health').then(r=>r.json()).then(d => {
-      azAvailable = !!(d && d.azure);
-      refreshVoiceList();
-      if (azAvailable){
-        fetch(API_BASE + '/api/voices').then(r=>r.json()).then(list => {
-          azVoices = (list||[]).filter(v => /^zh-(TW|CN|HK)/.test(v.locale));
-          refreshVoiceList();
-        }).catch(()=>{});
+  function notifyBrowserFallback(reason = "自然語音服務暫時無法使用"){
+    if (fallbackNoticeShown) return;
+    fallbackNoticeShown = true;
+    showRuntimeNotice(`${reason}，已自動切換為瀏覽器裝置語音。`);
+  }
+  function announceDeviceMode(){
+    RUNTIME_ENV.healthPromise.then(() => {
+      if (!azAvailable) {
+        notifyBrowserFallback(RUNTIME_ENV.localDemoMode ? "本機預覽沒有自然語音後端" : "自然語音後端未連線");
       }
-    }).catch(()=>{ azAvailable = false; refreshVoiceList(); });
+    });
+  }
+  async function detectBackend(){
+    const health = await RUNTIME_ENV.healthPromise;
+    azAvailable = !!(RUNTIME_ENV.backendAvailable && health?.azure);
+    if (!azAvailable) {
+      azVoices = [];
+      if (localStorage.getItem(LS.mode) === 'azure') {
+        localStorage.setItem(LS.mode, 'browser');
+        notifyBrowserFallback(RUNTIME_ENV.localDemoMode ? "本機預覽沒有語音後端" : "自然語音後端未連線");
+      }
+      refreshVoiceList();
+      return false;
+    }
+    try {
+      const response = await fetch(runtimeApiUrl('/api/voices'), {
+        headers: { 'Accept': 'application/json' },
+      });
+      if (!response.ok) throw new Error(`voices ${response.status}`);
+      const list = await response.json();
+      azVoices = (list || []).filter(v => /^zh-(TW|CN|HK)/.test(v.locale));
+    } catch (error) {
+      azVoices = [];
+      console.warn('Azure voice list unavailable', error);
+    }
+    refreshVoiceList();
+    return true;
   }
   detectBackend();
 
@@ -2559,7 +2934,11 @@ window.__TTS = (function(){
         || voices.find(v => /zh/i.test(v.lang)) || voices[0];
   }
   function getRate(){ return parseFloat(localStorage.getItem(LS.rate) || '1.05'); }
-  function getMode(){ return localStorage.getItem(LS.mode) || (azAvailable?'azure':'browser'); }
+  function getMode(){
+    const saved = localStorage.getItem(LS.mode);
+    if (saved === 'azure') return azAvailable ? 'azure' : 'browser';
+    return saved || (azAvailable ? 'azure' : 'browser');
+  }
   function getAzVoice(){ return localStorage.getItem(LS.azVoice) || 'zh-TW-HsiaoChenNeural'; }
   function clearAudio(){
     if (!audio) {
@@ -2657,17 +3036,33 @@ window.__TTS = (function(){
     if (!queue.length) return;
     nextChunk();
   }
+  function fallbackCurrentChunk(myEpoch, text, reason){
+    if (epoch !== myEpoch) return;
+    clearAudio();
+    azAvailable = false;
+    azVoices = [];
+    localStorage.setItem(LS.mode, 'browser');
+    refreshVoiceList();
+    notifyBrowserFallback(reason);
+    browserSpeak(text);
+  }
   async function nextChunk(){
     if (qIdx >= queue.length){ setStatus('idle'); updatePanelStatus(); return; }
     setActiveAnchor(queueMeta.anchor);
     const myEpoch = epoch;
     const text = queue[qIdx];
     if (getMode() === 'azure' && azAvailable){
+      let chunkFallbackStarted = false;
+      const fallback = reason => {
+        if (chunkFallbackStarted) return;
+        chunkFallbackStarted = true;
+        fallbackCurrentChunk(myEpoch, text, reason);
+      };
       try {
         setStatus('loading');
         const ratePct = Math.round((getRate()-1)*100);
         const r = (ratePct>=0?'+':'')+ratePct+'%';
-        const resp = await fetch(API_BASE + '/api/tts', {
+        const resp = await fetch(runtimeApiUrl('/api/tts'), {
           method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({ text, voice:getAzVoice(), rate:r })
         });
@@ -2683,14 +3078,13 @@ window.__TTS = (function(){
           if (epoch === myEpoch){ qIdx++; nextChunk(); }
         };
         audio.onerror = () => {
-          clearAudio();
-          if (epoch === myEpoch){ qIdx++; nextChunk(); }
+          fallback('自然語音音訊無法播放');
         };
-        audio.play();
+        await audio.play();
       } catch(e){
         if (epoch !== myEpoch) return;
         console.warn('Azure TTS failed, fallback to browser', e);
-        localStorage.setItem(LS.mode,'browser'); browserSpeak(text);
+        fallback('自然語音服務暫時無法使用');
       }
       return;
     }
@@ -2747,7 +3141,7 @@ window.__TTS = (function(){
   }
   function sanitizeReadableText(node){
     const clone = node.cloneNode(true);
-    clone.querySelectorAll('button,.tts-btn').forEach(n => n.remove());
+    clone.querySelectorAll('button,.tts-btn,[data-tts-skip],[data-ai-transient],#runtimeNoticeRegion').forEach(n => n.remove());
     clone.querySelectorAll('table').forEach(table => {
       const rows = Array.from(table.querySelectorAll('tr'));
       if (!rows.length) return;
@@ -2824,6 +3218,8 @@ window.__TTS = (function(){
       b.className = 'tts-btn'; b.title = '朗讀本段'; b.setAttribute('aria-label', `朗讀：${h2.textContent.trim()}`); b.textContent = '🔊';
       b.onclick = (e) => {
         e.stopPropagation();
+        FLOATING_UI.activate('tts');
+        announceDeviceMode();
         speakChunks(getSectionText(h2), 0, { scope: 'section', title: headingLabel(h2), anchor: h2 });
         panel.classList.add('open');
       };
@@ -2859,6 +3255,8 @@ window.__TTS = (function(){
     <button class="tts-ico" data-act="close" title="收起" aria-label="關閉朗讀工具">✕</button>
     </div>
   `;
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-label', '朗讀工具');
   document.body.appendChild(panel);
 
   function refreshVoiceList(){
@@ -2889,7 +3287,7 @@ window.__TTS = (function(){
     if (m){
       m.checked = (mode === 'azure' && azAvailable);
       m.disabled = false;
-      m.title = azAvailable ? '切換 Azure 自然語音' : '未偵測到後端，請確認 http://localhost:5173 已啟動';
+      m.title = azAvailable ? '切換 Azure 自然語音' : '目前使用瀏覽器裝置語音';
     }
   }
   setTimeout(refreshVoiceList, 300);
@@ -2940,7 +3338,11 @@ window.__TTS = (function(){
     else if (act === 'stop'){ stopAll(true); }
     else if (act === 'selection'){ readSelection(); }
     else if (act === 'page'){ readWholePage(); }
-    else if (act === 'close'){ stopAll(true); panel.classList.remove('open'); }
+    else if (act === 'close'){
+      stopAll(true);
+      panel.classList.remove('open');
+      FLOATING_UI.deactivate('tts');
+    }
   });
   function restartFromCurrent(){
     const playing = (audio && audio.src) || synth.speaking || synth.paused;
@@ -2960,11 +3362,13 @@ window.__TTS = (function(){
       if (e.target.checked && !azAvailable){
         detectBackend().then(()=>{
           if (!azAvailable){
-            alert('無法連到 Azure 後端\n\n請確認後端已啟動並在 index.html 設定 meta[name="api-base"]');
             e.target.checked = false;
             localStorage.setItem(LS.mode, 'browser');
+            notifyBrowserFallback(RUNTIME_ENV.localDemoMode ? '本機預覽沒有自然語音後端' : '自然語音後端未連線');
+            refreshVoiceList();
           } else {
             localStorage.setItem(LS.mode, 'azure');
+            fallbackNoticeShown = false;
             refreshVoiceList();
             restartFromCurrent();
           }
@@ -2979,7 +3383,16 @@ window.__TTS = (function(){
 
   const fab = document.createElement('button');
   fab.id = 'ttsFab'; fab.title = '朗讀工具'; fab.setAttribute('aria-label', '打開朗讀工具'); fab.textContent = '🔊';
-  fab.onclick = () => { panel.classList.toggle('open'); updatePanelStatus(); };
+  fab.onclick = () => {
+    const willOpen = !panel.classList.contains('open');
+    panel.classList.toggle('open', willOpen);
+    if (willOpen) {
+      FLOATING_UI.activate('tts');
+      announceDeviceMode();
+    }
+    else FLOATING_UI.deactivate('tts');
+    updatePanelStatus();
+  };
   document.body.appendChild(fab);
 
   document.addEventListener('selectionchange', updatePanelStatus);

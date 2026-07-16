@@ -61,7 +61,7 @@ import { SITE_DATA } from './site-data.js';
       '<div class="idx-summary-item"><div class="idx-summary-num">'+totalXp.toLocaleString()+'</div><div class="idx-summary-lbl">總 XP</div></div>'+
       '<div class="idx-summary-item"><div class="idx-summary-num">'+totalTasks+'</div><div class="idx-summary-lbl">微任務</div></div>'+
       '<div class="idx-summary-item"><div class="idx-summary-num">'+Math.round(totalMinutes/60*10)/10+'</div><div class="idx-summary-lbl">小時</div></div>'+
-      '<div class="idx-summary-item"><div class="idx-summary-num">21</div><div class="idx-summary-lbl">堂課</div></div>';
+      '<div class="idx-summary-item"><div class="idx-summary-num">22</div><div class="idx-summary-lbl">堂課</div></div>';
     heroActions.parentNode.insertBefore(summary, heroActions);
   }
 })();

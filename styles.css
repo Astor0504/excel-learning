@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;800&family=Noto+Serif+TC:wght@600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;800&family=Noto+Serif+TC:wght@600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap");
 
 :root{
   --bg:#F1F4EE;
@@ -825,6 +825,11 @@ main > .hero .progress{margin-top:14px}
   .hero-capability-node-copy{padding-right:0}
   .hero-capability-card{min-height:auto}
   .hero-capability-card h3{font-size:22px}
+}
+
+/* Mobile home keeps the primary learning actions unobstructed. */
+@media (max-width:760px){
+  body:not([data-lesson-slug]) .pomo{display:none !important}
 }
 @media (max-width:980px){
   .hero-featured-grid,
@@ -4687,3 +4692,877 @@ html:not([data-theme="dark"]) .diagram-dark{display:none}
 
 /* ===== B 版品味修剪:eyebrow 家族一律不轉大寫(2026-07-14) ===== */
 [class*="-eyebrow"]{text-transform:none;letter-spacing:.02em}
+
+/* ========================================================================
+   GRID / OPS — Excel data modeling & automation studio
+   This final cascade is intentionally static-first: the homepage remains
+   fully designed when opened through file:// before ES modules are available.
+   ======================================================================== */
+:root{
+  --bg:#E7E9E2;
+  --surface:#F7F8F3;
+  --surface-strong:#EEF0E9;
+  --text:#0A0D0B;
+  --muted:#646B64;
+  --line:#B8BDB5;
+  --line-strong:#111512;
+  --accent:#157A52;
+  --accent-soft:#E1F0E7;
+  --accent-2:#315CFF;
+  --accent-3:#F18A4C;
+  --accent-ink:#0A5B3B;
+  --accent-strong:#0A0D0B;
+  --studio-lime:#C8FF3D;
+  --studio-blue:#315CFF;
+  --studio-ink:#080B09;
+  --studio-grid:rgba(8,11,9,.075);
+  --shadow:10px 10px 0 rgba(8,11,9,.12);
+  --shadow-soft:5px 5px 0 rgba(8,11,9,.08);
+  --radius:6px;
+}
+html[data-theme="dark"]{
+  --bg:#080B09;
+  --surface:#111612;
+  --surface-strong:#171D18;
+  --text:#F3F5EE;
+  --muted:#9DA59D;
+  --line:#333A34;
+  --line-strong:#D9DED7;
+  --accent:#8FE3B8;
+  --accent-soft:#183327;
+  --accent-2:#7692FF;
+  --accent-3:#FF9B61;
+  --accent-ink:#A8EDC9;
+  --accent-strong:#C8FF3D;
+  --studio-grid:rgba(255,255,255,.055);
+  --shadow:10px 10px 0 rgba(0,0,0,.38);
+  --shadow-soft:5px 5px 0 rgba(0,0,0,.26);
+}
+html,body{
+  font-family:"Space Grotesk","Noto Sans TC","PingFang TC",-apple-system,sans-serif;
+}
+body,
+body[data-lesson-slug],
+html[data-theme="dark"] body,
+html[data-theme="dark"] body[data-lesson-slug]{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--studio-grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--studio-grid) 1px,transparent 1px);
+  background-size:34px 34px;
+}
+body::before{
+  opacity:1;
+  mask-image:none;
+  background:
+    linear-gradient(90deg,transparent 0 49.8%,rgba(49,92,255,.09) 50%,transparent 50.2%) center/272px 100%,
+    linear-gradient(180deg,rgba(255,255,255,.18),transparent 25%);
+}
+a{color:var(--text)}
+a:hover{color:var(--accent-2);text-decoration:none}
+
+.nav{
+  position:relative;
+  z-index:90;
+  max-width:1280px;
+  min-height:78px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--line-strong);
+}
+.nav .brand{
+  gap:12px;
+  font-family:"Space Grotesk","Noto Sans TC",sans-serif;
+  letter-spacing:0;
+}
+.nav .brand .dot{
+  width:18px;
+  height:18px;
+  border-radius:0;
+  background:var(--studio-lime);
+  box-shadow:inset 0 0 0 1px var(--studio-ink);
+}
+.brand-lockup{display:grid;gap:2px;line-height:1}
+.brand-lockup strong{
+  font-size:19px;
+  font-weight:700;
+  letter-spacing:-.04em;
+}
+.brand-lockup strong i{color:var(--studio-blue);font-style:normal}
+.brand-lockup small{
+  color:var(--muted);
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.16em;
+}
+.btn,
+.tool-btn,
+.xc-btn{
+  min-height:44px;
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  background:var(--surface);
+  box-shadow:none;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+html[data-theme="dark"] .btn{background:var(--surface);box-shadow:none}
+.btn:hover,
+.xc-btn:hover{
+  transform:translate(-2px,-2px);
+  border-color:var(--line-strong);
+  box-shadow:4px 4px 0 var(--line-strong);
+}
+.btn.primary,
+.xc-btn.primary,
+.lesson-focus-toggle.is-active,
+.tool-btn.is-active{
+  color:var(--studio-ink) !important;
+  background:var(--studio-lime) !important;
+  border-color:var(--line-strong) !important;
+}
+
+/* Homepage: first paint */
+body:not([data-lesson-slug]) .nav{max-width:1280px}
+body:not([data-lesson-slug]) main{
+  max-width:1280px;
+  padding:30px 20px 80px;
+}
+body:not([data-lesson-slug]) .hero{
+  padding:0;
+  overflow:hidden;
+  color:#F5F7F0;
+  border:1px solid var(--studio-ink);
+  border-radius:0;
+  background:
+    radial-gradient(circle at 78% 14%,rgba(49,92,255,.28),transparent 27%),
+    linear-gradient(135deg,#0A0D0B 0%,#111713 58%,#070908 100%);
+  box-shadow:12px 12px 0 rgba(8,11,9,.16);
+}
+html[data-theme="dark"] body:not([data-lesson-slug]) .hero{
+  background:
+    radial-gradient(circle at 78% 14%,rgba(49,92,255,.3),transparent 27%),
+    linear-gradient(135deg,#070908,#111713 58%,#050706);
+}
+body:not([data-lesson-slug]) .hero::before{
+  inset:0;
+  width:auto;
+  height:auto;
+  border:0;
+  border-radius:0;
+  transform:none;
+  background:
+    linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:34px 34px;
+}
+body:not([data-lesson-slug]) .hero > h1,
+body:not([data-lesson-slug]) .hero > p,
+body:not([data-lesson-slug]) .hero > .streak-row,
+body:not([data-lesson-slug]) .hero > .progress,
+body:not([data-lesson-slug]) .hero > .progress-label,
+body:not([data-lesson-slug]) .hero > .hero-actions{
+  margin-left:34px;
+  margin-right:34px;
+}
+body:not([data-lesson-slug]) .hero > .studio-hero-label{margin:30px 34px 0}
+body:not([data-lesson-slug]) .hero > h1{margin-top:30px}
+body:not([data-lesson-slug]) .hero > .studio-pipeline{margin:30px 34px 34px}
+.studio-hero-label{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  color:#BFC7BF;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.14em;
+}
+.studio-live{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--studio-lime);
+}
+.studio-live::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--studio-lime);
+  box-shadow:0 0 0 5px rgba(200,255,61,.1);
+}
+body:not([data-lesson-slug]) .hero h1{
+  max-width:10ch;
+  margin-bottom:18px;
+  color:#F7F8F3;
+  font-family:"Space Grotesk","Noto Sans TC",sans-serif;
+  font-size:clamp(50px,7vw,88px);
+  font-weight:700;
+  line-height:.88;
+  letter-spacing:-.075em;
+  text-transform:uppercase;
+}
+body:not([data-lesson-slug]) .hero h1 span{display:block}
+body:not([data-lesson-slug]) .hero h1 span:nth-child(2){color:#8B9FFF}
+body:not([data-lesson-slug]) .hero h1 span:nth-child(3){color:var(--studio-lime)}
+body:not([data-lesson-slug]) .hero p{
+  color:#C4CBC4;
+  font-size:16px;
+  line-height:1.7;
+}
+body:not([data-lesson-slug]) .hero .primary-actions .btn.primary{
+  background:var(--studio-lime) !important;
+}
+body:not([data-lesson-slug]) .hero .btn{
+  color:#F5F7F0;
+  border-color:rgba(255,255,255,.42);
+  background:rgba(255,255,255,.06);
+}
+body:not([data-lesson-slug]) .hero .btn.primary{color:var(--studio-ink)}
+.studio-pipeline{
+  display:grid;
+  gap:14px;
+  padding:18px;
+  color:var(--studio-ink);
+  border:1px solid #D7DDD3;
+  background:#F5F7F0;
+}
+.studio-pipeline-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+}
+.studio-pipeline-head span:last-child{color:#157A52}
+.studio-pipeline-track{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+.studio-pipeline-node{
+  position:relative;
+  min-height:88px;
+  padding:12px;
+  border:1px solid #101410;
+  background:#E8EAE4;
+  display:grid;
+  align-content:space-between;
+  gap:10px;
+}
+.studio-pipeline-node:not(:last-child)::after{
+  content:"→";
+  position:absolute;
+  z-index:2;
+  top:50%;
+  right:-8px;
+  width:15px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  color:#0A0D0B;
+  background:var(--studio-lime);
+  transform:translate(50%,-50%);
+  font-family:"IBM Plex Mono",monospace;
+  font-weight:700;
+}
+.studio-pipeline-node span{
+  color:#687068;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.1em;
+}
+.studio-pipeline-node strong{font-size:16px;line-height:1.15}
+.studio-pipeline-node.is-live{color:#F7F8F3;background:#111512}
+.studio-pipeline-node.is-live span{color:var(--studio-lime)}
+
+/* Hide static-only controls after the enhanced hero has composed itself. */
+body:not([data-lesson-slug]) .hero:has(.hero-shell) > .studio-hero-label,
+body:not([data-lesson-slug]) .hero:has(.hero-shell) > .studio-pipeline{display:none}
+body:not([data-lesson-slug]) .hero-shell{
+  grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr);
+  gap:0;
+}
+.hero-main{
+  padding:34px;
+  border-right:1px solid rgba(255,255,255,.18);
+}
+.hero-side{
+  padding:34px;
+  color:var(--studio-ink);
+  background:#F5F7F0;
+}
+.hero-side .btn{color:var(--studio-ink) !important;border-color:#0A0D0B !important}
+.hero-eyebrow{
+  padding:0;
+  color:var(--studio-lime);
+  border:0;
+  border-radius:0;
+  background:transparent;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  letter-spacing:.1em;
+}
+.hero-progress-stack,
+.hero-action-stack .idx-summary{
+  color:#F5F7F0;
+  border:1px solid rgba(255,255,255,.28) !important;
+  border-radius:0 !important;
+  background:rgba(255,255,255,.06) !important;
+  box-shadow:none !important;
+}
+body:not([data-lesson-slug]) .hero .progress{
+  height:8px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:0;
+  background:#060806;
+}
+body:not([data-lesson-slug]) .hero .progress > span{
+  border-radius:0;
+  background:var(--studio-lime);
+}
+body:not([data-lesson-slug]) .hero .progress-label,
+body:not([data-lesson-slug]) .hero .streak-badge{color:#C4CBC4}
+.streak-badge{
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:0;
+  background:rgba(255,255,255,.06);
+}
+.hero-action-stack .idx-summary-num{color:var(--studio-lime)}
+.hero-action-stack .idx-summary-lbl{color:#AEB6AE}
+body:not([data-lesson-slug]) .hero > .idx-summary{
+  margin:18px 34px 0;
+  padding:16px 14px;
+  color:#F5F7F0;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:0;
+  background:rgba(255,255,255,.06);
+  box-shadow:none;
+}
+body:not([data-lesson-slug]) .hero > .idx-summary .idx-summary-num{color:var(--studio-lime)}
+body:not([data-lesson-slug]) .hero > .idx-summary .idx-summary-lbl{color:#AEB6AE}
+.hero-helper,
+.hero-mode-switch{
+  color:var(--studio-ink);
+  border:1px solid #0A0D0B !important;
+  border-radius:0 !important;
+  background:#F5F7F0 !important;
+  box-shadow:none !important;
+}
+.hero-helper-label,
+.hero-mode-card-start{color:#315CFF}
+.hero-helper strong,
+.hero-mode-title{color:#0A0D0B}
+.hero-mode-card{
+  border:1px solid #AEB4AC;
+  border-radius:0;
+  background:#E8EAE4;
+}
+.hero-mode-card:hover{
+  transform:translate(-2px,-2px);
+  border-color:#0A0D0B;
+  box-shadow:4px 4px 0 #0A0D0B;
+}
+.hero-mode-card.is-active{
+  color:#0A0D0B;
+  border-color:#0A0D0B;
+  background:var(--studio-lime);
+}
+.hero-mode-meta{
+  border:1px solid #AEB4AC;
+  border-radius:0;
+  background:#FFFFFF;
+}
+
+/* Static lesson cards also form a useful grid before module enhancement. */
+body:not([data-lesson-slug]) main > a[data-lesson]{
+  display:inline-block;
+  width:calc(50% - 10px);
+  margin:6px 16px 6px 0;
+  vertical-align:top;
+}
+body:not([data-lesson-slug]) main > a[data-lesson]:nth-of-type(even){margin-right:0}
+body:not([data-lesson-slug]) .phase-section{
+  clear:both;
+  margin-top:28px;
+  padding:18px 20px;
+  border:1px solid var(--line-strong);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+}
+body:not([data-lesson-slug]) .phase-section .phase-badge{
+  color:var(--studio-ink);
+  border-radius:0;
+  background:var(--studio-lime) !important;
+}
+body:not([data-lesson-slug]) .card{
+  min-height:190px;
+  margin:0;
+  border:1px solid var(--line-strong);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:none;
+}
+html[data-theme="dark"] body:not([data-lesson-slug]) .card{background:var(--surface)}
+body:not([data-lesson-slug]) .card:hover{
+  transform:translate(-3px,-3px);
+  border-color:var(--line-strong);
+  box-shadow:6px 6px 0 var(--line-strong);
+}
+body:not([data-lesson-slug]) .card h3{
+  font-family:"Space Grotesk","Noto Sans TC",sans-serif;
+  font-size:23px;
+}
+body:not([data-lesson-slug]) .card .tag{
+  border-radius:0;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+}
+
+/* Enhanced homepage control surfaces */
+.home-personal-loop,
+.hero-featured-lessons,
+.hero-capability-map,
+.home-phase-guide,
+.home-curriculum-phase,
+body:not([data-lesson-slug]) .idx-dashboard{
+  border:1px solid var(--line-strong) !important;
+  border-radius:0 !important;
+  background:var(--surface) !important;
+  box-shadow:var(--shadow-soft) !important;
+}
+.home-personal-loop-step,
+.hero-featured-card,
+.home-tool-map,
+.home-tool-map-card,
+.home-phase-guide-card,
+.home-curriculum-card,
+.idx-badge,
+.idx-strategy,
+.idx-strategy-item{
+  border:1px solid var(--line) !important;
+  border-radius:0 !important;
+  background:var(--surface-strong) !important;
+  box-shadow:none !important;
+}
+.home-personal-loop-step span,
+.hero-capability-node-num{
+  color:var(--studio-ink);
+  border-radius:0;
+  background:var(--studio-lime);
+}
+.home-curriculum-card:hover,
+.hero-featured-card:hover{
+  transform:translate(-2px,-2px);
+  border-color:var(--line-strong) !important;
+  box-shadow:4px 4px 0 var(--line-strong) !important;
+}
+body:not([data-lesson-slug]) .phase-group.is-open{gap:12px}
+body:not([data-lesson-slug]) .phase-group .card{height:100%}
+.home-personal-loop-eyebrow,
+.hero-featured-eyebrow,
+.hero-capability-eyebrow,
+.home-phase-guide-eyebrow,
+.home-curriculum-eyebrow,
+.home-tool-map-head span,
+.home-curriculum-phase-kicker{
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  letter-spacing:.08em;
+}
+
+/* Lesson pages inherit the same workbench language. */
+body[data-lesson-slug] .nav{
+  position:sticky;
+  top:0;
+  max-width:none;
+  padding:12px 28px;
+  color:#F7F8F3;
+  border-bottom:1px solid rgba(200,255,61,.5);
+  background:rgba(8,11,9,.96);
+  backdrop-filter:blur(18px);
+}
+body[data-lesson-slug] .nav .brand a{
+  color:#F7F8F3 !important;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+}
+body[data-lesson-slug] .nav .tools .btn{color:#F7F8F3;background:#111612}
+body[data-lesson-slug] .layout{max-width:1440px;gap:20px;padding:28px}
+body[data-lesson-slug] .toc{
+  top:96px;
+  width:250px;
+  max-height:calc(100vh - 118px);
+  padding:20px;
+  color:#E9EEE8;
+  border:1px solid #080B09;
+  background:#0A0D0B;
+}
+body[data-lesson-slug] .toc .toc-label{
+  color:var(--studio-lime);
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+}
+body[data-lesson-slug] .toc ul{border-left:1px solid #4B534C}
+body[data-lesson-slug] .toc a{color:#AEB7AF}
+body[data-lesson-slug] .toc a:hover{color:#FFFFFF}
+body[data-lesson-slug] .toc a.active{
+  color:var(--studio-lime);
+  border-left-color:var(--studio-lime);
+}
+body[data-lesson-slug] .layout main.lesson{
+  max-width:1040px;
+  padding:34px 40px 50px;
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.lesson-crumb{
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.06em;
+}
+.lesson h1{
+  max-width:16ch;
+  margin:14px 0 18px;
+  font-family:"Space Grotesk","Noto Sans TC",sans-serif;
+  font-size:clamp(38px,5vw,64px);
+  font-weight:700;
+  line-height:.98;
+  letter-spacing:-.055em;
+}
+.lesson h2{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:"Space Grotesk","Noto Sans TC",sans-serif;
+  font-size:28px;
+  letter-spacing:-.035em;
+}
+.lesson h2::before{
+  content:"";
+  width:12px;
+  height:12px;
+  flex:0 0 auto;
+  border:1px solid var(--line-strong);
+  background:var(--studio-lime);
+}
+.lesson h2::after{display:none !important}
+.lesson .progress{
+  height:8px;
+  border:1px solid var(--line-strong);
+  border-radius:0;
+  background:var(--surface-strong);
+}
+.lesson .progress > span{
+  border-radius:0;
+  background:linear-gradient(90deg,var(--studio-blue),var(--studio-lime));
+}
+.tldr,
+.lesson-downloads,
+.lesson-kickoff,
+.lesson-compass,
+.lesson-pro-note,
+.lesson-focus-strip,
+.checklist,
+.notes,
+.formula-demo,
+.resCard{
+  border:1px solid var(--line-strong) !important;
+  border-radius:0 !important;
+  background:var(--surface-strong) !important;
+  box-shadow:none !important;
+}
+.tldr{position:relative;padding-left:68px}
+.tldr::before{
+  content:"FX";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:50px;
+  display:grid;
+  place-items:center;
+  color:var(--studio-ink);
+  border-right:1px solid var(--line-strong);
+  background:var(--studio-lime);
+  font-family:"IBM Plex Mono",monospace;
+  font-weight:700;
+}
+.lesson-badge,
+.lesson-downloads-pill,
+.lesson-compass-pill,
+.lesson-focus-state,
+.lesson-focus-rhythm span,
+.lesson-focus-progress{
+  border:1px solid var(--line) !important;
+  border-radius:0 !important;
+  background:var(--surface) !important;
+}
+.lesson-focus-strip{border-top:5px solid var(--studio-blue) !important}
+.lesson-focus-step{
+  color:var(--studio-ink);
+  border-radius:0;
+  background:var(--studio-lime);
+}
+.lesson-focus-reflection textarea,
+.notes textarea,
+.xc-input{
+  border:1px solid var(--line-strong);
+  border-radius:0;
+  background:var(--surface);
+}
+.lesson .md-body table,
+.xc-data,
+.xc-demo-table,
+.xc-demo-sheet-grid{
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+}
+.lesson .md-body th,
+.lesson .md-body td,
+.xc-data th,
+.xc-data td{border-color:var(--line-strong)}
+.lesson .md-body th,
+.xc-data th{
+  color:var(--studio-ink);
+  background:var(--studio-lime);
+}
+.lesson pre,
+.xc-vba pre,
+.xc-demo-formula{
+  border:1px solid #303731;
+  border-radius:0;
+  background:#0A0D0B;
+}
+.lt-bar{
+  top:82px;
+  padding:0;
+  border:1px solid var(--line-strong);
+  border-radius:0;
+  background:var(--surface) !important;
+  backdrop-filter:none;
+}
+.lt-tab{
+  border-right:1px solid var(--line);
+  border-radius:0;
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  font-size:12px;
+}
+.lt-tab:last-child{border-right:0}
+.lt-tab.is-active{
+  color:var(--studio-ink);
+  background:var(--studio-lime);
+  box-shadow:none;
+}
+.lt-tab.is-active .lt-badge{color:#FFFFFF;background:#0A0D0B}
+.xc-task,
+.xc-know,
+.xc-sc-group,
+.xc-vba,
+.xc-demo,
+.xc-demo-more,
+.xc-demo-board,
+.xc-demo-panel,
+.xc-demo-result-card,
+.xc-demo-sheet-window,
+.xc-hands{
+  border-radius:0 !important;
+}
+.xc-task,
+.xc-know,
+.xc-sc-group,
+.xc-vba,
+.xc-demo{
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  box-shadow:none;
+}
+.xc-task:hover{box-shadow:4px 4px 0 var(--line-strong)}
+.checklist .box,
+.xc-hands-box{border-radius:0}
+.checklist input:checked + .box,
+.xc-hands-item.is-done .xc-hands-box{
+  color:var(--studio-ink);
+  border-color:var(--line-strong);
+  background:var(--studio-lime);
+}
+.checklist input:checked + .box::after{color:var(--studio-ink)}
+
+footer{
+  color:var(--muted);
+  font-family:"IBM Plex Mono","JetBrains Mono",monospace;
+  letter-spacing:.04em;
+}
+
+@media (max-width:1100px){
+  body:not([data-lesson-slug]) .hero-shell{grid-template-columns:1fr}
+  .hero-main{border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}
+}
+@media (max-width:760px){
+  html,body{max-width:100%;overflow-x:hidden}
+  .nav{min-height:68px;padding:10px 14px}
+  .nav .brand{min-width:0;gap:9px}
+  .nav .brand .dot{width:15px;height:15px;flex:0 0 auto}
+  .brand-lockup{min-width:0}
+  .brand-lockup strong{font-size:16px;white-space:nowrap}
+  .brand-lockup small{font-size:7.5px;letter-spacing:.11em;white-space:nowrap}
+  .nav .tools{min-width:0;gap:6px}
+  .nav .tools .btn{
+    min-width:42px;
+    min-height:42px;
+    padding:7px 9px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+  }
+  .nav-btn-label{display:none}
+  .tool-btn-label{display:none}
+  body:not([data-lesson-slug]) main{padding:18px 12px 70px}
+  body:not([data-lesson-slug]) .hero{
+    width:100%;
+    min-width:0;
+    box-shadow:6px 6px 0 rgba(8,11,9,.16);
+  }
+  body:not([data-lesson-slug]) .hero > h1,
+  body:not([data-lesson-slug]) .hero > p,
+  body:not([data-lesson-slug]) .hero > .streak-row,
+  body:not([data-lesson-slug]) .hero > .progress,
+  body:not([data-lesson-slug]) .hero > .progress-label,
+  body:not([data-lesson-slug]) .hero > .hero-actions{
+    margin-left:20px;
+    margin-right:20px;
+    min-width:0;
+  }
+  body:not([data-lesson-slug]) .hero > .studio-hero-label{margin:22px 20px 0}
+  body:not([data-lesson-slug]) .hero > .studio-pipeline{margin:22px 20px 24px}
+  body:not([data-lesson-slug]) .hero h1{font-size:48px}
+  body:not([data-lesson-slug]) .hero > .idx-summary{
+    width:auto;
+    min-width:0;
+    margin:16px 20px 0;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body:not([data-lesson-slug]) .hero-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  body:not([data-lesson-slug]) .hero-actions .btn{
+    width:100%;
+    min-width:0;
+    padding:9px 7px;
+    font-size:10px;
+    white-space:normal;
+  }
+  .studio-hero-label{
+    min-width:0;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    font-size:8.5px;
+    letter-spacing:.09em;
+  }
+  .studio-pipeline{
+    width:auto;
+    min-width:0;
+    overflow:hidden;
+    padding:14px;
+  }
+  .studio-pipeline-head{
+    min-width:0;
+    display:grid;
+    gap:4px;
+    font-size:8.5px;
+  }
+  .studio-pipeline-track{
+    width:100%;
+    min-width:0;
+    grid-template-columns:minmax(0,1fr);
+    gap:12px;
+  }
+  .studio-pipeline-node{
+    width:100%;
+    min-width:0;
+    min-height:72px;
+  }
+  .studio-pipeline-node:not(:last-child)::after{
+    content:"↓";
+    top:auto;
+    right:auto;
+    bottom:-8px;
+    left:50%;
+    transform:translate(-50%,50%);
+  }
+  .hero-shell,
+  .hero-main,
+  .hero-side,
+  .hero-copy-group,
+  .hero-progress-stack,
+  .hero-action-stack,
+  .hero-quicknav,
+  .hero-mode-switch,
+  .hero-mode-grid,
+  .hero-mode-card,
+  .home-academy-stack,
+  .home-personal-loop,
+  .home-personal-loop-steps,
+  .hero-featured-lessons,
+  .hero-featured-grid,
+  .hero-capability-map,
+  .home-phase-guide,
+  .home-phase-guide-grid,
+  .home-curriculum,
+  .home-curriculum-stack,
+  .home-curriculum-phase,
+  .home-curriculum-grid{
+    width:100%;
+    min-width:0;
+  }
+  .hero-action-stack .idx-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body:not([data-lesson-slug]) main > a[data-lesson]{
+    display:block;
+    width:100%;
+    margin:8px 0;
+  }
+  .hero-main,.hero-side{padding:22px}
+  body[data-lesson-slug] .layout{padding:12px}
+  body[data-lesson-slug] .layout main.lesson{
+    padding:24px 18px 42px;
+    box-shadow:5px 5px 0 rgba(8,11,9,.12);
+  }
+  .lesson h1{font-size:40px}
+  .lesson h2{font-size:24px}
+  .tldr{padding:62px 18px 18px}
+  .tldr::before{
+    right:0;
+    bottom:auto;
+    width:auto;
+    height:46px;
+    border-right:0;
+    border-bottom:1px solid var(--line-strong);
+  }
+}
+@media (max-width:520px){
+  body:not([data-lesson-slug]) .nav{padding-left:10px;padding-right:10px}
+  body:not([data-lesson-slug]) .hero > h1,
+  body:not([data-lesson-slug]) .hero > p,
+  body:not([data-lesson-slug]) .hero > .streak-row,
+  body:not([data-lesson-slug]) .hero > .progress,
+  body:not([data-lesson-slug]) .hero > .progress-label,
+  body:not([data-lesson-slug]) .hero > .hero-actions{
+    margin-left:14px;
+    margin-right:14px;
+  }
+  body:not([data-lesson-slug]) .hero > .studio-hero-label{margin:18px 14px 0}
+  body:not([data-lesson-slug]) .hero > .studio-pipeline{margin:18px 14px 18px}
+  body:not([data-lesson-slug]) .hero > .idx-summary{margin:14px 14px 0}
+  body:not([data-lesson-slug]) .hero h1{font-size:clamp(39px,12.5vw,48px)}
+  body:not([data-lesson-slug]) .hero p{font-size:14px;line-height:1.65}
+  .streak-row{gap:6px}
+  .streak-badge{min-width:0;padding:8px 10px;font-size:12px}
+}
